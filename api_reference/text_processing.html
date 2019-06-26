@@ -39,21 +39,6 @@ phone numbers, and currency symbols with standardized forms. These should be
 applied before processing by spaCy, but be warned: preprocessing may affect
 the interpretation of the text – and spaCy’s processing of it.</p>
 <dl class="function">
-<dt id="textacy.preprocess.fix_bad_unicode">
-<code class="sig-prename descclassname">textacy.preprocess.</code><code class="sig-name descname">fix_bad_unicode</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">normalization='NFC'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/preprocess.html#fix_bad_unicode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.preprocess.fix_bad_unicode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fix unicode text that’s “broken” using <code class="docutils literal notranslate"><span class="pre">ftfy</span></code>;
-this includes mojibake, HTML entities and other code cruft,
-and non-standard forms for display purposes.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>As of v0.7.0, this is no longer implemented within textacy. Instead,
-install and import <code class="docutils literal notranslate"><span class="pre">ftfy</span></code> directly, and call <code class="docutils literal notranslate"><span class="pre">ftfy.fix_text(text)</span></code> ,
-which is more extensive and customizable than textacy’s wrapper of it.
-For details, check out <a class="reference external" href="https://ftfy.readthedocs.io">https://ftfy.readthedocs.io</a>.</p>
-</div>
-</dd></dl>
-
-<dl class="function">
 <dt id="textacy.preprocess.normalize_unicode">
 <code class="sig-prename descclassname">textacy.preprocess.</code><code class="sig-name descname">normalize_unicode</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">form='NFC'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/preprocess.html#normalize_unicode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.preprocess.normalize_unicode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Normalize unicode characters in <code class="docutils literal notranslate"><span class="pre">text</span></code> into canonical forms.</p>
@@ -86,15 +71,13 @@ or more linebreaks with a single newline. Also strip leading/trailing whitespace
 
 <dl class="function">
 <dt id="textacy.preprocess.preprocess_text">
-<code class="sig-prename descclassname">textacy.preprocess.</code><code class="sig-name descname">preprocess_text</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">fix_unicode=False</em>, <em class="sig-param">normalize_unicode=False</em>, <em class="sig-param">lowercase=False</em>, <em class="sig-param">no_urls=False</em>, <em class="sig-param">no_emails=False</em>, <em class="sig-param">no_phone_numbers=False</em>, <em class="sig-param">no_numbers=False</em>, <em class="sig-param">no_currency_symbols=False</em>, <em class="sig-param">no_punct=False</em>, <em class="sig-param">no_contractions=False</em>, <em class="sig-param">no_accents=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/preprocess.html#preprocess_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.preprocess.preprocess_text" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.preprocess.</code><code class="sig-name descname">preprocess_text</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">normalize_unicode=False</em>, <em class="sig-param">lowercase=False</em>, <em class="sig-param">no_urls=False</em>, <em class="sig-param">no_emails=False</em>, <em class="sig-param">no_phone_numbers=False</em>, <em class="sig-param">no_numbers=False</em>, <em class="sig-param">no_currency_symbols=False</em>, <em class="sig-param">no_punct=False</em>, <em class="sig-param">no_contractions=False</em>, <em class="sig-param">no_accents=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/preprocess.html#preprocess_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.preprocess.preprocess_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Normalize various aspects of raw text before parsing it with spaCy.
 A convenience function for applying all other preprocessing functions in one go.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Raw text to preprocess.</p></li>
-<li><p><strong>fix_unicode</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, fix “broken” unicode such as
-mojibake and garbled HTML entities.</p></li>
 <li><p><strong>normalize_unicode</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, normalize unicode characters in text
 into canonical form.</p></li>
 <li><p><strong>lowercase</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, all text is lower-cased</p></li>

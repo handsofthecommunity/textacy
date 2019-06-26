@@ -46,26 +46,6 @@
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">constants</span>
 
 
-<div class="viewcode-block" id="fix_bad_unicode"><a class="viewcode-back" href="../../api_reference/text_processing.html#textacy.preprocess.fix_bad_unicode">[docs]</a><span class="k">def</span> <span class="nf">fix_bad_unicode</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">normalization</span><span class="o">=</span><span class="s2">&quot;NFC&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Fix unicode text that&#39;s &quot;broken&quot; using ``ftfy``;</span>
-<span class="sd">    this includes mojibake, HTML entities and other code cruft,</span>
-<span class="sd">    and non-standard forms for display purposes.</span>
-
-<span class="sd">    Warning:</span>
-<span class="sd">        As of v0.7.0, this is no longer implemented within textacy. Instead,</span>
-<span class="sd">        install and import ``ftfy`` directly, and call ``ftfy.fix_text(text)`` ,</span>
-<span class="sd">        which is more extensive and customizable than textacy&#39;s wrapper of it.</span>
-<span class="sd">        For details, check out https://ftfy.readthedocs.io.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-        <span class="s2">&quot;As of v0.7.0, :func:`fix_bad_unicode()` is no longer implemented in textacy. &quot;</span>
-        <span class="s2">&quot;Instead, install and import ``ftfy`` directly, and call ``ftfy.fix_text(text)`` ,&quot;</span>
-        <span class="s2">&quot;which is more extensive and customizable than textacy&#39;s wrapper of it.&quot;</span>
-        <span class="s2">&quot;For details, check out https://ftfy.readthedocs.io.&quot;</span>
-    <span class="p">)</span></div>
-
-
 <div class="viewcode-block" id="normalize_unicode"><a class="viewcode-back" href="../../api_reference/text_processing.html#textacy.preprocess.normalize_unicode">[docs]</a><span class="k">def</span> <span class="nf">normalize_unicode</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;NFC&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Normalize unicode characters in ``text`` into canonical forms.</span>
@@ -236,7 +216,6 @@
 
 <div class="viewcode-block" id="preprocess_text"><a class="viewcode-back" href="../../api_reference/text_processing.html#textacy.preprocess.preprocess_text">[docs]</a><span class="k">def</span> <span class="nf">preprocess_text</span><span class="p">(</span>
     <span class="n">text</span><span class="p">,</span>
-    <span class="n">fix_unicode</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">normalize_unicode</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">lowercase</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">no_urls</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -254,8 +233,6 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        text (str): Raw text to preprocess.</span>
-<span class="sd">        fix_unicode (bool): If True, fix &quot;broken&quot; unicode such as</span>
-<span class="sd">            mojibake and garbled HTML entities.</span>
 <span class="sd">        normalize_unicode (bool): If True, normalize unicode characters in text</span>
 <span class="sd">            into canonical form.</span>
 <span class="sd">        lowercase (bool): If True, all text is lower-cased</span>
@@ -281,8 +258,6 @@
 <span class="sd">        These changes may negatively affect subsequent NLP analysis performed</span>
 <span class="sd">        on the text, so choose carefully, and preprocess at your own risk!</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">fix_unicode</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="n">fix_bad_unicode</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">normalization</span><span class="o">=</span><span class="s2">&quot;NFC&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">normalize_unicode</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">normalize_unicode</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;NFC&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">no_urls</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
