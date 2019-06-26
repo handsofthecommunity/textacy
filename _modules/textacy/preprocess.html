@@ -216,7 +216,7 @@
 
 <div class="viewcode-block" id="preprocess_text"><a class="viewcode-back" href="../../api_reference/text_processing.html#textacy.preprocess.preprocess_text">[docs]</a><span class="k">def</span> <span class="nf">preprocess_text</span><span class="p">(</span>
     <span class="n">text</span><span class="p">,</span>
-    <span class="n">normalize_unicode</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">normalized_unicode</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">lowercase</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">no_urls</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">no_emails</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -233,7 +233,7 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        text (str): Raw text to preprocess.</span>
-<span class="sd">        normalize_unicode (bool): If True, normalize unicode characters in text</span>
+<span class="sd">        normalized_unicode (bool): If True, normalize unicode characters in text</span>
 <span class="sd">            into canonical form.</span>
 <span class="sd">        lowercase (bool): If True, all text is lower-cased</span>
 <span class="sd">        no_urls (bool): If True, replace all URL strings with &quot;*URL*&quot;</span>
@@ -258,7 +258,7 @@
 <span class="sd">        These changes may negatively affect subsequent NLP analysis performed</span>
 <span class="sd">        on the text, so choose carefully, and preprocess at your own risk!</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">normalize_unicode</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">normalized_unicode</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">normalize_unicode</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;NFC&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">no_urls</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">replace_urls</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
