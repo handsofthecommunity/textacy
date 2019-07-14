@@ -63,7 +63,7 @@
 <li><p><strong>Refactored and expanded keyterm extraction functionality</strong> (PR #257)</p>
 <ul>
 <li><p>Moved code from a top-level <code class="docutils literal notranslate"><span class="pre">keyterms</span></code> module into a <code class="docutils literal notranslate"><span class="pre">ke</span></code> sub-package, and cleaned it up / standardized arg names / better shared functionality in the process</p></li>
-<li><p>Added new unsupervised keyterm extraction algorithms: YAKE (<code class="docutils literal notranslate"><span class="pre">ke.yake()</span></code>), sCAKE (<code class="docutils literal notranslate"><span class="pre">ke.scake()</span></code>), and PositionRank (<code class="docutils literal notranslate"><span class="pre">ke.textrank()</span></code>), with non-default parameter values)</p></li>
+<li><p>Added new unsupervised keyterm extraction algorithms: YAKE (<code class="docutils literal notranslate"><span class="pre">ke.yake()</span></code>), sCAKE (<code class="docutils literal notranslate"><span class="pre">ke.scake()</span></code>), and PositionRank (<code class="docutils literal notranslate"><span class="pre">ke.textrank()</span></code>, with non-default parameter values)</p></li>
 <li><p>Added new methods for selecting candidate keyterms: longest matching subsequence candidates (<code class="docutils literal notranslate"><span class="pre">ke.utils.get_longest_subsequence_candidates()</span></code>) and pattern-matching candidates (<code class="docutils literal notranslate"><span class="pre">ke.utils.get_pattern_matching_candidates()</span></code>)</p></li>
 <li><p>Improved speed of SGRank implementation, and generally optimized much of the code</p></li>
 </ul>
