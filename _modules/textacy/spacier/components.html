@@ -43,10 +43,8 @@
 
 <span class="kn">from</span> <span class="nn">spacy.tokens</span> <span class="k">import</span> <span class="n">Doc</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">utils</span> <span class="k">as</span> <span class="n">spacier_utils</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">compat</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">text_stats</span>
-<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">utils</span>
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -146,39 +144,6 @@
                 <span class="p">)</span>
                 <span class="k">raise</span>
         <span class="k">return</span> <span class="n">doc</span></div>
-
-
-<div class="viewcode-block" id="merge_entities"><a class="viewcode-back" href="../../../api_reference/spacier.html#textacy.spacier.components.merge_entities">[docs]</a><span class="k">def</span> <span class="nf">merge_entities</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Merge named entities into single tokens in ``doc``, *in-place*.</span>
-
-<span class="sd">    Can be used as a stand-alone function, or as part of a spaCy language pipeline::</span>
-
-<span class="sd">        &gt;&gt;&gt; spacy_lang = textacy.load_spacy_lang(&#39;en&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; spacy_lang.add_pipe(merge_entities, after=&#39;ner&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; doc = spacy_lang(&#39;Burton DeWilde is an entity in this sentence.&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; doc[0]</span>
-<span class="sd">        Burton DeWilde</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        doc (:class:`spacy.tokens.Doc`)</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        :class:`spacy.tokens.Doc`: Input ``doc`` with entities merged.</span>
-
-<span class="sd">    Warning:</span>
-<span class="sd">        *DEPRECATED!* For equivalent functionality, use</span>
-<span class="sd">        :func:`spacy.pipeline.functions.merge_entities()` instead.</span>
-<span class="sd">        For details, see https://spacy.io/api/pipeline-functions.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">utils</span><span class="o">.</span><span class="n">deprecated</span><span class="p">(</span>
-        <span class="s2">&quot;`merge_entities()` has been deprecated! for equivalent functionality, &quot;</span>
-        <span class="s2">&quot;use :func:`spacy.pipeline.functions.merge_entities()` instead. &quot;</span>
-        <span class="s2">&quot;For details, see https://spacy.io/api/pipeline-functions.&quot;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;once&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">spacier_utils</span><span class="o">.</span><span class="n">merge_spans</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">ents</span><span class="p">,</span> <span class="n">doc</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">doc</span></div>
 </pre></div>
 
           </div>

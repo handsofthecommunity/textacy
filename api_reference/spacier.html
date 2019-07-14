@@ -479,37 +479,6 @@ methods, e.g. <a class="reference external" href="https://spacy.io/api/language#
 </div>
 </dd></dl>
 
-<dl class="function">
-<dt id="textacy.spacier.components.merge_entities">
-<code class="sig-prename descclassname">textacy.spacier.components.</code><code class="sig-name descname">merge_entities</code><span class="sig-paren">(</span><em class="sig-param">doc</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/spacier/components.html#merge_entities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.spacier.components.merge_entities" title="Permalink to this definition">¶</a></dt>
-<dd><p>Merge named entities into single tokens in <code class="docutils literal notranslate"><span class="pre">doc</span></code>, <em>in-place</em>.</p>
-<p>Can be used as a stand-alone function, or as part of a spaCy language pipeline:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">spacy_lang</span> <span class="o">=</span> <span class="n">textacy</span><span class="o">.</span><span class="n">load_spacy_lang</span><span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">spacy_lang</span><span class="o">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="n">merge_entities</span><span class="p">,</span> <span class="n">after</span><span class="o">=</span><span class="s1">&#39;ner&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">doc</span> <span class="o">=</span> <span class="n">spacy_lang</span><span class="p">(</span><span class="s1">&#39;Burton DeWilde is an entity in this sentence.&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">doc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="go">Burton DeWilde</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>doc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code>) – </p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Input <code class="docutils literal notranslate"><span class="pre">doc</span></code> with entities merged.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code></p>
-</dd>
-</dl>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p><em>DEPRECATED!</em> For equivalent functionality, use
-<code class="xref py py-func docutils literal notranslate"><span class="pre">spacy.pipeline.functions.merge_entities()</span></code> instead.
-For details, see <a class="reference external" href="https://spacy.io/api/pipeline-functions">https://spacy.io/api/pipeline-functions</a>.</p>
-</div>
-</dd></dl>
-
 </div>
 <span class="target" id="module-textacy.spacier.utils"></span><div class="section" id="spacy-utils">
 <h2>spaCy Utils<a class="headerlink" href="#spacy-utils" title="Permalink to this headline">¶</a></h2>
