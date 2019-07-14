@@ -59,7 +59,6 @@
 <span class="kn">from</span> <span class="nn">cytoolz</span> <span class="k">import</span> <span class="n">itertoolz</span>
 
 <span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">compat</span>
-<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">utils</span>
 
 <span class="n">_ext_to_compression</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;.bz2&quot;</span><span class="p">:</span> <span class="s2">&quot;bz2&quot;</span><span class="p">,</span> <span class="s2">&quot;.gz&quot;</span><span class="p">:</span> <span class="s2">&quot;gzip&quot;</span><span class="p">,</span> <span class="s2">&quot;.xz&quot;</span><span class="p">:</span> <span class="s2">&quot;xz&quot;</span><span class="p">,</span> <span class="s2">&quot;.zip&quot;</span><span class="p">:</span> <span class="s2">&quot;zip&quot;</span><span class="p">}</span>
 
@@ -391,21 +390,6 @@
         <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dirpath</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">is_good_file</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
                 <span class="k">yield</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="get_filenames"><a class="viewcode-back" href="../../../api_reference/io.html#textacy.io.utils.get_filenames">[docs]</a><span class="k">def</span> <span class="nf">get_filenames</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    :func:`get_filenames()` has been renamed :func:`get_filepaths()`</span>
-<span class="sd">    for clarity and consistency with existing naming conventions;</span>
-<span class="sd">    please use that function instead of this one.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">utils</span><span class="o">.</span><span class="n">deprecated</span><span class="p">(</span>
-        <span class="s2">&quot;`get_filenames()` has been renamed `get_filepaths()` &quot;</span>
-        <span class="s2">&quot;for clarity and consistency with existing naming conventions; &quot;</span>
-        <span class="s2">&quot;please use that function instead of this one&quot;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;once&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">get_filepaths</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
