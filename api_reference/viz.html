@@ -36,7 +36,7 @@
 <span id="visualization"></span><span id="ref-api-reference-viz"></span><h1>Visualization<a class="headerlink" href="#module-textacy.viz.termite" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="textacy.viz.termite.draw_termite_plot">
-<code class="sig-prename descclassname">textacy.viz.termite.</code><code class="sig-name descname">draw_termite_plot</code><span class="sig-paren">(</span><em class="sig-param">values_mat</em>, <em class="sig-param">col_labels</em>, <em class="sig-param">row_labels</em>, <em class="sig-param">highlight_cols=None</em>, <em class="sig-param">highlight_colors=None</em>, <em class="sig-param">save=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/viz/termite.html#draw_termite_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.viz.termite.draw_termite_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.viz.termite.</code><code class="sig-name descname">draw_termite_plot</code><span class="sig-paren">(</span><em class="sig-param">values_mat</em>, <em class="sig-param">col_labels</em>, <em class="sig-param">row_labels</em>, <em class="sig-param">highlight_cols=None</em>, <em class="sig-param">highlight_colors=None</em>, <em class="sig-param">save=False</em>, <em class="sig-param">rc_params=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/viz/termite.html#draw_termite_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.viz.termite.draw_termite_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a “termite” plot, typically used for assessing topic models with a tabular
 layout that promotes comparison of terms both within and across topics.</p>
 <dl class="field-list simple">
@@ -52,13 +52,15 @@ to visually highlight in the plot with contrasting colors</p></li>
 of (light/dark) matplotlib-friendly colors used to highlight a single
 column; if not specified (default), a good set of 6 pairs are used</p></li>
 <li><p><strong>save</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><em>optional</em>) – give the full /path/to/fname on disk to save figure</p></li>
+<li><p><strong>rc_params</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><em>optional</em>) – allow passing parameters to rc_context in matplotlib.plyplot,
+details in <a class="reference external" href="https://matplotlib.org/3.1.0/api/_as_gen/matplotlib.pyplot.rc_context.html">https://matplotlib.org/3.1.0/api/_as_gen/matplotlib.pyplot.rc_context.html</a></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Axis on which termite plot is plotted.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.axis.html#matplotlib.axes.Axes.axis" title="(in Matplotlib v3.1.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.axes.Axes.axis</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.axis.html#matplotlib.axes.Axes.axis" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.axes.Axes.axis</span></code></a></p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if more columns are selected for highlighting than colors
@@ -109,7 +111,7 @@ this value based on the corresponding node weights compared to the max</p></li>
 <dd class="field-even"><p>Axis on which network plot is drawn.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.axis.html#matplotlib.axes.Axes.axis" title="(in Matplotlib v3.1.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.axes.Axes.axis</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.axis.html#matplotlib.axes.Axes.axis" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.axes.Axes.axis</span></code></a></p>
 </dd>
 </dl>
 <div class="admonition note">

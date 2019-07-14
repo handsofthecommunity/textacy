@@ -54,7 +54,8 @@
 <div class="viewcode-block" id="TopicModel"><a class="viewcode-back" href="../../../api_reference/vsm_and_tm.html#textacy.tm.topic_model.TopicModel">[docs]</a><span class="k">class</span> <span class="nc">TopicModel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Train and apply a topic model to vectorized texts using scikit-learn&#39;s</span>
-<span class="sd">    implementations of LSA, LDA, and NMF models. Inspect and visualize results.</span>
+<span class="sd">    implementations of LSA, LDA, and NMF models. Also any other topic model implementations that have</span>
+<span class="sd">    `component_`, `n_topics` and `transform` attributes. Inspect and visualize results.</span>
 <span class="sd">    Save and load trained models to and from disk.</span>
 
 <span class="sd">    Prepare a vectorized corpus (i.e. document-term matrix) and corresponding</span>
@@ -146,8 +147,12 @@
 <span class="sd">        * http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.TruncatedSVD.html</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">_required_trained_model_attr</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;transform&quot;</span><span class="p">,</span> <span class="s2">&quot;components_&quot;</span><span class="p">,</span> <span class="s2">&quot;n_topics&quot;</span><span class="p">}</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">n_topics</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">(</span><span class="n">NMF</span><span class="p">,</span> <span class="n">LatentDirichletAllocation</span><span class="p">,</span> <span class="n">TruncatedSVD</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="k">elif</span> <span class="nb">all</span><span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">required_attr</span><span class="p">)</span> <span class="k">for</span> <span class="n">required_attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_required_trained_model_attr</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">init_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">n_topics</span><span class="o">=</span><span class="n">n_topics</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -408,6 +413,7 @@
         <span class="n">rank_terms_by</span><span class="o">=</span><span class="s2">&quot;topic_weight&quot;</span><span class="p">,</span>
         <span class="n">sort_terms_by</span><span class="o">=</span><span class="s2">&quot;seriation&quot;</span><span class="p">,</span>
         <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">rc_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Make a &quot;termite&quot; plot for assessing topic models using a tabular layout</span>
@@ -435,6 +441,8 @@
 <span class="sd">                the default (&quot;seriation&quot;) groups similar terms together, which</span>
 <span class="sd">                facilitates cross-topic assessment</span>
 <span class="sd">            save (str): give the full /path/to/fname on disk to save figure</span>
+<span class="sd">                rc_params (dict, optional): allow passing parameters to rc_context in matplotlib.plyplot,</span>
+<span class="sd">                details in https://matplotlib.org/3.1.0/api/_as_gen/matplotlib.pyplot.rc_context.html</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            ``matplotlib.axes.Axes.axis``: Axis on which termite plot is plotted.</span>
@@ -565,6 +573,7 @@
             <span class="n">term_labels</span><span class="p">,</span>
             <span class="n">highlight_cols</span><span class="o">=</span><span class="n">highlight_cols</span><span class="p">,</span>
             <span class="n">save</span><span class="o">=</span><span class="n">save</span><span class="p">,</span>
+            <span class="n">rc_params</span><span class="o">=</span><span class="n">rc_params</span><span class="p">,</span>
         <span class="p">)</span></div></div>
 </pre></div>
 

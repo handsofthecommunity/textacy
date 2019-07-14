@@ -1048,7 +1048,8 @@ the # of unique terms (# of columns) in <code class="docutils literal notranslat
 <dt id="textacy.tm.topic_model.TopicModel">
 <em class="property">class </em><code class="sig-prename descclassname">textacy.tm.topic_model.</code><code class="sig-name descname">TopicModel</code><span class="sig-paren">(</span><em class="sig-param">model</em>, <em class="sig-param">n_topics=10</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Train and apply a topic model to vectorized texts using scikit-learn’s
-implementations of LSA, LDA, and NMF models. Inspect and visualize results.
+implementations of LSA, LDA, and NMF models. Also any other topic model implementations that have
+<cite>component_</cite>, <cite>n_topics</cite> and <cite>transform</cite> attributes. Inspect and visualize results.
 Save and load trained models to and from disk.</p>
 <p>Prepare a vectorized corpus (i.e. document-term matrix) and corresponding
 vocabulary (i.e. mapping of term strings to column indices in the matrix).
@@ -1160,7 +1161,7 @@ i.e. topic weights on each document sum to 1</p></li>
 
 <dl class="method">
 <dt id="textacy.tm.topic_model.TopicModel.termite_plot">
-<code class="sig-name descname">termite_plot</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">id2term</em>, <em class="sig-param">topics=-1</em>, <em class="sig-param">sort_topics_by='index'</em>, <em class="sig-param">highlight_topics=None</em>, <em class="sig-param">n_terms=25</em>, <em class="sig-param">rank_terms_by='topic_weight'</em>, <em class="sig-param">sort_terms_by='seriation'</em>, <em class="sig-param">save=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.termite_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.termite_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">termite_plot</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">id2term</em>, <em class="sig-param">topics=-1</em>, <em class="sig-param">sort_topics_by='index'</em>, <em class="sig-param">highlight_topics=None</em>, <em class="sig-param">n_terms=25</em>, <em class="sig-param">rank_terms_by='topic_weight'</em>, <em class="sig-param">sort_terms_by='seriation'</em>, <em class="sig-param">save=False</em>, <em class="sig-param">rc_params=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.termite_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.termite_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a “termite” plot for assessing topic models using a tabular layout
 to promote comparison of terms both within and across topics.</p>
 <dl class="field-list simple">
@@ -1185,7 +1186,9 @@ to rank terms; the top-ranked <code class="docutils literal notranslate"><span c
 <li><p><strong>sort_terms_by</strong> (<em>{'seriation'</em><em>, </em><em>'weight'</em><em>, </em><em>'index'</em><em>, </em><em>'alphabetical'}</em>) – method used to vertically sort the selected top <code class="docutils literal notranslate"><span class="pre">n_terms</span></code> terms;
 the default (“seriation”) groups similar terms together, which
 facilitates cross-topic assessment</p></li>
-<li><p><strong>save</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – give the full /path/to/fname on disk to save figure</p></li>
+<li><p><strong>save</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – give the full /path/to/fname on disk to save figure
+rc_params (dict, optional): allow passing parameters to rc_context in matplotlib.plyplot,
+details in <a class="reference external" href="https://matplotlib.org/3.1.0/api/_as_gen/matplotlib.pyplot.rc_context.html">https://matplotlib.org/3.1.0/api/_as_gen/matplotlib.pyplot.rc_context.html</a></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
