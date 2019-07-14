@@ -483,7 +483,7 @@ will be saved as a binary file.</p>
 
 <dl class="method">
 <dt id="textacy.corpus.Corpus.word_counts">
-<code class="sig-name descname">word_counts</code><span class="sig-paren">(</span><em class="sig-param">normalize='lemma'</em>, <em class="sig-param">weighting='count'</em>, <em class="sig-param">as_strings=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.word_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.word_counts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">word_counts</code><span class="sig-paren">(</span><em class="sig-param">normalize='lemma'</em>, <em class="sig-param">weighting='count'</em>, <em class="sig-param">as_strings=False</em>, <em class="sig-param">filter_stops=True</em>, <em class="sig-param">filter_punct=True</em>, <em class="sig-param">filter_nums=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.word_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.word_counts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map the set of unique words in <a class="reference internal" href="#textacy.corpus.Corpus" title="textacy.corpus.Corpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></a> to their counts as
 absolute, relative, or binary frequencies of occurence, similar to
 <a class="reference internal" href="spacier.html#textacy.spacier.doc_extensions.to_bag_of_words" title="textacy.spacier.doc_extensions.to_bag_of_words"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Doc._.to_bag_of_words()</span></code></a>
@@ -508,6 +508,9 @@ counts are normalized.</p>
 </p></li>
 <li><p><strong>as_strings</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, words are returned as strings; if False
 (default), words are returned as their unique integer ids.</p></li>
+<li><p><strong>filter_stops</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True (default), stop word counts are removed.</p></li>
+<li><p><strong>filter_punct</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True (default), punctuation counts are removed.</p></li>
+<li><p><strong>filter_nums</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, number counts are removed.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -529,7 +532,7 @@ of occurrence (depending on the value of <code class="docutils literal notransla
 
 <dl class="method">
 <dt id="textacy.corpus.Corpus.word_doc_counts">
-<code class="sig-name descname">word_doc_counts</code><span class="sig-paren">(</span><em class="sig-param">normalize='lemma'</em>, <em class="sig-param">weighting='count'</em>, <em class="sig-param">smooth_idf=True</em>, <em class="sig-param">as_strings=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.word_doc_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.word_doc_counts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">word_doc_counts</code><span class="sig-paren">(</span><em class="sig-param">normalize='lemma'</em>, <em class="sig-param">weighting='count'</em>, <em class="sig-param">smooth_idf=True</em>, <em class="sig-param">as_strings=False</em>, <em class="sig-param">filter_stops=True</em>, <em class="sig-param">filter_punct=True</em>, <em class="sig-param">filter_nums=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.word_doc_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.word_doc_counts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map the set of unique words in <a class="reference internal" href="#textacy.corpus.Corpus" title="textacy.corpus.Corpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></a> to their <em>document</em> counts
 as absolute, relative, inverse, or binary frequencies of occurence.</p>
 <dl class="field-list simple">
@@ -550,6 +553,9 @@ calculating “idf” weighting, equivalent to adding a single
 document to the corpus containing every unique word.</p></li>
 <li><p><strong>as_strings</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, words are returned as strings; if False
 (default), words are returned as their unique integer ids</p></li>
+<li><p><strong>filter_stops</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True (default), stop word counts are removed.</p></li>
+<li><p><strong>filter_punct</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True (default), punctuation counts are removed.</p></li>
+<li><p><strong>filter_nums</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, number counts are removed.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

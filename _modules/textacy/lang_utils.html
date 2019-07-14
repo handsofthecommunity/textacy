@@ -92,7 +92,7 @@
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">cache</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">compat</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">constants</span>
-<span class="kn">from</span> <span class="nn">.datasets</span> <span class="k">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">utils</span>
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -141,6 +141,7 @@
 <span class="sd">            force (bool): If True, download the dataset, even if it already</span>
 <span class="sd">                exists on disk under ``data_dir``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">.datasets.utils</span> <span class="k">import</span> <span class="n">download_file</span>
         <span class="n">release_tag</span> <span class="o">=</span> <span class="s2">&quot;lang_identifier_py</span><span class="si">{py_version}</span><span class="s2">_v</span><span class="si">{data_version}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">py_version</span><span class="o">=</span><span class="mi">2</span> <span class="k">if</span> <span class="n">compat</span><span class="o">.</span><span class="n">PY2</span> <span class="k">else</span> <span class="mi">3</span><span class="p">,</span>
             <span class="n">data_version</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
@@ -148,7 +149,7 @@
         <span class="n">url</span> <span class="o">=</span> <span class="n">compat</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span>
             <span class="s2">&quot;https://github.com/bdewilde/textacy-data/releases/download/&quot;</span><span class="p">,</span>
             <span class="n">release_tag</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
-        <span class="n">filepath</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">download_file</span><span class="p">(</span>
             <span class="n">url</span><span class="p">,</span>
             <span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span>
             <span class="n">dirpath</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span>

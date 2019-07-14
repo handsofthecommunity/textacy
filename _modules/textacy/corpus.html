@@ -433,7 +433,8 @@
 
     <span class="c1"># useful methods</span>
 
-<div class="viewcode-block" id="Corpus.word_counts"><a class="viewcode-back" href="../../api_reference/doc_and_corpus.html#textacy.corpus.Corpus.word_counts">[docs]</a>    <span class="k">def</span> <span class="nf">word_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;lemma&quot;</span><span class="p">,</span> <span class="n">weighting</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="n">as_strings</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Corpus.word_counts"><a class="viewcode-back" href="../../api_reference/doc_and_corpus.html#textacy.corpus.Corpus.word_counts">[docs]</a>    <span class="k">def</span> <span class="nf">word_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;lemma&quot;</span><span class="p">,</span> <span class="n">weighting</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="n">as_strings</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">filter_stops</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">filter_punct</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">filter_nums</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Map the set of unique words in :class:`Corpus` to their counts as</span>
 <span class="sd">        absolute, relative, or binary frequencies of occurence, similar to</span>
@@ -456,6 +457,9 @@
 
 <span class="sd">            as_strings (bool): If True, words are returned as strings; if False</span>
 <span class="sd">                (default), words are returned as their unique integer ids.</span>
+<span class="sd">            filter_stops (bool): If True (default), stop word counts are removed.</span>
+<span class="sd">            filter_punct (bool): If True (default), punctuation counts are removed.</span>
+<span class="sd">            filter_nums (bool): If True, number counts are removed.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: mapping of a unique word id or string (depending on the value</span>
@@ -469,7 +473,9 @@
         <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
             <span class="n">word_counts_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
                 <span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">to_bag_of_words</span><span class="p">(</span>
-                    <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">,</span> <span class="n">weighting</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="n">as_strings</span><span class="o">=</span><span class="n">as_strings</span>
+                    <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">,</span> <span class="n">weighting</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="n">as_strings</span><span class="o">=</span><span class="n">as_strings</span><span class="p">,</span>
+                    <span class="n">filter_stops</span><span class="o">=</span><span class="n">filter_stops</span><span class="p">,</span> <span class="n">filter_punct</span><span class="o">=</span><span class="n">filter_punct</span><span class="p">,</span> 
+                    <span class="n">filter_nums</span><span class="o">=</span><span class="n">filter_nums</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">weighting</span> <span class="o">==</span> <span class="s2">&quot;count&quot;</span><span class="p">:</span>
@@ -488,8 +494,8 @@
         <span class="k">return</span> <span class="n">word_counts_</span></div>
 
 <div class="viewcode-block" id="Corpus.word_doc_counts"><a class="viewcode-back" href="../../api_reference/doc_and_corpus.html#textacy.corpus.Corpus.word_doc_counts">[docs]</a>    <span class="k">def</span> <span class="nf">word_doc_counts</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;lemma&quot;</span><span class="p">,</span> <span class="n">weighting</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="n">smooth_idf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">as_strings</span><span class="o">=</span><span class="kc">False</span>
-    <span class="p">):</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;lemma&quot;</span><span class="p">,</span> <span class="n">weighting</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="n">smooth_idf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">as_strings</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">filter_stops</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">filter_punct</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">filter_nums</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Map the set of unique words in :class:`Corpus` to their *document* counts</span>
 <span class="sd">        as absolute, relative, inverse, or binary frequencies of occurence.</span>
@@ -510,6 +516,9 @@
 <span class="sd">                document to the corpus containing every unique word.</span>
 <span class="sd">            as_strings (bool): If True, words are returned as strings; if False</span>
 <span class="sd">                (default), words are returned as their unique integer ids</span>
+<span class="sd">            filter_stops (bool): If True (default), stop word counts are removed.</span>
+<span class="sd">            filter_punct (bool): If True (default), punctuation counts are removed.</span>
+<span class="sd">            filter_nums (bool): If True, number counts are removed.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: mapping of a unique word id or string (depending on the value</span>
@@ -524,7 +533,9 @@
         <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
             <span class="n">word_doc_counts_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
                 <span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">to_bag_of_words</span><span class="p">(</span>
-                    <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">,</span> <span class="n">weighting</span><span class="o">=</span><span class="s2">&quot;binary&quot;</span><span class="p">,</span> <span class="n">as_strings</span><span class="o">=</span><span class="n">as_strings</span>
+                    <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">,</span> <span class="n">weighting</span><span class="o">=</span><span class="s2">&quot;binary&quot;</span><span class="p">,</span> <span class="n">as_strings</span><span class="o">=</span><span class="n">as_strings</span><span class="p">,</span>
+                    <span class="n">filter_stops</span><span class="o">=</span><span class="n">filter_stops</span><span class="p">,</span> <span class="n">filter_punct</span><span class="o">=</span><span class="n">filter_punct</span><span class="p">,</span> 
+                    <span class="n">filter_nums</span><span class="o">=</span><span class="n">filter_nums</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">weighting</span> <span class="o">==</span> <span class="s2">&quot;count&quot;</span><span class="p">:</span>

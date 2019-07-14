@@ -63,7 +63,6 @@
 <span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">compat</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">constants</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">io</span> <span class="k">as</span> <span class="n">tio</span>
-<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">preprocess</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">utils</span>
 <span class="kn">from</span> <span class="nn">.dataset</span> <span class="k">import</span> <span class="n">Dataset</span>
 
@@ -381,7 +380,9 @@
         <span class="c1"># strip out text markup, e.g. * for bold text</span>
         <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;`&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="c1"># normalize whitespace</span>
-        <span class="k">return</span> <span class="n">preprocess</span><span class="o">.</span><span class="n">normalize_whitespace</span><span class="p">(</span><span class="n">content</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">constants</span><span class="o">.</span><span class="n">RE_NONBREAKING_SPACE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
+            <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">constants</span><span class="o">.</span><span class="n">RE_LINEBREAK</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\n&quot;</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
 </pre></div>
 
           </div>

@@ -496,7 +496,8 @@
     <span class="k">return</span> <span class="n">bot</span></div>
 
 
-<div class="viewcode-block" id="to_bag_of_words"><a class="viewcode-back" href="../../../api_reference/spacier.html#textacy.spacier.doc_extensions.to_bag_of_words">[docs]</a><span class="k">def</span> <span class="nf">to_bag_of_words</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;lemma&quot;</span><span class="p">,</span> <span class="n">weighting</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="n">as_strings</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="to_bag_of_words"><a class="viewcode-back" href="../../../api_reference/spacier.html#textacy.spacier.doc_extensions.to_bag_of_words">[docs]</a><span class="k">def</span> <span class="nf">to_bag_of_words</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;lemma&quot;</span><span class="p">,</span> <span class="n">weighting</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="n">as_strings</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                    <span class="n">filter_stops</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">filter_punct</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">filter_nums</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transform ``Doc`` into a bag-of-words: the set of unique words in ``Doc``</span>
 <span class="sd">    mapped to their absolute, relative, or binary frequency of occurrence.</span>
@@ -514,8 +515,14 @@
 <span class="sd">            Note: The resulting set of frequencies won&#39;t (necessarily) sum</span>
 <span class="sd">            to 1.0, since punctuation and stop words are filtered out after</span>
 <span class="sd">            counts are normalized.</span>
-<span class="sd">        as_strings (bool): if True, words are returned as strings; if False</span>
+<span class="sd">        as_strings (bool): If True, words are returned as strings; if False</span>
 <span class="sd">            (default), words are returned as their unique integer ids</span>
+<span class="sd">        filter_stops (bool): If True (default), stop words are removed after</span>
+<span class="sd">            counting.</span>
+<span class="sd">        filter_punct (bool): If True (default), punctuation tokens are removed</span>
+<span class="sd">            after counting.</span>
+<span class="sd">        filter_nums (bool): If True, tokens consisting of digits are removed</span>
+<span class="sd">            after counting.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: mapping of a unique word id or string (depending on the value</span>
@@ -542,13 +549,19 @@
     <span class="k">if</span> <span class="n">as_strings</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">wid</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">wid_weights</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">lex</span> <span class="o">=</span> <span class="n">vocab</span><span class="p">[</span><span class="n">wid</span><span class="p">]</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">lex</span><span class="o">.</span><span class="n">is_stop</span> <span class="ow">or</span> <span class="n">lex</span><span class="o">.</span><span class="n">is_punct</span> <span class="ow">or</span> <span class="n">lex</span><span class="o">.</span><span class="n">is_space</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span> <span class="p">(</span><span class="n">lex</span><span class="o">.</span><span class="n">is_stop</span> <span class="ow">and</span> <span class="n">filter_stops</span><span class="p">)</span> <span class="ow">or</span> 
+                     <span class="p">(</span><span class="n">lex</span><span class="o">.</span><span class="n">is_punct</span> <span class="ow">and</span> <span class="n">filter_punct</span><span class="p">)</span> <span class="ow">or</span>
+                     <span class="p">(</span><span class="n">lex</span><span class="o">.</span><span class="n">is_digit</span> <span class="ow">and</span> <span class="n">filter_nums</span><span class="p">)</span> <span class="ow">or</span>
+                      <span class="n">lex</span><span class="o">.</span><span class="n">is_space</span><span class="p">):</span>
                 <span class="n">bow</span><span class="p">[</span><span class="n">wid</span><span class="p">]</span> <span class="o">=</span> <span class="n">weight</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">ss</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">strings</span>
         <span class="k">for</span> <span class="n">wid</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">wid_weights</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">lex</span> <span class="o">=</span> <span class="n">vocab</span><span class="p">[</span><span class="n">wid</span><span class="p">]</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">lex</span><span class="o">.</span><span class="n">is_stop</span> <span class="ow">or</span> <span class="n">lex</span><span class="o">.</span><span class="n">is_punct</span> <span class="ow">or</span> <span class="n">lex</span><span class="o">.</span><span class="n">is_space</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span> <span class="p">(</span><span class="n">lex</span><span class="o">.</span><span class="n">is_stop</span> <span class="ow">and</span> <span class="n">filter_stops</span><span class="p">)</span> <span class="ow">or</span> 
+                     <span class="p">(</span><span class="n">lex</span><span class="o">.</span><span class="n">is_punct</span> <span class="ow">and</span> <span class="n">filter_punct</span><span class="p">)</span> <span class="ow">or</span> 
+                     <span class="p">(</span><span class="n">lex</span><span class="o">.</span><span class="n">is_digit</span> <span class="ow">and</span> <span class="n">filter_nums</span><span class="p">)</span> <span class="ow">or</span>
+                      <span class="n">lex</span><span class="o">.</span><span class="n">is_space</span><span class="p">):</span>
                 <span class="n">bow</span><span class="p">[</span><span class="n">ss</span><span class="p">[</span><span class="n">wid</span><span class="p">]]</span> <span class="o">=</span> <span class="n">weight</span>
     <span class="k">return</span> <span class="n">bow</span></div>
 

@@ -49,7 +49,8 @@ this top-level import, but we’ll see that some features require their own impo
 <span class="gp">... </span>    <span class="s2">&quot;of rules, which is not in general robust to natural language variation. &quot;</span>
 <span class="gp">... </span>    <span class="s2">&quot;The machine-learning paradigm calls instead for using statistical inference &quot;</span>
 <span class="gp">... </span>    <span class="s2">&quot;to automatically learn such rules through the analysis of large corpora &quot;</span>
-<span class="gp">... </span>    <span class="s2">&quot;of typical real-world examples.&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="s2">&quot;of typical real-world examples.&quot;</span>
+<span class="gp">... </span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Note:</strong> In almost all cases, textacy (as well as spaCy) expects to be
@@ -68,11 +69,12 @@ how a particular word or phrase is used in a body of text:</p>
 </div>
 <p>Sometimes, “raw” text is messy and must be cleaned up before analysis; other
 times, an analysis simply benefits from well-standardized text. In either case,
-the <code class="docutils literal notranslate"><span class="pre">textacy.preprocessing</span></code> module contains a number of functions to remove
-URLs, punctuation, accents, HTML cruft, etc. as well as normalize whitespace.
-For example:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">textacy</span><span class="o">.</span><span class="n">preprocess_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">lowercase</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">no_punct</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="go">&#39;since the so called statistical revolution in the late 1980s and mid 1990s much natural language processing research has relied heavily on machine learning formerly many language processing tasks typically involved the direct hand coding of rules which is not in general robust to natural language variation the machine learning paradigm calls instead for using statistical inference to automatically learn such rules through the analysis of large corpora of typical real world examples&#39;</span>
+the <code class="docutils literal notranslate"><span class="pre">textacy.preprocessing</span></code> sub-package contains a number of functions to
+normalize (whitespace, quotation marks, etc.), remove (punctuation, accents, etc.),
+and replace (URLs, emails, numbers, etc.) messy text data. For example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">textacy</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">preprocessing</span><span class="o">.</span><span class="n">normalize_whitespace</span><span class="p">(</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">remove_punctuation</span><span class="p">(</span><span class="n">text</span><span class="p">))[:</span><span class="mi">80</span><span class="p">]</span>
+<span class="go">&#39;Since the so called statistical revolution in the late 1980s and mid 1990s much &#39;</span>
 </pre></div>
 </div>
 </div>
@@ -176,27 +178,24 @@ extract various elements of interest:</p>
 </pre></div>
 </div>
 <p>We can also identify key terms in a document by a number of algorithms:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">textacy.keyterms</span>  <span class="c1"># note the import</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">textacy</span><span class="o">.</span><span class="n">keyterms</span><span class="o">.</span><span class="n">textrank</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;lemma&quot;</span><span class="p">,</span> <span class="n">n_keyterms</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="go">[(&#39;rule&#39;, 0.053388673426165274),</span>
-<span class="go"> (&#39;language&#39;, 0.051393874215877614),</span>
-<span class="go"> (&#39;machine&#39;, 0.05117898985460108),</span>
-<span class="go"> (&#39;statistical&#39;, 0.04067363609786232),</span>
-<span class="go"> (&#39;world&#39;, 0.03714841125591235),</span>
-<span class="go"> (&#39;real&#39;, 0.034770679620166826),</span>
-<span class="go"> (&#39;typical&#39;, 0.033277268136629116),</span>
-<span class="go"> (&#39;corpora&#39;, 0.03214591053006896),</span>
-<span class="go"> (&#39;1990&#39;, 0.03162874015505505),</span>
-<span class="go"> (&#39;mid&#39;, 0.031567325030955926)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">textacy</span><span class="o">.</span><span class="n">keyterms</span><span class="o">.</span><span class="n">sgrank</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">ngrams</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span> <span class="n">n_keyterms</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="go">[(&#39;natural language processing research&#39;, 0.31188112358833325),</span>
-<span class="go"> (&#39;natural language variation&#39;, 0.09554941648195946),</span>
-<span class="go"> (&#39;direct hand coding&#39;, 0.09461396545586934),</span>
-<span class="go"> (&#39;mid 1990s&#39;, 0.05831079282180467),</span>
-<span class="go"> (&#39;machine learning&#39;, 0.0552325339992006),</span>
-<span class="go"> (&#39;late 1980s&#39;, 0.04713120721580818),</span>
-<span class="go"> (&#39;general robust&#39;, 0.040647628278589344),</span>
-<span class="go"> (&#39;statistical revolution&#39;, 0.03898147636679938)]</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">textacy.ke</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">textacy</span><span class="o">.</span><span class="n">ke</span><span class="o">.</span><span class="n">textrank</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;lemma&quot;</span><span class="p">,</span> <span class="n">topn</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="go">[(&#39;Natural Language Processing research&#39;, 0.059959246697826624),</span>
+<span class="go"> (&#39;natural language variation&#39;, 0.04488350959275309),</span>
+<span class="go"> (&#39;direct hand coding&#39;, 0.037736661821063354),</span>
+<span class="go"> (&#39;statistical inference&#39;, 0.03432557996664981),</span>
+<span class="go"> (&#39;statistical revolution&#39;, 0.034007535820683756),</span>
+<span class="go"> (&#39;machine learning&#39;, 0.03305919655573349),</span>
+<span class="go"> (&#39;mid 1990&#39;, 0.026993994406706995),</span>
+<span class="go"> (&#39;late 1980&#39;, 0.026499549123496648),</span>
+<span class="go"> (&#39;general robust&#39;, 0.024835834233545625),</span>
+<span class="go"> (&#39;large corpora&#39;, 0.024322049918545637)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">textacy</span><span class="o">.</span><span class="n">ke</span><span class="o">.</span><span class="n">sgrank</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">ngrams</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span> <span class="n">topn</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="go">[(&#39;natural language processing research&#39;, 0.31279919999041045),</span>
+<span class="go"> (&#39;direct hand coding&#39;, 0.09373747682969617),</span>
+<span class="go"> (&#39;natural language variation&#39;, 0.09229056171473927),</span>
+<span class="go"> (&#39;mid 1990s&#39;, 0.05832421657510258),</span>
+<span class="go"> (&#39;machine learning&#39;, 0.05536624437146417)]</span>
 </pre></div>
 </div>
 <p>Or we can compute basic counts and various readability statistics:</p>

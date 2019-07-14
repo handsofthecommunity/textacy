@@ -332,7 +332,7 @@ of occurrence (depending on the value of <code class="docutils literal notransla
 
 <dl class="function">
 <dt id="textacy.spacier.doc_extensions.to_bag_of_words">
-<code class="sig-prename descclassname">textacy.spacier.doc_extensions.</code><code class="sig-name descname">to_bag_of_words</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">weighting='count'</em>, <em class="sig-param">as_strings=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/spacier/doc_extensions.html#to_bag_of_words"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.spacier.doc_extensions.to_bag_of_words" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.spacier.doc_extensions.</code><code class="sig-name descname">to_bag_of_words</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">weighting='count'</em>, <em class="sig-param">as_strings=False</em>, <em class="sig-param">filter_stops=True</em>, <em class="sig-param">filter_punct=True</em>, <em class="sig-param">filter_nums=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/spacier/doc_extensions.html#to_bag_of_words"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.spacier.doc_extensions.to_bag_of_words" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform <code class="docutils literal notranslate"><span class="pre">Doc</span></code> into a bag-of-words: the set of unique words in <code class="docutils literal notranslate"><span class="pre">Doc</span></code>
 mapped to their absolute, relative, or binary frequency of occurrence.</p>
 <dl class="field-list simple">
@@ -350,8 +350,14 @@ total token count, giving their relative frequency of occurrence.
 Note: The resulting set of frequencies won’t (necessarily) sum
 to 1.0, since punctuation and stop words are filtered out after
 counts are normalized.</p></li>
-<li><p><strong>as_strings</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – if True, words are returned as strings; if False
+<li><p><strong>as_strings</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, words are returned as strings; if False
 (default), words are returned as their unique integer ids</p></li>
+<li><p><strong>filter_stops</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True (default), stop words are removed after
+counting.</p></li>
+<li><p><strong>filter_punct</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True (default), punctuation tokens are removed
+after counting.</p></li>
+<li><p><strong>filter_nums</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, tokens consisting of digits are removed
+after counting.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

@@ -509,14 +509,15 @@ like terms are counted together; for example, by applying
 </div>
 <span class="target" id="module-textacy.similarity"></span><div class="section" id="similarity">
 <h2>Similarity<a class="headerlink" href="#similarity" title="Permalink to this headline">¶</a></h2>
-<p>Collection of various semantic similarity metrics between docs, sequences of tokens,
-and individual tokens, where tokens may either be spaCy objects or strings.</p>
+<p>Collection of semantic + lexical similarity metrics between tokens, strings,
+and sequences thereof, returning values between 0.0 (totally dissimilar)
+and 1.0 (totally similar).</p>
 <dl class="function">
-<dt id="textacy.similarity.hamming">
-<code class="sig-prename descclassname">textacy.similarity.</code><code class="sig-name descname">hamming</code><span class="sig-paren">(</span><em class="sig-param">str1</em>, <em class="sig-param">str2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/similarity.html#hamming"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.similarity.hamming" title="Permalink to this definition">¶</a></dt>
-<dd><p>Measure the similarity between two strings using Hamming distance, which
-simply gives the number of characters in the strings that are different i.e.
-the number of substitution edits needed to change one string into the other.</p>
+<dt id="textacy.similarity.character_ngrams">
+<code class="sig-prename descclassname">textacy.similarity.</code><code class="sig-name descname">character_ngrams</code><span class="sig-paren">(</span><em class="sig-param">str1</em>, <em class="sig-param">str2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/similarity.html#character_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.similarity.character_ngrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Measure the similarity between two strings using a character ngrams similarity
+metric, in which strings are transformed into trigrams of alnum-only characters,
+vectorized and weighted by tf-idf, then compared by cosine similarity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -534,16 +535,18 @@ where larger values correspond to more similar strings</p>
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This uses a <em>modified</em> Hamming distance in that it permits strings
-of different lengths to be compared.</p>
+<p>This method has been used in cross-lingual plagiarism detection and
+authorship attribution, and seems to work better on longer texts.
+At the very least, it is <em>slow</em> on shorter texts relative to the other
+similarity measures.</p>
 </div>
 </dd></dl>
 
 <dl class="function">
 <dt id="textacy.similarity.jaccard">
 <code class="sig-prename descclassname">textacy.similarity.</code><code class="sig-name descname">jaccard</code><span class="sig-paren">(</span><em class="sig-param">obj1</em>, <em class="sig-param">obj2</em>, <em class="sig-param">fuzzy_match=False</em>, <em class="sig-param">match_threshold=0.8</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/similarity.html#jaccard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.similarity.jaccard" title="Permalink to this definition">¶</a></dt>
-<dd><p>Measure the semantic similarity between two strings or sequences of strings
-using Jaccard distance, with optional fuzzy matching of not-identical pairs
+<dd><p>Measure the similarity between two strings or sequences of strings using
+Jaccard distance, with optional fuzzy matching of not-identical pairs
 when <code class="docutils literal notranslate"><span class="pre">obj1</span></code> and <code class="docutils literal notranslate"><span class="pre">obj2</span></code> are sequences of strings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -566,31 +569,10 @@ of strings</p>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)">float</a></p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">fuzzy_match</span></code> is True but <code class="docutils literal notranslate"><span class="pre">obj1</span></code> and <code class="docutils literal notranslate"><span class="pre">obj2</span></code> are strings</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="textacy.similarity.jaro_winkler">
-<code class="sig-prename descclassname">textacy.similarity.</code><code class="sig-name descname">jaro_winkler</code><span class="sig-paren">(</span><em class="sig-param">str1</em>, <em class="sig-param">str2</em>, <em class="sig-param">prefix_weight=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/similarity.html#jaro_winkler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.similarity.jaro_winkler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Measure the similarity between two strings using Jaro-Winkler similarity
-metric, a modification of Jaro metric giving more weight to a shared prefix.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>str1</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – </p></li>
-<li><p><strong>str2</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – </p></li>
-<li><p><strong>prefix_weight</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – The inverse value of common prefix length needed
-to consider the strings identical</p></li>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">fuzzy_match</span></code> is True but <code class="docutils literal notranslate"><span class="pre">obj1</span></code> and <code class="docutils literal notranslate"><span class="pre">obj2</span></code> are strings,</p></li>
+<li><p><strong>or if match_threshold is not a valid float</strong> – </p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Similarity between <code class="docutils literal notranslate"><span class="pre">str1</span></code> and <code class="docutils literal notranslate"><span class="pre">str2</span></code> in the interval [0.0, 1.0],
-where larger values correspond to more similar strings</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -606,8 +588,6 @@ needed to change one string into the other.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>str1</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – </p></li>
 <li><p><strong>str2</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – </p></li>
-<li><p><strong>normalize</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – if True, divide Levenshtein distance by the total number
-of characters in the longest string; otherwise leave the distance as-is</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -623,8 +603,9 @@ where larger values correspond to more similar strings</p>
 <dl class="function">
 <dt id="textacy.similarity.token_sort_ratio">
 <code class="sig-prename descclassname">textacy.similarity.</code><code class="sig-name descname">token_sort_ratio</code><span class="sig-paren">(</span><em class="sig-param">str1</em>, <em class="sig-param">str2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/similarity.html#token_sort_ratio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.similarity.token_sort_ratio" title="Permalink to this definition">¶</a></dt>
-<dd><p>Measure of similarity between two strings based on minimal edit distance,
-where ordering of words in each string is normalized before comparing.</p>
+<dd><p>Measure the similarity between two strings based on <a class="reference internal" href="#textacy.similarity.levenshtein" title="textacy.similarity.levenshtein"><code class="xref py py-func docutils literal notranslate"><span class="pre">levenshtein()</span></code></a>,
+only with non-alphanumeric characters removed and the ordering of words
+in each string sorted before comparison.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">

@@ -35,31 +35,27 @@
 <span class="sd">Similarity</span>
 <span class="sd">----------</span>
 
-<span class="sd">Collection of various semantic similarity metrics between docs, sequences of tokens,</span>
-<span class="sd">and individual tokens, where tokens may either be spaCy objects or strings.</span>
+<span class="sd">Collection of semantic + lexical similarity metrics between tokens, strings,</span>
+<span class="sd">and sequences thereof, returning values between 0.0 (totally dissimilar)</span>
+<span class="sd">and 1.0 (totally similar).</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
 
 <span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">cytoolz</span> <span class="k">import</span> <span class="n">itertoolz</span>
-<span class="kn">from</span> <span class="nn">Levenshtein</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">distance</span> <span class="k">as</span> <span class="n">_levenshtein</span><span class="p">,</span>
-    <span class="n">hamming</span> <span class="k">as</span> <span class="n">_hamming</span><span class="p">,</span>
-    <span class="n">jaro_winkler</span> <span class="k">as</span> <span class="n">_jaro_winkler</span><span class="p">,</span>
-    <span class="n">ratio</span> <span class="k">as</span> <span class="n">_ratio</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">jellyfish</span> <span class="k">import</span> <span class="n">levenshtein_distance</span> <span class="k">as</span> <span class="n">_levenshtein</span>
 <span class="kn">from</span> <span class="nn">pyemd</span> <span class="k">import</span> <span class="n">emd</span>
+<span class="kn">import</span> <span class="nn">sklearn.feature_extraction</span>
 <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">pairwise_distances</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">compat</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">extract</span>
 
 
-<span class="n">RE_NONWORDCHARS</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\W+&quot;</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
+<span class="n">RE_ALNUM</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[^\W_]+&quot;</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="word_movers"><a class="viewcode-back" href="../../api_reference/misc.html#textacy.similarity.word_movers">[docs]</a><span class="k">def</span> <span class="nf">word_movers</span><span class="p">(</span><span class="n">doc1</span><span class="p">,</span> <span class="n">doc2</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;cosine&quot;</span><span class="p">):</span>
@@ -136,8 +132,8 @@
 
 <div class="viewcode-block" id="jaccard"><a class="viewcode-back" href="../../api_reference/misc.html#textacy.similarity.jaccard">[docs]</a><span class="k">def</span> <span class="nf">jaccard</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">,</span> <span class="n">fuzzy_match</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">match_threshold</span><span class="o">=</span><span class="mf">0.8</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Measure the semantic similarity between two strings or sequences of strings</span>
-<span class="sd">    using Jaccard distance, with optional fuzzy matching of not-identical pairs</span>
+<span class="sd">    Measure the similarity between two strings or sequences of strings using</span>
+<span class="sd">    Jaccard distance, with optional fuzzy matching of not-identical pairs</span>
 <span class="sd">    when ``obj1`` and ``obj2`` are sequences of strings.</span>
 
 <span class="sd">    Args:</span>
@@ -155,14 +151,14 @@
 <span class="sd">        of strings</span>
 
 <span class="sd">    Raises:</span>
-<span class="sd">        ValueError: if ``fuzzy_match`` is True but ``obj1`` and ``obj2`` are strings</span>
+<span class="sd">        ValueError: if ``fuzzy_match`` is True but ``obj1`` and ``obj2`` are strings,</span>
+<span class="sd">        or if ``match_threshold`` is not a valid float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">match_threshold</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">match_threshold</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">:</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;`match_threshold` should be a float in [0.0, 1.0]; &quot;</span>
-            <span class="s2">&quot;it was automatically converted from the provided int in [0, 100]&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="mf">0.0</span> <span class="o">&lt;=</span> <span class="n">match_threshold</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;match_threshold=</span><span class="si">{}</span><span class="s2"> is invalid; &quot;</span>
+            <span class="s2">&quot;it must be a float in the interval [0.0, 1.0]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">match_threshold</span><span class="p">)</span>
         <span class="p">)</span>
-        <span class="n">match_threshold</span> <span class="o">/=</span> <span class="mi">100</span>
     <span class="n">set1</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">obj1</span><span class="p">)</span>
     <span class="n">set2</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">obj2</span><span class="p">)</span>
     <span class="n">intersection</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">set1</span> <span class="o">&amp;</span> <span class="n">set2</span><span class="p">)</span>
@@ -184,40 +180,6 @@
     <span class="k">return</span> <span class="n">intersection</span> <span class="o">/</span> <span class="n">union</span></div>
 
 
-<div class="viewcode-block" id="hamming"><a class="viewcode-back" href="../../api_reference/misc.html#textacy.similarity.hamming">[docs]</a><span class="k">def</span> <span class="nf">hamming</span><span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">str2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Measure the similarity between two strings using Hamming distance, which</span>
-<span class="sd">    simply gives the number of characters in the strings that are different i.e.</span>
-<span class="sd">    the number of substitution edits needed to change one string into the other.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        str1 (str)</span>
-<span class="sd">        str2 (str)</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        float: Similarity between ``str1`` and ``str2`` in the interval [0.0, 1.0],</span>
-<span class="sd">        where larger values correspond to more similar strings</span>
-
-<span class="sd">    Note:</span>
-<span class="sd">        This uses a *modified* Hamming distance in that it permits strings</span>
-<span class="sd">        of different lengths to be compared.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">len_str1</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">str1</span><span class="p">)</span>
-    <span class="n">len_str2</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">str2</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">len_str1</span> <span class="o">==</span> <span class="n">len_str2</span><span class="p">:</span>
-        <span class="n">distance</span> <span class="o">=</span> <span class="n">_hamming</span><span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">str2</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># make sure str1 is as long as or longer than str2</span>
-        <span class="k">if</span> <span class="n">len_str2</span> <span class="o">&gt;</span> <span class="n">len_str1</span><span class="p">:</span>
-            <span class="n">str1</span><span class="p">,</span> <span class="n">str2</span> <span class="o">=</span> <span class="n">str2</span><span class="p">,</span> <span class="n">str1</span>
-            <span class="n">len_str1</span><span class="p">,</span> <span class="n">len_str2</span> <span class="o">=</span> <span class="n">len_str2</span><span class="p">,</span> <span class="n">len_str1</span>
-        <span class="c1"># distance is # of different chars + difference in str lengths</span>
-        <span class="n">distance</span> <span class="o">=</span> <span class="n">len_str1</span> <span class="o">-</span> <span class="n">len_str2</span>
-        <span class="n">distance</span> <span class="o">+=</span> <span class="n">_hamming</span><span class="p">(</span><span class="n">str1</span><span class="p">[:</span><span class="n">len_str2</span><span class="p">],</span> <span class="n">str2</span><span class="p">)</span>
-    <span class="n">distance</span> <span class="o">/=</span> <span class="n">len_str1</span>
-    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">distance</span></div>
-
-
 <div class="viewcode-block" id="levenshtein"><a class="viewcode-back" href="../../api_reference/misc.html#textacy.similarity.levenshtein">[docs]</a><span class="k">def</span> <span class="nf">levenshtein</span><span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">str2</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Measure the similarity between two strings using Levenshtein distance, which</span>
@@ -227,40 +189,24 @@
 <span class="sd">    Args:</span>
 <span class="sd">        str1 (str)</span>
 <span class="sd">        str2 (str)</span>
-<span class="sd">        normalize (bool): if True, divide Levenshtein distance by the total number</span>
-<span class="sd">            of characters in the longest string; otherwise leave the distance as-is</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        float: similarity between ``str1`` and ``str2`` in the interval [0.0, 1.0],</span>
 <span class="sd">        where larger values correspond to more similar strings</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">distance</span> <span class="o">=</span> <span class="n">_levenshtein</span><span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">str2</span><span class="p">)</span>
-    <span class="n">distance</span> <span class="o">/=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">str1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">str2</span><span class="p">))</span>
-    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">distance</span></div>
-
-
-<div class="viewcode-block" id="jaro_winkler"><a class="viewcode-back" href="../../api_reference/misc.html#textacy.similarity.jaro_winkler">[docs]</a><span class="k">def</span> <span class="nf">jaro_winkler</span><span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">str2</span><span class="p">,</span> <span class="n">prefix_weight</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Measure the similarity between two strings using Jaro-Winkler similarity</span>
-<span class="sd">    metric, a modification of Jaro metric giving more weight to a shared prefix.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        str1 (str)</span>
-<span class="sd">        str2 (str)</span>
-<span class="sd">        prefix_weight (float): The inverse value of common prefix length needed</span>
-<span class="sd">            to consider the strings identical</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        float: Similarity between ``str1`` and ``str2`` in the interval [0.0, 1.0],</span>
-<span class="sd">        where larger values correspond to more similar strings</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">_jaro_winkler</span><span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">str2</span><span class="p">,</span> <span class="n">prefix_weight</span><span class="p">)</span></div>
+    <span class="n">max_len</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">str1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">str2</span><span class="p">))</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">distance</span> <span class="o">/</span> <span class="n">max_len</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span></div>
 
 
 <div class="viewcode-block" id="token_sort_ratio"><a class="viewcode-back" href="../../api_reference/misc.html#textacy.similarity.token_sort_ratio">[docs]</a><span class="k">def</span> <span class="nf">token_sort_ratio</span><span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">str2</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Measure of similarity between two strings based on minimal edit distance,</span>
-<span class="sd">    where ordering of words in each string is normalized before comparing.</span>
+<span class="sd">    Measure the similarity between two strings based on :func:`levenshtein()`,</span>
+<span class="sd">    only with non-alphanumeric characters removed and the ordering of words</span>
+<span class="sd">    in each string sorted before comparison.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        str1 (str)</span>
@@ -271,27 +217,53 @@
 <span class="sd">        where larger values correspond to more similar strings.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">str1</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">str2</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
     <span class="n">str1</span> <span class="o">=</span> <span class="n">compat</span><span class="o">.</span><span class="n">to_unicode</span><span class="p">(</span><span class="n">str1</span><span class="p">)</span>
     <span class="n">str2</span> <span class="o">=</span> <span class="n">compat</span><span class="o">.</span><span class="n">to_unicode</span><span class="p">(</span><span class="n">str2</span><span class="p">)</span>
     <span class="n">str1_proc</span> <span class="o">=</span> <span class="n">_process_and_sort</span><span class="p">(</span><span class="n">str1</span><span class="p">)</span>
     <span class="n">str2_proc</span> <span class="o">=</span> <span class="n">_process_and_sort</span><span class="p">(</span><span class="n">str2</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">_ratio</span><span class="p">(</span><span class="n">str1_proc</span><span class="p">,</span> <span class="n">str2_proc</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">levenshtein</span><span class="p">(</span><span class="n">str1_proc</span><span class="p">,</span> <span class="n">str2_proc</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">_process_and_sort</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return a processed string with tokens sorted then re-joined.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">_process</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
-
-
-<span class="k">def</span> <span class="nf">_process</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Remove all characters but letters and numbers, strip whitespace,</span>
-<span class="sd">    and force everything to lower-case.</span>
+<span class="sd">    Remove all characters from ``s`` except letters and numbers, strip whitespace,</span>
+<span class="sd">    and force everything to lower-case; then sort tokens before re-joining into</span>
+<span class="sd">    a single string.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">s</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">RE_NONWORDCHARS</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">RE_ALNUM</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">lower</span><span class="p">())))</span>
+
+
+<div class="viewcode-block" id="character_ngrams"><a class="viewcode-back" href="../../api_reference/misc.html#textacy.similarity.character_ngrams">[docs]</a><span class="k">def</span> <span class="nf">character_ngrams</span><span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">str2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Measure the similarity between two strings using a character ngrams similarity</span>
+<span class="sd">    metric, in which strings are transformed into trigrams of alnum-only characters,</span>
+<span class="sd">    vectorized and weighted by tf-idf, then compared by cosine similarity.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        str1 (str)</span>
+<span class="sd">        str2 (str)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Similarity between ``str1`` and ``str2`` in the interval [0.0, 1.0],</span>
+<span class="sd">        where larger values correspond to more similar strings</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        This method has been used in cross-lingual plagiarism detection and</span>
+<span class="sd">        authorship attribution, and seems to work better on longer texts.</span>
+<span class="sd">        At the very least, it is *slow* on shorter texts relative to the other</span>
+<span class="sd">        similarity measures.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vectorizer</span> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">feature_extraction</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">TfidfVectorizer</span><span class="p">(</span>
+        <span class="n">preprocessor</span><span class="o">=</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">RE_ALNUM</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">lower</span><span class="p">())),</span>
+        <span class="n">analyzer</span><span class="o">=</span><span class="s2">&quot;char&quot;</span><span class="p">,</span>
+        <span class="n">token_pattern</span><span class="o">=</span><span class="s2">&quot;(?u)</span><span class="se">\\</span><span class="s2">b</span><span class="se">\\</span><span class="s2">w+</span><span class="se">\\</span><span class="s2">b&quot;</span><span class="p">,</span>
+        <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">mat</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">([</span><span class="n">str1</span><span class="p">,</span> <span class="n">str2</span><span class="p">])</span>
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">pairwise_distances</span><span class="p">(</span><span class="n">mat</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">mat</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;cosine&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
 </pre></div>
 
           </div>
