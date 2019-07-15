@@ -45,365 +45,6 @@ with filtering and weighting functionality as described above.</p>
 <p>See the <a class="reference internal" href="#textacy.vsm.vectorizers.Vectorizer" title="textacy.vsm.vectorizers.Vectorizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vectorizer</span></code></a> and <a class="reference internal" href="#textacy.vsm.vectorizers.GroupVectorizer" title="textacy.vsm.vectorizers.GroupVectorizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupVectorizer</span></code></a> docstrings for usage
 examples and explanations of the various weighting schemes.</p>
 <dl class="class">
-<dt id="textacy.vsm.vectorizers.GroupVectorizer">
-<em class="property">class </em><code class="sig-prename descclassname">textacy.vsm.vectorizers.</code><code class="sig-name descname">GroupVectorizer</code><span class="sig-paren">(</span><em class="sig-param">tf_type='linear'</em>, <em class="sig-param">apply_idf=False</em>, <em class="sig-param">idf_type='smooth'</em>, <em class="sig-param">apply_dl=False</em>, <em class="sig-param">dl_type='linear'</em>, <em class="sig-param">norm=None</em>, <em class="sig-param">min_df=1</em>, <em class="sig-param">max_df=1.0</em>, <em class="sig-param">max_n_terms=None</em>, <em class="sig-param">vocabulary_terms=None</em>, <em class="sig-param">vocabulary_grps=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/vectorizers.html#GroupVectorizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transform one or more tokenized documents into a group-term matrix of
-shape (# groups, # unique terms), with tf-, tf-idf, or binary-weighted values.</p>
-<p>This is an extension of typical document-term matrix vectorization, where
-terms are grouped by the documents in which they co-occur. It allows for
-customized grouping, such as by a shared author or publication year, that
-may span multiple documents, without forcing users to merge those documents
-themselves.</p>
-<p>Stream a corpus with metadata from disk:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ds</span> <span class="o">=</span> <span class="n">textacy</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">CapitolWords</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">records</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">corpus</span> <span class="o">=</span> <span class="n">textacy</span><span class="o">.</span><span class="n">Corpus</span><span class="p">(</span><span class="s2">&quot;en&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">records</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">corpus</span>
-<span class="go">Corpus(1000 docs; 538172 tokens)</span>
-</pre></div>
-</div>
-<p>Tokenize and vectorize the first 600 documents of this corpus, where terms
-are grouped not by documents but by a categorical value in the docs’ metadata:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tokenized_docs</span><span class="p">,</span> <span class="n">groups</span> <span class="o">=</span> <span class="n">textacy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">unzip</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">to_terms_list</span><span class="p">(</span><span class="n">ngrams</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">entities</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">as_strings</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-<span class="gp">... </span>     <span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;speaker_name&quot;</span><span class="p">])</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">[:</span><span class="mi">600</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">vectorizer</span> <span class="o">=</span> <span class="n">GroupVectorizer</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">apply_idf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">idf_type</span><span class="o">=</span><span class="s2">&quot;smooth&quot;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s2">&quot;l2&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">min_df</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_df</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">grp_term_matrix</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">tokenized_docs</span><span class="p">,</span> <span class="n">groups</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">grp_term_matrix</span>
-<span class="go">&lt;5x1793 sparse matrix of type &#39;&lt;class &#39;numpy.float64&#39;&gt;&#39;</span>
-<span class="go">        with 6075 stored elements in Compressed Sparse Row format&gt;</span>
-</pre></div>
-</div>
-<p>Tokenize and vectorize the remaining 400 documents of the corpus, using only
-the groups, terms, and weights learned in the previous step:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tokenized_docs</span><span class="p">,</span> <span class="n">groups</span> <span class="o">=</span> <span class="n">textacy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">unzip</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">to_terms_list</span><span class="p">(</span><span class="n">ngrams</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">entities</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">as_strings</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-<span class="gp">... </span>     <span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;speaker_name&quot;</span><span class="p">])</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">[</span><span class="mi">600</span><span class="p">:])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">grp_term_matrix</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">tokenized_docs</span><span class="p">,</span> <span class="n">groups</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">grp_term_matrix</span>
-<span class="go">&lt;5x1793 sparse matrix of type &#39;&lt;class &#39;numpy.float64&#39;&gt;&#39;</span>
-<span class="go">        with 4440 stored elements in Compressed Sparse Row format&gt;</span>
-</pre></div>
-</div>
-<p>Inspect the terms associated with columns and groups associated with rows;
-they’re sorted alphabetically:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vectorizer</span><span class="o">.</span><span class="n">terms_list</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
-<span class="go">[&#39;$ 1 million&#39;, &#39;$ 160 million&#39;, &#39;$ 7 billion&#39;, &#39;0&#39;, &#39;1 minute&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">vectorizer</span><span class="o">.</span><span class="n">grps_list</span>
-<span class="go">[&#39;Bernie Sanders&#39;, &#39;John Kasich&#39;, &#39;Joseph Biden&#39;, &#39;Lindsey Graham&#39;, &#39;Rick Santorum&#39;]</span>
-</pre></div>
-</div>
-<p>If known in advance, limit the terms and/or groups included in vectorized outputs
-to a particular set of values:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tokenized_docs</span><span class="p">,</span> <span class="n">groups</span> <span class="o">=</span> <span class="n">textacy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">unzip</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">to_terms_list</span><span class="p">(</span><span class="n">ngrams</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">entities</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">as_strings</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-<span class="gp">... </span>     <span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;speaker_name&quot;</span><span class="p">])</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">[:</span><span class="mi">600</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">vectorizer</span> <span class="o">=</span> <span class="n">GroupVectorizer</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">apply_idf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">idf_type</span><span class="o">=</span><span class="s2">&quot;smooth&quot;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s2">&quot;l2&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">min_df</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_df</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">vocabulary_terms</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;legislation&quot;</span><span class="p">,</span> <span class="s2">&quot;federal government&quot;</span><span class="p">,</span> <span class="s2">&quot;house&quot;</span><span class="p">,</span> <span class="s2">&quot;constitutional&quot;</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="n">vocabulary_grps</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Bernie Sanders&quot;</span><span class="p">,</span> <span class="s2">&quot;Lindsey Graham&quot;</span><span class="p">,</span> <span class="s2">&quot;Rick Santorum&quot;</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">grp_term_matrix</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">tokenized_docs</span><span class="p">,</span> <span class="n">groups</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">grp_term_matrix</span>
-<span class="go">&lt;3x4 sparse matrix of type &#39;&lt;class &#39;numpy.float64&#39;&gt;&#39;</span>
-<span class="go">        with 12 stored elements in Compressed Sparse Row format&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">vectorizer</span><span class="o">.</span><span class="n">terms_list</span>
-<span class="go">[&#39;constitutional&#39;, &#39;federal government&#39;, &#39;house&#39;, &#39;legislation&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">vectorizer</span><span class="o">.</span><span class="n">grps_list</span>
-<span class="go">[&#39;Bernie Sanders&#39;, &#39;Lindsey Graham&#39;, &#39;Rick Santorum&#39;]</span>
-</pre></div>
-</div>
-<p>For a discussion of the various weighting schemes that can be applied, check
-out the <a class="reference internal" href="#textacy.vsm.vectorizers.Vectorizer" title="textacy.vsm.vectorizers.Vectorizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vectorizer</span></code></a> docstring.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>tf_type</strong> (<em>{&quot;linear&quot;</em><em>, </em><em>&quot;sqrt&quot;</em><em>, </em><em>&quot;log&quot;</em><em>, </em><em>&quot;binary&quot;}</em>) – <p>Type of term frequency (tf)
-to use for weights’ local component:</p>
-<ul>
-<li><p>”linear”: tf (tfs are already linear, so left as-is)</p></li>
-<li><p>”sqrt”: tf =&gt; sqrt(tf)</p></li>
-<li><p>”log”: tf =&gt; log(tf) + 1</p></li>
-<li><p>”binary”: tf =&gt; 1</p></li>
-</ul>
-</p></li>
-<li><p><strong>apply_idf</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, apply global idfs to local term weights, i.e.
-divide per-doc term frequencies by the total number of documents
-in which they appear (well, the log of that number); otherwise, don’t.</p></li>
-<li><p><strong>idf_type</strong> (<em>{&quot;standard&quot;</em><em>, </em><em>&quot;smooth&quot;</em><em>, </em><em>&quot;bm25&quot;}</em>) – <p>Type of inverse document
-frequency (idf) to use for weights’ global component:</p>
-<ul>
-<li><p>”standard”: idf = log(n_docs / df) + 1.0</p></li>
-<li><p>”smooth”: idf = log(n_docs + 1 / df + 1) + 1.0, i.e. 1 is added
-to all document frequencies, as if a single document containing
-every unique term was added to the corpus.</p></li>
-<li><p>”bm25”: idf = log((n_docs - df + 0.5) / (df + 0.5)), which is
-a form commonly used in information retrieval that allows for
-very common terms to receive negative weights.</p></li>
-</ul>
-</p></li>
-<li><p><strong>apply_dl</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, normalize local(+global) weights by doc length,
-i.e. divide by the total number of in-vocabulary terms appearing
-in a given doc; otherwise, don’t.</p></li>
-<li><p><strong>dl_type</strong> (<em>{&quot;linear&quot;</em><em>, </em><em>&quot;sqrt&quot;</em><em>, </em><em>&quot;log&quot;}</em>) – <p>Type of document-length scaling
-to use for weights’ normalization component:</p>
-<ul>
-<li><p>”linear”: dl (dls are already linear, so left as-is)</p></li>
-<li><p>”sqrt”: dl =&gt; sqrt(dl)</p></li>
-<li><p>”log”: dl =&gt; log(dl)</p></li>
-</ul>
-</p></li>
-<li><p><strong>norm</strong> (<em>{&quot;l1&quot;</em><em>, </em><em>&quot;l2&quot;}</em><em> or </em><a class="reference external" href="https://docs.python.org/3.6/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – If “l1” or “l2”, normalize weights by the
-L1 or L2 norms, respectively, of row-wise vectors; otherwise, don’t.</p></li>
-<li><p><strong>vocabulary_terms</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>] or </em><em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – Mapping of unique term
-string to unique term id, or an iterable of term strings that gets
-converted into a suitable mapping. Note that, if specified, vectorized
-outputs will include <em>only</em> these terms as columns.</p></li>
-<li><p><strong>vocabulary_grps</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>] or </em><em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – Mapping of unique group
-string to unique group id, or an iterable of group strings that gets
-converted into a suitable mapping. Note that, if specified, vectorized
-outputs will include <em>only</em> these groups as rows.</p></li>
-<li><p><strong>min_df</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – If float, value is the fractional proportion of
-the total number of documents, which must be in [0.0, 1.0]. If int,
-value is the absolute number. Filter terms whose document frequency
-is less than <code class="docutils literal notranslate"><span class="pre">min_df</span></code>.</p></li>
-<li><p><strong>max_df</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – If float, value is the fractional proportion of
-the total number of documents, which must be in [0.0, 1.0]. If int,
-value is the absolute number. Filter terms whose document frequency
-is greater than <code class="docutils literal notranslate"><span class="pre">max_df</span></code>.</p></li>
-<li><p><strong>max_n_terms</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Only include terms whose document frequency is within
-the top <code class="docutils literal notranslate"><span class="pre">max_n_terms</span></code>.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="attribute">
-<dt id="textacy.vsm.vectorizers.GroupVectorizer.vocabulary_terms">
-<code class="sig-name descname">vocabulary_terms</code><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer.vocabulary_terms" title="Permalink to this definition">¶</a></dt>
-<dd><p>Mapping of unique term string to unique
-term id, either provided on instantiation or generated by calling
-<a class="reference internal" href="#textacy.vsm.vectorizers.GroupVectorizer.fit" title="textacy.vsm.vectorizers.GroupVectorizer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GroupVectorizer.fit()</span></code></a> on a collection of tokenized documents.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)">str</a>, <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)">int</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="textacy.vsm.vectorizers.GroupVectorizer.vocabulary_grps">
-<code class="sig-name descname">vocabulary_grps</code><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer.vocabulary_grps" title="Permalink to this definition">¶</a></dt>
-<dd><p>Mapping of unique group string to unique
-group id, either provided on instantiation or generated by calling
-<a class="reference internal" href="#textacy.vsm.vectorizers.GroupVectorizer.fit" title="textacy.vsm.vectorizers.GroupVectorizer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GroupVectorizer.fit()</span></code></a> on a collection of tokenized documents.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)">str</a>, <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)">int</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="textacy.vsm.vectorizers.GroupVectorizer.id_to_term">
-<code class="sig-name descname">id_to_term</code><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer.id_to_term" title="Permalink to this definition">¶</a></dt>
-<dd><p>Mapping of unique term id to unique term
-string, i.e. the inverse of <a class="reference internal" href="#textacy.vsm.vectorizers.GroupVectorizer.vocabulary_terms" title="textacy.vsm.vectorizers.GroupVectorizer.vocabulary_terms"><code class="xref py py-attr docutils literal notranslate"><span class="pre">GroupVectorizer.vocabulary_terms</span></code></a>.
-This mapping is only generated as needed.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)">int</a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)">str</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="textacy.vsm.vectorizers.GroupVectorizer.id_to_grp">
-<code class="sig-name descname">id_to_grp</code><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer.id_to_grp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Mapping of unique group id to unique group
-string, i.e. the inverse of <a class="reference internal" href="#textacy.vsm.vectorizers.GroupVectorizer.vocabulary_grps" title="textacy.vsm.vectorizers.GroupVectorizer.vocabulary_grps"><code class="xref py py-attr docutils literal notranslate"><span class="pre">GroupVectorizer.vocabulary_grps</span></code></a>.
-This mapping is only generated as needed.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)">int</a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)">str</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="textacy.vsm.vectorizers.GroupVectorizer.terms_list">
-<code class="sig-name descname">terms_list</code><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer.terms_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>List of term strings in column order of
-vectorized outputs.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)">str</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="textacy.vsm.vectorizers.GroupVectorizer.grps_list">
-<code class="sig-name descname">grps_list</code><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer.grps_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>List of group strings in row order of
-vectorized outputs.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)">str</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><a class="reference internal" href="#textacy.vsm.vectorizers.Vectorizer" title="textacy.vsm.vectorizers.Vectorizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vectorizer</span></code></a></p>
-</div>
-<dl class="method">
-<dt id="textacy.vsm.vectorizers.GroupVectorizer.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">tokenized_docs</em>, <em class="sig-param">grps</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/vectorizers.html#GroupVectorizer.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Count terms in <code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code> and, if not already provided, build up
-a vocabulary based those terms; do the same for the groups in <code class="docutils literal notranslate"><span class="pre">grps</span></code>.
-Fit and store global weights (IDFs) and, if needed for term weighting,
-the average document length.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>tokenized_docs</strong> (<em>Iterable</em><em>[</em><em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em><em>]</em>) – <p>A sequence of tokenized
-documents, where each is a sequence of (str) terms. For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">([</span><span class="n">tok</span><span class="o">.</span><span class="n">lemma_</span> <span class="k">for</span> <span class="n">tok</span> <span class="ow">in</span> <span class="n">spacy_doc</span><span class="p">]</span>
-<span class="gp">... </span> <span class="k">for</span> <span class="n">spacy_doc</span> <span class="ow">in</span> <span class="n">spacy_docs</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">((</span><span class="n">ne</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">ne</span> <span class="ow">in</span> <span class="n">extract</span><span class="o">.</span><span class="n">entities</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span>
-<span class="gp">... </span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">to_terms_list</span><span class="p">(</span><span class="n">as_strings</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">... </span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">)</span>
-</pre></div>
-</div>
-</p></li>
-<li><p><strong>grps</strong> (<em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – Sequence of group names by which the terms in
-<code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code> are aggregated, where the first item in <code class="docutils literal notranslate"><span class="pre">grps</span></code>
-corresponds to the first item in <code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code>, and so on.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The instance that has just been fit.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#textacy.vsm.vectorizers.GroupVectorizer" title="textacy.vsm.vectorizers.GroupVectorizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupVectorizer</span></code></a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="textacy.vsm.vectorizers.GroupVectorizer.fit_transform">
-<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param">tokenized_docs</em>, <em class="sig-param">grps</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/vectorizers.html#GroupVectorizer.fit_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer.fit_transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Count terms in <code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code> and, if not already provided, build up
-a vocabulary based those terms; do the same for the groups in <code class="docutils literal notranslate"><span class="pre">grps</span></code>.
-Fit and store global weights (IDFs) and, if needed for term weighting,
-the average document length. Transform <code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code> into a
-group-term matrix with values weighted according to the parameters in
-<a class="reference internal" href="#textacy.vsm.vectorizers.GroupVectorizer" title="textacy.vsm.vectorizers.GroupVectorizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupVectorizer</span></code></a> initialization.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>tokenized_docs</strong> (<em>Iterable</em><em>[</em><em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em><em>]</em>) – <p>A sequence of tokenized
-documents, where each is a sequence of (str) terms. For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">([</span><span class="n">tok</span><span class="o">.</span><span class="n">lemma_</span> <span class="k">for</span> <span class="n">tok</span> <span class="ow">in</span> <span class="n">spacy_doc</span><span class="p">]</span>
-<span class="gp">... </span> <span class="k">for</span> <span class="n">spacy_doc</span> <span class="ow">in</span> <span class="n">spacy_docs</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">((</span><span class="n">ne</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">ne</span> <span class="ow">in</span> <span class="n">extract</span><span class="o">.</span><span class="n">entities</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span>
-<span class="gp">... </span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">to_terms_list</span><span class="p">(</span><span class="n">as_strings</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">... </span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">)</span>
-</pre></div>
-</div>
-</p></li>
-<li><p><strong>grps</strong> (<em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – Sequence of group names by which the terms in
-<code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code> are aggregated, where the first item in <code class="docutils literal notranslate"><span class="pre">grps</span></code>
-corresponds to the first item in <code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code>, and so on.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The transformed group-term matrix.
-Rows correspond to groups and columns correspond to terms.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt>
-<em class="property">property </em><code class="sig-name descname">grps_list</code></dt>
-<dd><p>List of group strings in row order of vectorized outputs. For example,
-<code class="docutils literal notranslate"><span class="pre">grps_list[0]</span></code> gives the group assigned to the first row in an
-output group-term-matrix, <code class="docutils literal notranslate"><span class="pre">grp_term_matrix[0,</span> <span class="pre">:]</span></code>.</p>
-</dd></dl>
-
-<dl class="method">
-<dt>
-<em class="property">property </em><code class="sig-name descname">id_to_grp</code></dt>
-<dd><p>Mapping of unique group id (int) to unique group string (str), i.e.
-the inverse of <a class="reference internal" href="#textacy.vsm.vectorizers.GroupVectorizer.vocabulary_grps" title="textacy.vsm.vectorizers.GroupVectorizer.vocabulary_grps"><code class="xref py py-attr docutils literal notranslate"><span class="pre">GroupVectorizer.vocabulary_grps</span></code></a>. This attribute
-is only generated if needed, and it is automatically kept in sync
-with the corresponding vocabulary.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)">dict</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="textacy.vsm.vectorizers.GroupVectorizer.transform">
-<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param">tokenized_docs</em>, <em class="sig-param">grps</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/vectorizers.html#GroupVectorizer.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer.transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transform <code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code> and <code class="docutils literal notranslate"><span class="pre">grps</span></code> into a group-term matrix with
-values weighted according to the parameters in <a class="reference internal" href="#textacy.vsm.vectorizers.GroupVectorizer" title="textacy.vsm.vectorizers.GroupVectorizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupVectorizer</span></code></a>
-initialization and the global weights computed by calling
-<a class="reference internal" href="#textacy.vsm.vectorizers.GroupVectorizer.fit" title="textacy.vsm.vectorizers.GroupVectorizer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GroupVectorizer.fit()</span></code></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>tokenized_docs</strong> (<em>Iterable</em><em>[</em><em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em><em>]</em>) – <p>A sequence of tokenized
-documents, where each is a sequence of (str) terms. For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">([</span><span class="n">tok</span><span class="o">.</span><span class="n">lemma_</span> <span class="k">for</span> <span class="n">tok</span> <span class="ow">in</span> <span class="n">spacy_doc</span><span class="p">]</span>
-<span class="gp">... </span> <span class="k">for</span> <span class="n">spacy_doc</span> <span class="ow">in</span> <span class="n">spacy_docs</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">((</span><span class="n">ne</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">ne</span> <span class="ow">in</span> <span class="n">extract</span><span class="o">.</span><span class="n">entities</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span>
-<span class="gp">... </span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">to_terms_list</span><span class="p">(</span><span class="n">as_strings</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">... </span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">)</span>
-</pre></div>
-</div>
-</p></li>
-<li><p><strong>grps</strong> (<em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – Sequence of group names by which the terms in
-<code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code> are aggregated, where the first item in <code class="docutils literal notranslate"><span class="pre">grps</span></code>
-corresponds to the first item in <code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code>, and so on.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The transformed group-term matrix.
-Rows correspond to groups and columns correspond to terms.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a></p>
-</dd>
-</dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For best results, the tokenization used to produce <code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code>
-should be the same as was applied to the docs used in fitting this
-vectorizer or in generating a fixed input vocabulary.</p>
-<p>Consider an extreme case where the docs used in fitting consist of
-lowercased (non-numeric) terms, while the docs to be transformed are
-all uppercased: The output group-term-matrix will be empty.</p>
-</div>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="textacy.vsm.vectorizers.Vectorizer">
 <em class="property">class </em><code class="sig-prename descclassname">textacy.vsm.vectorizers.</code><code class="sig-name descname">Vectorizer</code><span class="sig-paren">(</span><em class="sig-param">tf_type='linear'</em>, <em class="sig-param">apply_idf=False</em>, <em class="sig-param">idf_type='smooth'</em>, <em class="sig-param">apply_dl=False</em>, <em class="sig-param">dl_type='sqrt'</em>, <em class="sig-param">norm=None</em>, <em class="sig-param">min_df=1</em>, <em class="sig-param">max_df=1.0</em>, <em class="sig-param">max_n_terms=None</em>, <em class="sig-param">vocabulary_terms=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/vectorizers.html#Vectorizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.vectorizers.Vectorizer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform one or more tokenized documents into a sparse document-term matrix
@@ -644,6 +285,28 @@ vectorized outputs.</p>
 </dd></dl>
 
 <dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">id_to_term</code></dt>
+<dd><p>Mapping of unique term id (int) to unique term string (str), i.e.
+the inverse of <code class="xref py py-attr docutils literal notranslate"><span class="pre">Vectorizer.vocabulary</span></code>. This attribute is only
+generated if needed, and it is automatically kept in sync with the
+corresponding vocabulary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">terms_list</code></dt>
+<dd><p>List of term strings in column order of vectorized outputs. For example,
+<code class="docutils literal notranslate"><span class="pre">terms_list[0]</span></code> gives the term assigned to the first column in an
+output doc-term-matrix, <code class="docutils literal notranslate"><span class="pre">doc_term_matrix[:,</span> <span class="pre">0]</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="textacy.vsm.vectorizers.Vectorizer.fit">
 <code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">tokenized_docs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/vectorizers.html#Vectorizer.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.vectorizers.Vectorizer.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Count terms in <code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code> and, if not already provided, build up
@@ -705,28 +368,6 @@ Rows correspond to documents and columns correspond to terms.</p>
 </dd></dl>
 
 <dl class="method">
-<dt>
-<em class="property">property </em><code class="sig-name descname">id_to_term</code></dt>
-<dd><p>Mapping of unique term id (int) to unique term string (str), i.e.
-the inverse of <code class="xref py py-attr docutils literal notranslate"><span class="pre">Vectorizer.vocabulary</span></code>. This attribute is only
-generated if needed, and it is automatically kept in sync with the
-corresponding vocabulary.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)">dict</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt>
-<em class="property">property </em><code class="sig-name descname">terms_list</code></dt>
-<dd><p>List of term strings in column order of vectorized outputs. For example,
-<code class="docutils literal notranslate"><span class="pre">terms_list[0]</span></code> gives the term assigned to the first column in an
-output doc-term-matrix, <code class="docutils literal notranslate"><span class="pre">doc_term_matrix[:,</span> <span class="pre">0]</span></code>.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="textacy.vsm.vectorizers.Vectorizer.transform">
 <code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param">tokenized_docs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/vectorizers.html#Vectorizer.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.vectorizers.Vectorizer.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform <code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code> into a document-term matrix with values
@@ -780,12 +421,522 @@ params used to initialize the <a class="reference internal" href="#textacy.vsm.v
 
 </dd></dl>
 
+<dl class="class">
+<dt id="textacy.vsm.vectorizers.GroupVectorizer">
+<em class="property">class </em><code class="sig-prename descclassname">textacy.vsm.vectorizers.</code><code class="sig-name descname">GroupVectorizer</code><span class="sig-paren">(</span><em class="sig-param">tf_type='linear'</em>, <em class="sig-param">apply_idf=False</em>, <em class="sig-param">idf_type='smooth'</em>, <em class="sig-param">apply_dl=False</em>, <em class="sig-param">dl_type='linear'</em>, <em class="sig-param">norm=None</em>, <em class="sig-param">min_df=1</em>, <em class="sig-param">max_df=1.0</em>, <em class="sig-param">max_n_terms=None</em>, <em class="sig-param">vocabulary_terms=None</em>, <em class="sig-param">vocabulary_grps=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/vectorizers.html#GroupVectorizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform one or more tokenized documents into a group-term matrix of
+shape (# groups, # unique terms), with tf-, tf-idf, or binary-weighted values.</p>
+<p>This is an extension of typical document-term matrix vectorization, where
+terms are grouped by the documents in which they co-occur. It allows for
+customized grouping, such as by a shared author or publication year, that
+may span multiple documents, without forcing users to merge those documents
+themselves.</p>
+<p>Stream a corpus with metadata from disk:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ds</span> <span class="o">=</span> <span class="n">textacy</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">CapitolWords</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">records</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">corpus</span> <span class="o">=</span> <span class="n">textacy</span><span class="o">.</span><span class="n">Corpus</span><span class="p">(</span><span class="s2">&quot;en&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">records</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">corpus</span>
+<span class="go">Corpus(1000 docs; 538172 tokens)</span>
+</pre></div>
+</div>
+<p>Tokenize and vectorize the first 600 documents of this corpus, where terms
+are grouped not by documents but by a categorical value in the docs’ metadata:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tokenized_docs</span><span class="p">,</span> <span class="n">groups</span> <span class="o">=</span> <span class="n">textacy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">unzip</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">to_terms_list</span><span class="p">(</span><span class="n">ngrams</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">entities</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">as_strings</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>     <span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;speaker_name&quot;</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">[:</span><span class="mi">600</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vectorizer</span> <span class="o">=</span> <span class="n">GroupVectorizer</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">apply_idf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">idf_type</span><span class="o">=</span><span class="s2">&quot;smooth&quot;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s2">&quot;l2&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">min_df</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_df</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grp_term_matrix</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">tokenized_docs</span><span class="p">,</span> <span class="n">groups</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grp_term_matrix</span>
+<span class="go">&lt;5x1793 sparse matrix of type &#39;&lt;class &#39;numpy.float64&#39;&gt;&#39;</span>
+<span class="go">        with 6075 stored elements in Compressed Sparse Row format&gt;</span>
+</pre></div>
+</div>
+<p>Tokenize and vectorize the remaining 400 documents of the corpus, using only
+the groups, terms, and weights learned in the previous step:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tokenized_docs</span><span class="p">,</span> <span class="n">groups</span> <span class="o">=</span> <span class="n">textacy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">unzip</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">to_terms_list</span><span class="p">(</span><span class="n">ngrams</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">entities</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">as_strings</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>     <span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;speaker_name&quot;</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">[</span><span class="mi">600</span><span class="p">:])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grp_term_matrix</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">tokenized_docs</span><span class="p">,</span> <span class="n">groups</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grp_term_matrix</span>
+<span class="go">&lt;5x1793 sparse matrix of type &#39;&lt;class &#39;numpy.float64&#39;&gt;&#39;</span>
+<span class="go">        with 4440 stored elements in Compressed Sparse Row format&gt;</span>
+</pre></div>
+</div>
+<p>Inspect the terms associated with columns and groups associated with rows;
+they’re sorted alphabetically:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vectorizer</span><span class="o">.</span><span class="n">terms_list</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">[&#39;$ 1 million&#39;, &#39;$ 160 million&#39;, &#39;$ 7 billion&#39;, &#39;0&#39;, &#39;1 minute&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vectorizer</span><span class="o">.</span><span class="n">grps_list</span>
+<span class="go">[&#39;Bernie Sanders&#39;, &#39;John Kasich&#39;, &#39;Joseph Biden&#39;, &#39;Lindsey Graham&#39;, &#39;Rick Santorum&#39;]</span>
+</pre></div>
+</div>
+<p>If known in advance, limit the terms and/or groups included in vectorized outputs
+to a particular set of values:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tokenized_docs</span><span class="p">,</span> <span class="n">groups</span> <span class="o">=</span> <span class="n">textacy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">unzip</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">to_terms_list</span><span class="p">(</span><span class="n">ngrams</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">entities</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">as_strings</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="gp">... </span>     <span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;speaker_name&quot;</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">[:</span><span class="mi">600</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vectorizer</span> <span class="o">=</span> <span class="n">GroupVectorizer</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">apply_idf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">idf_type</span><span class="o">=</span><span class="s2">&quot;smooth&quot;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s2">&quot;l2&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">min_df</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_df</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">vocabulary_terms</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;legislation&quot;</span><span class="p">,</span> <span class="s2">&quot;federal government&quot;</span><span class="p">,</span> <span class="s2">&quot;house&quot;</span><span class="p">,</span> <span class="s2">&quot;constitutional&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">vocabulary_grps</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Bernie Sanders&quot;</span><span class="p">,</span> <span class="s2">&quot;Lindsey Graham&quot;</span><span class="p">,</span> <span class="s2">&quot;Rick Santorum&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grp_term_matrix</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">tokenized_docs</span><span class="p">,</span> <span class="n">groups</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grp_term_matrix</span>
+<span class="go">&lt;3x4 sparse matrix of type &#39;&lt;class &#39;numpy.float64&#39;&gt;&#39;</span>
+<span class="go">        with 12 stored elements in Compressed Sparse Row format&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vectorizer</span><span class="o">.</span><span class="n">terms_list</span>
+<span class="go">[&#39;constitutional&#39;, &#39;federal government&#39;, &#39;house&#39;, &#39;legislation&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vectorizer</span><span class="o">.</span><span class="n">grps_list</span>
+<span class="go">[&#39;Bernie Sanders&#39;, &#39;Lindsey Graham&#39;, &#39;Rick Santorum&#39;]</span>
+</pre></div>
+</div>
+<p>For a discussion of the various weighting schemes that can be applied, check
+out the <a class="reference internal" href="#textacy.vsm.vectorizers.Vectorizer" title="textacy.vsm.vectorizers.Vectorizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vectorizer</span></code></a> docstring.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tf_type</strong> (<em>{&quot;linear&quot;</em><em>, </em><em>&quot;sqrt&quot;</em><em>, </em><em>&quot;log&quot;</em><em>, </em><em>&quot;binary&quot;}</em>) – <p>Type of term frequency (tf)
+to use for weights’ local component:</p>
+<ul>
+<li><p>”linear”: tf (tfs are already linear, so left as-is)</p></li>
+<li><p>”sqrt”: tf =&gt; sqrt(tf)</p></li>
+<li><p>”log”: tf =&gt; log(tf) + 1</p></li>
+<li><p>”binary”: tf =&gt; 1</p></li>
+</ul>
+</p></li>
+<li><p><strong>apply_idf</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, apply global idfs to local term weights, i.e.
+divide per-doc term frequencies by the total number of documents
+in which they appear (well, the log of that number); otherwise, don’t.</p></li>
+<li><p><strong>idf_type</strong> (<em>{&quot;standard&quot;</em><em>, </em><em>&quot;smooth&quot;</em><em>, </em><em>&quot;bm25&quot;}</em>) – <p>Type of inverse document
+frequency (idf) to use for weights’ global component:</p>
+<ul>
+<li><p>”standard”: idf = log(n_docs / df) + 1.0</p></li>
+<li><p>”smooth”: idf = log(n_docs + 1 / df + 1) + 1.0, i.e. 1 is added
+to all document frequencies, as if a single document containing
+every unique term was added to the corpus.</p></li>
+<li><p>”bm25”: idf = log((n_docs - df + 0.5) / (df + 0.5)), which is
+a form commonly used in information retrieval that allows for
+very common terms to receive negative weights.</p></li>
+</ul>
+</p></li>
+<li><p><strong>apply_dl</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, normalize local(+global) weights by doc length,
+i.e. divide by the total number of in-vocabulary terms appearing
+in a given doc; otherwise, don’t.</p></li>
+<li><p><strong>dl_type</strong> (<em>{&quot;linear&quot;</em><em>, </em><em>&quot;sqrt&quot;</em><em>, </em><em>&quot;log&quot;}</em>) – <p>Type of document-length scaling
+to use for weights’ normalization component:</p>
+<ul>
+<li><p>”linear”: dl (dls are already linear, so left as-is)</p></li>
+<li><p>”sqrt”: dl =&gt; sqrt(dl)</p></li>
+<li><p>”log”: dl =&gt; log(dl)</p></li>
+</ul>
+</p></li>
+<li><p><strong>norm</strong> (<em>{&quot;l1&quot;</em><em>, </em><em>&quot;l2&quot;}</em><em> or </em><a class="reference external" href="https://docs.python.org/3.6/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – If “l1” or “l2”, normalize weights by the
+L1 or L2 norms, respectively, of row-wise vectors; otherwise, don’t.</p></li>
+<li><p><strong>vocabulary_terms</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>] or </em><em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – Mapping of unique term
+string to unique term id, or an iterable of term strings that gets
+converted into a suitable mapping. Note that, if specified, vectorized
+outputs will include <em>only</em> these terms as columns.</p></li>
+<li><p><strong>vocabulary_grps</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>] or </em><em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – Mapping of unique group
+string to unique group id, or an iterable of group strings that gets
+converted into a suitable mapping. Note that, if specified, vectorized
+outputs will include <em>only</em> these groups as rows.</p></li>
+<li><p><strong>min_df</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – If float, value is the fractional proportion of
+the total number of documents, which must be in [0.0, 1.0]. If int,
+value is the absolute number. Filter terms whose document frequency
+is less than <code class="docutils literal notranslate"><span class="pre">min_df</span></code>.</p></li>
+<li><p><strong>max_df</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – If float, value is the fractional proportion of
+the total number of documents, which must be in [0.0, 1.0]. If int,
+value is the absolute number. Filter terms whose document frequency
+is greater than <code class="docutils literal notranslate"><span class="pre">max_df</span></code>.</p></li>
+<li><p><strong>max_n_terms</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Only include terms whose document frequency is within
+the top <code class="docutils literal notranslate"><span class="pre">max_n_terms</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="textacy.vsm.vectorizers.GroupVectorizer.vocabulary_terms">
+<code class="sig-name descname">vocabulary_terms</code><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer.vocabulary_terms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mapping of unique term string to unique
+term id, either provided on instantiation or generated by calling
+<a class="reference internal" href="#textacy.vsm.vectorizers.GroupVectorizer.fit" title="textacy.vsm.vectorizers.GroupVectorizer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GroupVectorizer.fit()</span></code></a> on a collection of tokenized documents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)">str</a>, <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)">int</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="textacy.vsm.vectorizers.GroupVectorizer.vocabulary_grps">
+<code class="sig-name descname">vocabulary_grps</code><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer.vocabulary_grps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mapping of unique group string to unique
+group id, either provided on instantiation or generated by calling
+<a class="reference internal" href="#textacy.vsm.vectorizers.GroupVectorizer.fit" title="textacy.vsm.vectorizers.GroupVectorizer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GroupVectorizer.fit()</span></code></a> on a collection of tokenized documents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)">str</a>, <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)">int</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="textacy.vsm.vectorizers.GroupVectorizer.id_to_term">
+<code class="sig-name descname">id_to_term</code><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer.id_to_term" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mapping of unique term id to unique term
+string, i.e. the inverse of <a class="reference internal" href="#textacy.vsm.vectorizers.GroupVectorizer.vocabulary_terms" title="textacy.vsm.vectorizers.GroupVectorizer.vocabulary_terms"><code class="xref py py-attr docutils literal notranslate"><span class="pre">GroupVectorizer.vocabulary_terms</span></code></a>.
+This mapping is only generated as needed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)">int</a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="textacy.vsm.vectorizers.GroupVectorizer.id_to_grp">
+<code class="sig-name descname">id_to_grp</code><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer.id_to_grp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mapping of unique group id to unique group
+string, i.e. the inverse of <a class="reference internal" href="#textacy.vsm.vectorizers.GroupVectorizer.vocabulary_grps" title="textacy.vsm.vectorizers.GroupVectorizer.vocabulary_grps"><code class="xref py py-attr docutils literal notranslate"><span class="pre">GroupVectorizer.vocabulary_grps</span></code></a>.
+This mapping is only generated as needed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)">int</a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="textacy.vsm.vectorizers.GroupVectorizer.terms_list">
+<code class="sig-name descname">terms_list</code><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer.terms_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of term strings in column order of
+vectorized outputs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="textacy.vsm.vectorizers.GroupVectorizer.grps_list">
+<code class="sig-name descname">grps_list</code><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer.grps_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of group strings in row order of
+vectorized outputs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#textacy.vsm.vectorizers.Vectorizer" title="textacy.vsm.vectorizers.Vectorizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vectorizer</span></code></a></p>
+</div>
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">id_to_grp</code></dt>
+<dd><p>Mapping of unique group id (int) to unique group string (str), i.e.
+the inverse of <a class="reference internal" href="#textacy.vsm.vectorizers.GroupVectorizer.vocabulary_grps" title="textacy.vsm.vectorizers.GroupVectorizer.vocabulary_grps"><code class="xref py py-attr docutils literal notranslate"><span class="pre">GroupVectorizer.vocabulary_grps</span></code></a>. This attribute
+is only generated if needed, and it is automatically kept in sync
+with the corresponding vocabulary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">grps_list</code></dt>
+<dd><p>List of group strings in row order of vectorized outputs. For example,
+<code class="docutils literal notranslate"><span class="pre">grps_list[0]</span></code> gives the group assigned to the first row in an
+output group-term-matrix, <code class="docutils literal notranslate"><span class="pre">grp_term_matrix[0,</span> <span class="pre">:]</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="textacy.vsm.vectorizers.GroupVectorizer.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">tokenized_docs</em>, <em class="sig-param">grps</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/vectorizers.html#GroupVectorizer.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count terms in <code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code> and, if not already provided, build up
+a vocabulary based those terms; do the same for the groups in <code class="docutils literal notranslate"><span class="pre">grps</span></code>.
+Fit and store global weights (IDFs) and, if needed for term weighting,
+the average document length.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tokenized_docs</strong> (<em>Iterable</em><em>[</em><em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em><em>]</em>) – <p>A sequence of tokenized
+documents, where each is a sequence of (str) terms. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">([</span><span class="n">tok</span><span class="o">.</span><span class="n">lemma_</span> <span class="k">for</span> <span class="n">tok</span> <span class="ow">in</span> <span class="n">spacy_doc</span><span class="p">]</span>
+<span class="gp">... </span> <span class="k">for</span> <span class="n">spacy_doc</span> <span class="ow">in</span> <span class="n">spacy_docs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">((</span><span class="n">ne</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">ne</span> <span class="ow">in</span> <span class="n">extract</span><span class="o">.</span><span class="n">entities</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span>
+<span class="gp">... </span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">to_terms_list</span><span class="p">(</span><span class="n">as_strings</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">... </span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">)</span>
+</pre></div>
+</div>
+</p></li>
+<li><p><strong>grps</strong> (<em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – Sequence of group names by which the terms in
+<code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code> are aggregated, where the first item in <code class="docutils literal notranslate"><span class="pre">grps</span></code>
+corresponds to the first item in <code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code>, and so on.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The instance that has just been fit.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#textacy.vsm.vectorizers.GroupVectorizer" title="textacy.vsm.vectorizers.GroupVectorizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupVectorizer</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="textacy.vsm.vectorizers.GroupVectorizer.fit_transform">
+<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param">tokenized_docs</em>, <em class="sig-param">grps</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/vectorizers.html#GroupVectorizer.fit_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer.fit_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count terms in <code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code> and, if not already provided, build up
+a vocabulary based those terms; do the same for the groups in <code class="docutils literal notranslate"><span class="pre">grps</span></code>.
+Fit and store global weights (IDFs) and, if needed for term weighting,
+the average document length. Transform <code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code> into a
+group-term matrix with values weighted according to the parameters in
+<a class="reference internal" href="#textacy.vsm.vectorizers.GroupVectorizer" title="textacy.vsm.vectorizers.GroupVectorizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupVectorizer</span></code></a> initialization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tokenized_docs</strong> (<em>Iterable</em><em>[</em><em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em><em>]</em>) – <p>A sequence of tokenized
+documents, where each is a sequence of (str) terms. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">([</span><span class="n">tok</span><span class="o">.</span><span class="n">lemma_</span> <span class="k">for</span> <span class="n">tok</span> <span class="ow">in</span> <span class="n">spacy_doc</span><span class="p">]</span>
+<span class="gp">... </span> <span class="k">for</span> <span class="n">spacy_doc</span> <span class="ow">in</span> <span class="n">spacy_docs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">((</span><span class="n">ne</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">ne</span> <span class="ow">in</span> <span class="n">extract</span><span class="o">.</span><span class="n">entities</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span>
+<span class="gp">... </span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">to_terms_list</span><span class="p">(</span><span class="n">as_strings</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">... </span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">)</span>
+</pre></div>
+</div>
+</p></li>
+<li><p><strong>grps</strong> (<em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – Sequence of group names by which the terms in
+<code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code> are aggregated, where the first item in <code class="docutils literal notranslate"><span class="pre">grps</span></code>
+corresponds to the first item in <code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code>, and so on.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The transformed group-term matrix.
+Rows correspond to groups and columns correspond to terms.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="textacy.vsm.vectorizers.GroupVectorizer.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param">tokenized_docs</em>, <em class="sig-param">grps</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/vectorizers.html#GroupVectorizer.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform <code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code> and <code class="docutils literal notranslate"><span class="pre">grps</span></code> into a group-term matrix with
+values weighted according to the parameters in <a class="reference internal" href="#textacy.vsm.vectorizers.GroupVectorizer" title="textacy.vsm.vectorizers.GroupVectorizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupVectorizer</span></code></a>
+initialization and the global weights computed by calling
+<a class="reference internal" href="#textacy.vsm.vectorizers.GroupVectorizer.fit" title="textacy.vsm.vectorizers.GroupVectorizer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GroupVectorizer.fit()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tokenized_docs</strong> (<em>Iterable</em><em>[</em><em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em><em>]</em>) – <p>A sequence of tokenized
+documents, where each is a sequence of (str) terms. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">([</span><span class="n">tok</span><span class="o">.</span><span class="n">lemma_</span> <span class="k">for</span> <span class="n">tok</span> <span class="ow">in</span> <span class="n">spacy_doc</span><span class="p">]</span>
+<span class="gp">... </span> <span class="k">for</span> <span class="n">spacy_doc</span> <span class="ow">in</span> <span class="n">spacy_docs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">((</span><span class="n">ne</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">ne</span> <span class="ow">in</span> <span class="n">extract</span><span class="o">.</span><span class="n">entities</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span>
+<span class="gp">... </span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">to_terms_list</span><span class="p">(</span><span class="n">as_strings</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">... </span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">)</span>
+</pre></div>
+</div>
+</p></li>
+<li><p><strong>grps</strong> (<em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – Sequence of group names by which the terms in
+<code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code> are aggregated, where the first item in <code class="docutils literal notranslate"><span class="pre">grps</span></code>
+corresponds to the first item in <code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code>, and so on.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The transformed group-term matrix.
+Rows correspond to groups and columns correspond to terms.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For best results, the tokenization used to produce <code class="docutils literal notranslate"><span class="pre">tokenized_docs</span></code>
+should be the same as was applied to the docs used in fitting this
+vectorizer or in generating a fixed input vocabulary.</p>
+<p>Consider an extreme case where the docs used in fitting consist of
+lowercased (non-numeric) terms, while the docs to be transformed are
+all uppercased: The output group-term-matrix will be empty.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <span class="target" id="module-textacy.vsm.matrix_utils"></span><div class="section" id="sparse-matrix-utils">
 <h2>Sparse Matrix Utils<a class="headerlink" href="#sparse-matrix-utils" title="Permalink to this headline">¶</a></h2>
 <p>Functions for computing corpus-wide term- or document-based values, like
 term frequency, document frequency, and document length, and filtering terms
 from a matrix by their document frequency.</p>
+<dl class="function">
+<dt id="textacy.vsm.matrix_utils.get_term_freqs">
+<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">get_term_freqs</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">type_='linear'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#get_term_freqs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.get_term_freqs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute frequencies for all terms in a document-term matrix, with optional
+sub-linear scaling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>doc_term_matrix</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a>) – M x N sparse matrix,
+where M is the # of docs and N is the # of unique terms. Values must be
+the linear, un-scaled counts of term n per doc m.</p></li>
+<li><p><strong>type_</strong> (<em>{'linear'</em><em>, </em><em>'sqrt'</em><em>, </em><em>'log'}</em>) – Scaling applied to absolute term counts.
+If ‘linear’, term counts are left as-is, since the sums are already
+linear; if ‘sqrt’, tf =&gt; sqrt(tf); if ‘log’, tf =&gt; log(tf) + 1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Array of term frequencies, with length equal to
+the # of unique terms (# of columns) in <code class="docutils literal notranslate"><span class="pre">doc_term_matrix</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">doc_term_matrix</span></code> doesn’t have any non-zero entries, or
+    if <code class="docutils literal notranslate"><span class="pre">type_</span></code> isn’t one of {“linear”, “sqrt”, “log”}.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="textacy.vsm.matrix_utils.get_doc_freqs">
+<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">get_doc_freqs</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#get_doc_freqs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.get_doc_freqs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute document frequencies for all terms in a document-term matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>doc_term_matrix</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a>) – <p>M x N sparse matrix,
+where M is the # of docs and N is the # of unique terms.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Weighting on the terms doesn’t matter! Could be binary or
+tf or tfidf, a term’s doc freq will be the same.</p>
+</div>
+</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Array of document frequencies, with length equal to
+the # of unique terms (# of columns) in <code class="docutils literal notranslate"><span class="pre">doc_term_matrix</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">doc_term_matrix</span></code> doesn’t have any non-zero entries.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="textacy.vsm.matrix_utils.get_inverse_doc_freqs">
+<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">get_inverse_doc_freqs</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">type_='smooth'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#get_inverse_doc_freqs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.get_inverse_doc_freqs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute inverse document frequencies for all terms in a document-term matrix,
+using one of several IDF formulations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>doc_term_matrix</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a>) – M x N sparse matrix,
+where M is the # of docs and N is the # of unique terms.
+The particular weighting of matrix values doesn’t matter.</p></li>
+<li><p><strong>type_</strong> (<em>{'standard'</em><em>, </em><em>'smooth'</em><em>, </em><em>'bm25'}</em>) – Type of IDF formulation to use.
+If ‘standard’, idfs =&gt; log(n_docs / dfs) + 1.0;
+if ‘smooth’, idfs =&gt; log(n_docs + 1 / dfs + 1) + 1.0, i.e. 1 is added
+to all document frequencies, equivalent to adding a single document
+to the corpus containing every unique term;
+if ‘bm25’, idfs =&gt; log((n_docs - dfs + 0.5) / (dfs + 0.5)), which is
+a form commonly used in BM25 ranking that allows for extremely common
+terms to have negative idf weights.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Array of inverse document frequencies, with length
+equal to the # of unique terms (# of columns) in <code class="docutils literal notranslate"><span class="pre">doc_term_matrix</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">type_</span></code> isn’t one of {“standard”, “smooth”, “bm25”}.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="textacy.vsm.matrix_utils.get_doc_lengths">
+<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">get_doc_lengths</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">type_='linear'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#get_doc_lengths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.get_doc_lengths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the lengths (i.e. number of terms) for all documents in a
+document-term matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>doc_term_matrix</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a>) – M x N sparse matrix,
+where M is the # of docs, N is the # of unique terms, and values are
+the absolute counts of term n per doc m.</p></li>
+<li><p><strong>type_</strong> (<em>{'linear'</em><em>, </em><em>'sqrt'</em><em>, </em><em>'log'}</em>) – Scaling applied to absolute doc lengths.
+If ‘linear’, lengths are left as-is, since the sums are already
+linear; if ‘sqrt’, dl =&gt; sqrt(dl); if ‘log’, dl =&gt; log(dl) + 1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Array of document lengths, with length equal to
+the # of documents (# of rows) in <code class="docutils literal notranslate"><span class="pre">doc_term_matrix</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">type_</span></code> isn’t one of {“linear”, “sqrt”, “log”}.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="textacy.vsm.matrix_utils.get_information_content">
+<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">get_information_content</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#get_information_content"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.get_information_content" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute information content for all terms in a document-term matrix. IC is a
+float in [0.0, 1.0], defined as <code class="docutils literal notranslate"><span class="pre">-df</span> <span class="pre">*</span> <span class="pre">log2(df)</span> <span class="pre">-</span> <span class="pre">(1</span> <span class="pre">-</span> <span class="pre">df)</span> <span class="pre">*</span> <span class="pre">log2(1</span> <span class="pre">-</span> <span class="pre">df)</span></code>,
+where df is a term’s normalized document frequency.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>doc_term_matrix</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a>) – <p>M x N sparse matrix,
+where M is the # of docs and N is the # of unique terms.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Weighting on the terms doesn’t matter! Could be binary or
+tf or tfidf, a term’s information content will be the same.</p>
+</div>
+</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Array of term information content values, with
+length equal to the # of unique terms (# of columns) in <code class="docutils literal notranslate"><span class="pre">doc_term_matrix</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">doc_term_matrix</span></code> doesn’t have any non-zero entries.</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="function">
 <dt id="textacy.vsm.matrix_utils.apply_idf_weighting">
 <code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">apply_idf_weighting</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">type_='smooth'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#apply_idf_weighting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.apply_idf_weighting" title="Permalink to this definition">¶</a></dt>
@@ -885,157 +1036,6 @@ as strings and values are their corresponding integer ids.</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">min_ic</span></code> not in [0.0, 1.0] or <code class="docutils literal notranslate"><span class="pre">max_n_terms</span></code> &lt; 0.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="textacy.vsm.matrix_utils.get_doc_freqs">
-<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">get_doc_freqs</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#get_doc_freqs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.get_doc_freqs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute document frequencies for all terms in a document-term matrix.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>doc_term_matrix</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a>) – <p>M x N sparse matrix,
-where M is the # of docs and N is the # of unique terms.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Weighting on the terms doesn’t matter! Could be binary or
-tf or tfidf, a term’s doc freq will be the same.</p>
-</div>
-</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Array of document frequencies, with length equal to
-the # of unique terms (# of columns) in <code class="docutils literal notranslate"><span class="pre">doc_term_matrix</span></code>.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">doc_term_matrix</span></code> doesn’t have any non-zero entries.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="textacy.vsm.matrix_utils.get_doc_lengths">
-<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">get_doc_lengths</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">type_='linear'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#get_doc_lengths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.get_doc_lengths" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the lengths (i.e. number of terms) for all documents in a
-document-term matrix.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>doc_term_matrix</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a>) – M x N sparse matrix,
-where M is the # of docs, N is the # of unique terms, and values are
-the absolute counts of term n per doc m.</p></li>
-<li><p><strong>type_</strong> (<em>{'linear'</em><em>, </em><em>'sqrt'</em><em>, </em><em>'log'}</em>) – Scaling applied to absolute doc lengths.
-If ‘linear’, lengths are left as-is, since the sums are already
-linear; if ‘sqrt’, dl =&gt; sqrt(dl); if ‘log’, dl =&gt; log(dl) + 1.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Array of document lengths, with length equal to
-the # of documents (# of rows) in <code class="docutils literal notranslate"><span class="pre">doc_term_matrix</span></code>.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">type_</span></code> isn’t one of {“linear”, “sqrt”, “log”}.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="textacy.vsm.matrix_utils.get_information_content">
-<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">get_information_content</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#get_information_content"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.get_information_content" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute information content for all terms in a document-term matrix. IC is a
-float in [0.0, 1.0], defined as <code class="docutils literal notranslate"><span class="pre">-df</span> <span class="pre">*</span> <span class="pre">log2(df)</span> <span class="pre">-</span> <span class="pre">(1</span> <span class="pre">-</span> <span class="pre">df)</span> <span class="pre">*</span> <span class="pre">log2(1</span> <span class="pre">-</span> <span class="pre">df)</span></code>,
-where df is a term’s normalized document frequency.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>doc_term_matrix</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a>) – <p>M x N sparse matrix,
-where M is the # of docs and N is the # of unique terms.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Weighting on the terms doesn’t matter! Could be binary or
-tf or tfidf, a term’s information content will be the same.</p>
-</div>
-</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Array of term information content values, with
-length equal to the # of unique terms (# of columns) in <code class="docutils literal notranslate"><span class="pre">doc_term_matrix</span></code>.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">doc_term_matrix</span></code> doesn’t have any non-zero entries.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="textacy.vsm.matrix_utils.get_inverse_doc_freqs">
-<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">get_inverse_doc_freqs</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">type_='smooth'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#get_inverse_doc_freqs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.get_inverse_doc_freqs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute inverse document frequencies for all terms in a document-term matrix,
-using one of several IDF formulations.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>doc_term_matrix</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a>) – M x N sparse matrix,
-where M is the # of docs and N is the # of unique terms.
-The particular weighting of matrix values doesn’t matter.</p></li>
-<li><p><strong>type_</strong> (<em>{'standard'</em><em>, </em><em>'smooth'</em><em>, </em><em>'bm25'}</em>) – Type of IDF formulation to use.
-If ‘standard’, idfs =&gt; log(n_docs / dfs) + 1.0;
-if ‘smooth’, idfs =&gt; log(n_docs + 1 / dfs + 1) + 1.0, i.e. 1 is added
-to all document frequencies, equivalent to adding a single document
-to the corpus containing every unique term;
-if ‘bm25’, idfs =&gt; log((n_docs - dfs + 0.5) / (dfs + 0.5)), which is
-a form commonly used in BM25 ranking that allows for extremely common
-terms to have negative idf weights.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Array of inverse document frequencies, with length
-equal to the # of unique terms (# of columns) in <code class="docutils literal notranslate"><span class="pre">doc_term_matrix</span></code>.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">type_</span></code> isn’t one of {“standard”, “smooth”, “bm25”}.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="textacy.vsm.matrix_utils.get_term_freqs">
-<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">get_term_freqs</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">type_='linear'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#get_term_freqs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.get_term_freqs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute frequencies for all terms in a document-term matrix, with optional
-sub-linear scaling.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>doc_term_matrix</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a>) – M x N sparse matrix,
-where M is the # of docs and N is the # of unique terms. Values must be
-the linear, un-scaled counts of term n per doc m.</p></li>
-<li><p><strong>type_</strong> (<em>{'linear'</em><em>, </em><em>'sqrt'</em><em>, </em><em>'log'}</em>) – Scaling applied to absolute term counts.
-If ‘linear’, term counts are left as-is, since the sums are already
-linear; if ‘sqrt’, tf =&gt; sqrt(tf); if ‘log’, tf =&gt; log(tf) + 1.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Array of term frequencies, with length equal to
-the # of unique terms (# of columns) in <code class="docutils literal notranslate"><span class="pre">doc_term_matrix</span></code>.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">doc_term_matrix</span></code> doesn’t have any non-zero entries, or
-    if <code class="docutils literal notranslate"><span class="pre">type_</span></code> isn’t one of {“linear”, “sqrt”, “log”}.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1160,6 +1160,125 @@ i.e. topic weights on each document sum to 1</p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="textacy.tm.topic_model.TopicModel.top_topic_terms">
+<code class="sig-name descname">top_topic_terms</code><span class="sig-paren">(</span><em class="sig-param">id2term</em>, <em class="sig-param">topics=-1</em>, <em class="sig-param">top_n=10</em>, <em class="sig-param">weights=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.top_topic_terms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.top_topic_terms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code> terms by weight per topic in <code class="docutils literal notranslate"><span class="pre">model</span></code>.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id2term</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>) or </em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – object that returns the term string corresponding
+to term id <code class="docutils literal notranslate"><span class="pre">i</span></code> through <code class="docutils literal notranslate"><span class="pre">id2term[i]</span></code>; could be a list of strings
+where the index represents the term id, such as that returned by
+<code class="docutils literal notranslate"><span class="pre">sklearn.feature_extraction.text.CountVectorizer.get_feature_names()</span></code>,
+or a mapping of term id: term string</p></li>
+<li><p><strong>topics</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em> or </em><em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>]</em>) – topic(s) for which to return top terms;
+if -1 (default), all topics’ terms are returned</p></li>
+<li><p><strong>top_n</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – number of top terms to return per topic</p></li>
+<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – if True, terms are returned with their corresponding
+topic weights; otherwise, terms are returned without weights</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p><em>Tuple[int, Tuple[str]] or Tuple[int, Tuple[Tuple[str, float]]]</em> –     next tuple corresponding to a topic; the first element is the topic’s
+index; if <code class="docutils literal notranslate"><span class="pre">weights</span></code> is False, the second element is a tuple of str
+representing the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code> related terms; otherwise, the second
+is a tuple of (str, float) pairs representing the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code>
+related terms and their associated weights wrt the topic; for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">TopicModel</span><span class="o">.</span><span class="n">top_topic_terms</span><span class="p">(</span><span class="n">id2term</span><span class="p">,</span> <span class="n">topics</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+<span class="go">[(0, (&#39;foo&#39;, &#39;bar&#39;)), (1, (&#39;bat&#39;, &#39;baz&#39;))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">TopicModel</span><span class="o">.</span><span class="n">top_topic_terms</span><span class="p">(</span><span class="n">id2term</span><span class="p">,</span> <span class="n">topics</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="go">[(0, ((&#39;foo&#39;, 0.1415), (&#39;bar&#39;, 0.0986)))]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="textacy.tm.topic_model.TopicModel.top_topic_docs">
+<code class="sig-name descname">top_topic_docs</code><span class="sig-paren">(</span><em class="sig-param">doc_topic_matrix</em>, <em class="sig-param">topics=-1</em>, <em class="sig-param">top_n=10</em>, <em class="sig-param">weights=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.top_topic_docs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.top_topic_docs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code> docs by weight per topic in <code class="docutils literal notranslate"><span class="pre">doc_topic_matrix</span></code>.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>doc_topic_matrix</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) – document-topic matrix with shape
+(n_docs, n_topics), the result of calling <a class="reference internal" href="#textacy.tm.topic_model.TopicModel.get_doc_topic_matrix" title="textacy.tm.topic_model.TopicModel.get_doc_topic_matrix"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TopicModel.get_doc_topic_matrix()</span></code></a></p></li>
+<li><p><strong>topics</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em> or </em><em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>]</em>) – topic(s) for which to return top docs;
+if -1, all topics’ docs are returned</p></li>
+<li><p><strong>top_n</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – number of top docs to return per topic</p></li>
+<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – if True, docs are returned with their corresponding
+(normalized) topic weights; otherwise, docs are returned without weights</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p><em>Tuple[int, Tuple[int]] or Tuple[int, Tuple[Tuple[int, float]]]</em> –     next tuple corresponding to a topic; the first element is the topic’s
+index; if <code class="docutils literal notranslate"><span class="pre">weights</span></code> is False, the second element is a tuple of ints
+representing the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code> related docs; otherwise, the second
+is a tuple of (int, float) pairs representing the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code>
+related docs and their associated weights wrt the topic; for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">TopicModel</span><span class="o">.</span><span class="n">top_doc_terms</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span> <span class="n">topics</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+<span class="go">[(0, (4, 2)), (1, (1, 3))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">TopicModel</span><span class="o">.</span><span class="n">top_doc_terms</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span> <span class="n">topics</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="go">[(0, ((4, 0.3217), (2, 0.2154)))]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="textacy.tm.topic_model.TopicModel.top_doc_topics">
+<code class="sig-name descname">top_doc_topics</code><span class="sig-paren">(</span><em class="sig-param">doc_topic_matrix</em>, <em class="sig-param">docs=-1</em>, <em class="sig-param">top_n=3</em>, <em class="sig-param">weights=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.top_doc_topics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.top_doc_topics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code> topics by weight per doc for <code class="docutils literal notranslate"><span class="pre">docs</span></code> in <code class="docutils literal notranslate"><span class="pre">doc_topic_matrix</span></code>.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>doc_topic_matrix</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) – document-topic matrix with shape
+(n_docs, n_topics), the result of calling <a class="reference internal" href="#textacy.tm.topic_model.TopicModel.get_doc_topic_matrix" title="textacy.tm.topic_model.TopicModel.get_doc_topic_matrix"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TopicModel.get_doc_topic_matrix()</span></code></a></p></li>
+<li><p><strong>docs</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em> or </em><em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>]</em>) – docs for which to return top topics;
+if -1, all docs’ top topics are returned</p></li>
+<li><p><strong>top_n</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – number of top topics to return per doc</p></li>
+<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – if True, docs are returned with their corresponding
+(normalized) topic weights; otherwise, docs are returned without weights</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p><em>Tuple[int, Tuple[int]] or Tuple[int, Tuple[Tuple[int, float]]]</em> –     next tuple corresponding to a doc; the first element is the doc’s
+index; if <code class="docutils literal notranslate"><span class="pre">weights</span></code> is False, the second element is a tuple of ints
+representing the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code> related topics; otherwise, the second
+is a tuple of (int, float) pairs representing the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code>
+related topics and their associated weights wrt the doc; for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">TopicModel</span><span class="o">.</span><span class="n">top_doc_topics</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span> <span class="n">docs</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+<span class="go">[(0, (1, 4)), (1, (3, 2))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">TopicModel</span><span class="o">.</span><span class="n">top_doc_topics</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span> <span class="n">docs</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="go">[(0, ((1, 0.2855), (4, 0.2412)))]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="textacy.tm.topic_model.TopicModel.topic_weights">
+<code class="sig-name descname">topic_weights</code><span class="sig-paren">(</span><em class="sig-param">doc_topic_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.topic_weights"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.topic_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the overall weight of topics across an entire corpus. Note: Values depend
+on whether topic weights per document in <code class="docutils literal notranslate"><span class="pre">doc_topic_matrix</span></code> were normalized,
+or not. I suppose either way makes sense… o_O</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>doc_topic_matrix</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) – document-topic matrix with shape
+(n_docs, n_topics), the result of calling <a class="reference internal" href="#textacy.tm.topic_model.TopicModel.get_doc_topic_matrix" title="textacy.tm.topic_model.TopicModel.get_doc_topic_matrix"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TopicModel.get_doc_topic_matrix()</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the ith element is the ith topic’s overall weight</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="textacy.tm.topic_model.TopicModel.termite_plot">
 <code class="sig-name descname">termite_plot</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">id2term</em>, <em class="sig-param">topics=-1</em>, <em class="sig-param">sort_topics_by='index'</em>, <em class="sig-param">highlight_topics=None</em>, <em class="sig-param">n_terms=25</em>, <em class="sig-param">rank_terms_by='topic_weight'</em>, <em class="sig-param">sort_terms_by='seriation'</em>, <em class="sig-param">save=False</em>, <em class="sig-param">rc_params=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.termite_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.termite_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a “termite” plot for assessing topic models using a tabular layout
@@ -1216,125 +1335,6 @@ Visual Interfaces. ACM, 2012.</p></li>
 <p><code class="xref py py-func docutils literal notranslate"><span class="pre">viz.termite_plot</span></code></p>
 </div>
 <p>TODO: <cite>rank_terms_by</cite> other metrics, e.g. topic salience or relevance</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="textacy.tm.topic_model.TopicModel.top_doc_topics">
-<code class="sig-name descname">top_doc_topics</code><span class="sig-paren">(</span><em class="sig-param">doc_topic_matrix</em>, <em class="sig-param">docs=-1</em>, <em class="sig-param">top_n=3</em>, <em class="sig-param">weights=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.top_doc_topics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.top_doc_topics" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code> topics by weight per doc for <code class="docutils literal notranslate"><span class="pre">docs</span></code> in <code class="docutils literal notranslate"><span class="pre">doc_topic_matrix</span></code>.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>doc_topic_matrix</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) – document-topic matrix with shape
-(n_docs, n_topics), the result of calling <a class="reference internal" href="#textacy.tm.topic_model.TopicModel.get_doc_topic_matrix" title="textacy.tm.topic_model.TopicModel.get_doc_topic_matrix"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TopicModel.get_doc_topic_matrix()</span></code></a></p></li>
-<li><p><strong>docs</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em> or </em><em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>]</em>) – docs for which to return top topics;
-if -1, all docs’ top topics are returned</p></li>
-<li><p><strong>top_n</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – number of top topics to return per doc</p></li>
-<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – if True, docs are returned with their corresponding
-(normalized) topic weights; otherwise, docs are returned without weights</p></li>
-</ul>
-</dd>
-<dt class="field-even">Yields</dt>
-<dd class="field-even"><p><em>Tuple[int, Tuple[int]] or Tuple[int, Tuple[Tuple[int, float]]]</em> –     next tuple corresponding to a doc; the first element is the doc’s
-index; if <code class="docutils literal notranslate"><span class="pre">weights</span></code> is False, the second element is a tuple of ints
-representing the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code> related topics; otherwise, the second
-is a tuple of (int, float) pairs representing the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code>
-related topics and their associated weights wrt the doc; for example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">TopicModel</span><span class="o">.</span><span class="n">top_doc_topics</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span> <span class="n">docs</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
-<span class="go">[(0, (1, 4)), (1, (3, 2))]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">TopicModel</span><span class="o">.</span><span class="n">top_doc_topics</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span> <span class="n">docs</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-<span class="go">[(0, ((1, 0.2855), (4, 0.2412)))]</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="textacy.tm.topic_model.TopicModel.top_topic_docs">
-<code class="sig-name descname">top_topic_docs</code><span class="sig-paren">(</span><em class="sig-param">doc_topic_matrix</em>, <em class="sig-param">topics=-1</em>, <em class="sig-param">top_n=10</em>, <em class="sig-param">weights=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.top_topic_docs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.top_topic_docs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code> docs by weight per topic in <code class="docutils literal notranslate"><span class="pre">doc_topic_matrix</span></code>.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>doc_topic_matrix</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) – document-topic matrix with shape
-(n_docs, n_topics), the result of calling <a class="reference internal" href="#textacy.tm.topic_model.TopicModel.get_doc_topic_matrix" title="textacy.tm.topic_model.TopicModel.get_doc_topic_matrix"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TopicModel.get_doc_topic_matrix()</span></code></a></p></li>
-<li><p><strong>topics</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em> or </em><em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>]</em>) – topic(s) for which to return top docs;
-if -1, all topics’ docs are returned</p></li>
-<li><p><strong>top_n</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – number of top docs to return per topic</p></li>
-<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – if True, docs are returned with their corresponding
-(normalized) topic weights; otherwise, docs are returned without weights</p></li>
-</ul>
-</dd>
-<dt class="field-even">Yields</dt>
-<dd class="field-even"><p><em>Tuple[int, Tuple[int]] or Tuple[int, Tuple[Tuple[int, float]]]</em> –     next tuple corresponding to a topic; the first element is the topic’s
-index; if <code class="docutils literal notranslate"><span class="pre">weights</span></code> is False, the second element is a tuple of ints
-representing the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code> related docs; otherwise, the second
-is a tuple of (int, float) pairs representing the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code>
-related docs and their associated weights wrt the topic; for example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">TopicModel</span><span class="o">.</span><span class="n">top_doc_terms</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span> <span class="n">topics</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
-<span class="go">[(0, (4, 2)), (1, (1, 3))]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">TopicModel</span><span class="o">.</span><span class="n">top_doc_terms</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span> <span class="n">topics</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-<span class="go">[(0, ((4, 0.3217), (2, 0.2154)))]</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="textacy.tm.topic_model.TopicModel.top_topic_terms">
-<code class="sig-name descname">top_topic_terms</code><span class="sig-paren">(</span><em class="sig-param">id2term</em>, <em class="sig-param">topics=-1</em>, <em class="sig-param">top_n=10</em>, <em class="sig-param">weights=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.top_topic_terms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.top_topic_terms" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code> terms by weight per topic in <code class="docutils literal notranslate"><span class="pre">model</span></code>.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>id2term</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>) or </em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – object that returns the term string corresponding
-to term id <code class="docutils literal notranslate"><span class="pre">i</span></code> through <code class="docutils literal notranslate"><span class="pre">id2term[i]</span></code>; could be a list of strings
-where the index represents the term id, such as that returned by
-<code class="docutils literal notranslate"><span class="pre">sklearn.feature_extraction.text.CountVectorizer.get_feature_names()</span></code>,
-or a mapping of term id: term string</p></li>
-<li><p><strong>topics</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em> or </em><em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>]</em>) – topic(s) for which to return top terms;
-if -1 (default), all topics’ terms are returned</p></li>
-<li><p><strong>top_n</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – number of top terms to return per topic</p></li>
-<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – if True, terms are returned with their corresponding
-topic weights; otherwise, terms are returned without weights</p></li>
-</ul>
-</dd>
-<dt class="field-even">Yields</dt>
-<dd class="field-even"><p><em>Tuple[int, Tuple[str]] or Tuple[int, Tuple[Tuple[str, float]]]</em> –     next tuple corresponding to a topic; the first element is the topic’s
-index; if <code class="docutils literal notranslate"><span class="pre">weights</span></code> is False, the second element is a tuple of str
-representing the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code> related terms; otherwise, the second
-is a tuple of (str, float) pairs representing the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code>
-related terms and their associated weights wrt the topic; for example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">TopicModel</span><span class="o">.</span><span class="n">top_topic_terms</span><span class="p">(</span><span class="n">id2term</span><span class="p">,</span> <span class="n">topics</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
-<span class="go">[(0, (&#39;foo&#39;, &#39;bar&#39;)), (1, (&#39;bat&#39;, &#39;baz&#39;))]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">TopicModel</span><span class="o">.</span><span class="n">top_topic_terms</span><span class="p">(</span><span class="n">id2term</span><span class="p">,</span> <span class="n">topics</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-<span class="go">[(0, ((&#39;foo&#39;, 0.1415), (&#39;bar&#39;, 0.0986)))]</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="textacy.tm.topic_model.TopicModel.topic_weights">
-<code class="sig-name descname">topic_weights</code><span class="sig-paren">(</span><em class="sig-param">doc_topic_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.topic_weights"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.topic_weights" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the overall weight of topics across an entire corpus. Note: Values depend
-on whether topic weights per document in <code class="docutils literal notranslate"><span class="pre">doc_topic_matrix</span></code> were normalized,
-or not. I suppose either way makes sense… o_O</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>doc_topic_matrix</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) – document-topic matrix with shape
-(n_docs, n_topics), the result of calling <a class="reference internal" href="#textacy.tm.topic_model.TopicModel.get_doc_topic_matrix" title="textacy.tm.topic_model.TopicModel.get_doc_topic_matrix"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TopicModel.get_doc_topic_matrix()</span></code></a></p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the ith element is the ith topic’s overall weight</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
-</dd>
-</dl>
 </dd></dl>
 
 </dd></dl>

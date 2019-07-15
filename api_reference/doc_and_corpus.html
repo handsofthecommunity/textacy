@@ -285,25 +285,28 @@ Tuple[str, dict] or Iterable[Tuple[str, dict]]
 </dd></dl>
 
 <dl class="method">
-<dt id="textacy.corpus.Corpus.add_doc">
-<code class="sig-name descname">add_doc</code><span class="sig-paren">(</span><em class="sig-param">doc</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.add_doc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.add_doc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add one <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code> to the corpus, provided it was processed
+<dt id="textacy.corpus.Corpus.add_text">
+<code class="sig-name descname">add_text</code><span class="sig-paren">(</span><em class="sig-param">text</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.add_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.add_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add one text to the corpus, processing it into a <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code>
 using the <a class="reference internal" href="#textacy.corpus.Corpus.spacy_lang" title="textacy.corpus.Corpus.spacy_lang"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Corpus.spacy_lang</span></code></a> pipeline.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>doc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code>) – </p>
+<dd class="field-odd"><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – </p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="textacy.corpus.Corpus.add_docs">
-<code class="sig-name descname">add_docs</code><span class="sig-paren">(</span><em class="sig-param">docs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.add_docs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.add_docs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a stream of <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code> s to the corpus, provided
-they were processed using the <a class="reference internal" href="#textacy.corpus.Corpus.spacy_lang" title="textacy.corpus.Corpus.spacy_lang"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Corpus.spacy_lang</span></code></a> pipeline.</p>
+<dt id="textacy.corpus.Corpus.add_texts">
+<code class="sig-name descname">add_texts</code><span class="sig-paren">(</span><em class="sig-param">texts</em>, <em class="sig-param">batch_size=1000</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.add_texts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.add_texts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a stream of texts to the corpus, efficiently processing them into
+<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code> s using the <a class="reference internal" href="#textacy.corpus.Corpus.spacy_lang" title="textacy.corpus.Corpus.spacy_lang"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Corpus.spacy_lang</span></code></a> pipeline.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>doc</strong> (Iterable[<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code>]) – </p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>texts</strong> (<em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>batch_size</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – </p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -336,28 +339,25 @@ using the <a class="reference internal" href="#textacy.corpus.Corpus.spacy_lang"
 </dd></dl>
 
 <dl class="method">
-<dt id="textacy.corpus.Corpus.add_text">
-<code class="sig-name descname">add_text</code><span class="sig-paren">(</span><em class="sig-param">text</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.add_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.add_text" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add one text to the corpus, processing it into a <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code>
+<dt id="textacy.corpus.Corpus.add_doc">
+<code class="sig-name descname">add_doc</code><span class="sig-paren">(</span><em class="sig-param">doc</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.add_doc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.add_doc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add one <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code> to the corpus, provided it was processed
 using the <a class="reference internal" href="#textacy.corpus.Corpus.spacy_lang" title="textacy.corpus.Corpus.spacy_lang"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Corpus.spacy_lang</span></code></a> pipeline.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – </p>
+<dd class="field-odd"><p><strong>doc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code>) – </p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="textacy.corpus.Corpus.add_texts">
-<code class="sig-name descname">add_texts</code><span class="sig-paren">(</span><em class="sig-param">texts</em>, <em class="sig-param">batch_size=1000</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.add_texts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.add_texts" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a stream of texts to the corpus, efficiently processing them into
-<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code> s using the <a class="reference internal" href="#textacy.corpus.Corpus.spacy_lang" title="textacy.corpus.Corpus.spacy_lang"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Corpus.spacy_lang</span></code></a> pipeline.</p>
+<dt id="textacy.corpus.Corpus.add_docs">
+<code class="sig-name descname">add_docs</code><span class="sig-paren">(</span><em class="sig-param">docs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.add_docs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.add_docs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a stream of <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code> s to the corpus, provided
+they were processed using the <a class="reference internal" href="#textacy.corpus.Corpus.spacy_lang" title="textacy.corpus.Corpus.spacy_lang"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Corpus.spacy_lang</span></code></a> pipeline.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>texts</strong> (<em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – </p></li>
-<li><p><strong>batch_size</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – </p></li>
-</ul>
+<dd class="field-odd"><p><strong>doc</strong> (Iterable[<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code>]) – </p>
 </dd>
 </dl>
 </dd></dl>
@@ -397,30 +397,6 @@ document in the corpus; <code class="docutils literal notranslate"><span class="
 </dd></dl>
 
 <dl class="method">
-<dt id="textacy.corpus.Corpus.load">
-<em class="property">classmethod </em><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">lang</em>, <em class="sig-param">filepath</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load previously saved <a class="reference internal" href="#textacy.corpus.Corpus" title="textacy.corpus.Corpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></a> binary data, reproduce the original
-<cite>:class:`spacy.tokens.Doc`s tokens and annotations, and instantiate
-a new :class:`Corpus</cite> from them.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>lang</strong> (str or <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.language.Language</span></code>) – </p></li>
-<li><p><strong>filepath</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Full path to file on disk where <a class="reference internal" href="#textacy.corpus.Corpus" title="textacy.corpus.Corpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></a> data
-was previously saved as a binary file.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="#textacy.corpus.Corpus" title="textacy.corpus.Corpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></a></p>
-</dd>
-</dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><a class="reference internal" href="#textacy.corpus.Corpus.save" title="textacy.corpus.Corpus.save"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Corpus.save()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="method">
 <dt id="textacy.corpus.Corpus.remove">
 <code class="sig-name descname">remove</code><span class="sig-paren">(</span><em class="sig-param">match_func</em>, <em class="sig-param">limit=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.remove"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.remove" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove all (or N &lt;= <code class="docutils literal notranslate"><span class="pre">limit</span></code>) docs in <a class="reference internal" href="#textacy.corpus.Corpus" title="textacy.corpus.Corpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></a> for which
@@ -454,31 +430,15 @@ first document in the corpus; <code class="docutils literal notranslate"><span c
 </dd></dl>
 
 <dl class="method">
-<dt id="textacy.corpus.Corpus.save">
-<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">filepath</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save <a class="reference internal" href="#textacy.corpus.Corpus" title="textacy.corpus.Corpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></a> to disk as binary data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filepath</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Full path to file on disk where <a class="reference internal" href="#textacy.corpus.Corpus" title="textacy.corpus.Corpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></a> data
-will be saved as a binary file.</p>
-</dd>
-</dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><a class="reference internal" href="#textacy.corpus.Corpus.load" title="textacy.corpus.Corpus.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Corpus.load()</span></code></a></p>
-</div>
+<dt id="textacy.corpus.Corpus.vectors">
+<em class="property">property </em><code class="sig-name descname">vectors</code><a class="headerlink" href="#textacy.corpus.Corpus.vectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constituent docs’ word vectors stacked in a 2d array.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="textacy.corpus.Corpus.vector_norms">
 <em class="property">property </em><code class="sig-name descname">vector_norms</code><a class="headerlink" href="#textacy.corpus.Corpus.vector_norms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constituent docs’ L2-normalized word vectors stacked in a 2d array.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="textacy.corpus.Corpus.vectors">
-<em class="property">property </em><code class="sig-name descname">vectors</code><a class="headerlink" href="#textacy.corpus.Corpus.vectors" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constituent docs’ word vectors stacked in a 2d array.</p>
 </dd></dl>
 
 <dl class="method">
@@ -573,6 +533,46 @@ on the value of <code class="docutils literal notranslate"><span class="pre">wei
 <ul class="simple">
 <li><p><a class="reference internal" href="vsm_and_tm.html#textacy.vsm.matrix_utils.get_doc_freqs" title="textacy.vsm.matrix_utils.get_doc_freqs"><code class="xref py py-func docutils literal notranslate"><span class="pre">textacy.vsm.get_doc_freqs()</span></code></a></p></li>
 </ul>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="textacy.corpus.Corpus.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">filepath</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save <a class="reference internal" href="#textacy.corpus.Corpus" title="textacy.corpus.Corpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></a> to disk as binary data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filepath</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Full path to file on disk where <a class="reference internal" href="#textacy.corpus.Corpus" title="textacy.corpus.Corpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></a> data
+will be saved as a binary file.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#textacy.corpus.Corpus.load" title="textacy.corpus.Corpus.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Corpus.load()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="textacy.corpus.Corpus.load">
+<em class="property">classmethod </em><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">lang</em>, <em class="sig-param">filepath</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load previously saved <a class="reference internal" href="#textacy.corpus.Corpus" title="textacy.corpus.Corpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></a> binary data, reproduce the original
+<cite>:class:`spacy.tokens.Doc`s tokens and annotations, and instantiate
+a new :class:`Corpus</cite> from them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lang</strong> (str or <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.language.Language</span></code>) – </p></li>
+<li><p><strong>filepath</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Full path to file on disk where <a class="reference internal" href="#textacy.corpus.Corpus" title="textacy.corpus.Corpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></a> data
+was previously saved as a binary file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="#textacy.corpus.Corpus" title="textacy.corpus.Corpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></a></p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#textacy.corpus.Corpus.save" title="textacy.corpus.Corpus.save"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Corpus.save()</span></code></a></p>
 </div>
 </dd></dl>
 

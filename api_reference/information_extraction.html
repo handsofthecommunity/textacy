@@ -38,50 +38,84 @@
 by spaCy, such as n-grams, named entities, subject-verb-object triples, and
 acronyms.</p>
 <dl class="function">
-<dt id="textacy.extract.acronyms_and_definitions">
-<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">acronyms_and_definitions</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">known_acro_defs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#acronyms_and_definitions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.acronyms_and_definitions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extract a collection of acronyms and their most likely definitions, if available,
-from a spacy-parsed doc. If multiple definitions are found for a given acronym,
-only the most frequently occurring definition is returned.</p>
+<dt id="textacy.extract.words">
+<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">words</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">filter_stops=True</em>, <em class="sig-param">filter_punct=True</em>, <em class="sig-param">filter_nums=False</em>, <em class="sig-param">include_pos=None</em>, <em class="sig-param">exclude_pos=None</em>, <em class="sig-param">min_freq=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#words"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.words" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract an ordered sequence of words from a document processed by spaCy,
+optionally filtering words by part-of-speech tag and frequency.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>doc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>) – </p></li>
-<li><p><strong>known_acro_defs</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – if certain acronym/definition pairs
-are known, pass them in as {acronym (str): definition (str)};
-algorithm will not attempt to find new definitions</p></li>
+<li><p><strong>filter_stops</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, remove stop words from word list.</p></li>
+<li><p><strong>filter_punct</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, remove punctuation from word list.</p></li>
+<li><p><strong>filter_nums</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, remove number-like words (e.g. 10, “ten”)
+from word list.</p></li>
+<li><p><strong>include_pos</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>Set</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – Remove words whose part-of-speech tag
+IS NOT included in this param.</p></li>
+<li><p><strong>exclude_pos</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>Set</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – Remove words whose part-of-speech tag
+IS in the specified tags.</p></li>
+<li><p><strong>min_freq</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Remove words that occur in <code class="docutils literal notranslate"><span class="pre">doc</span></code> fewer than
+<code class="docutils literal notranslate"><span class="pre">min_freq</span></code> times.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>unique acronyms (keys) with matched definitions (values)</p>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Token</span></code> – Next token from <code class="docutils literal notranslate"><span class="pre">doc</span></code> passing specified filters
+in order of appearance in the document.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)">dict</a></p>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#TypeError" title="(in Python v3.6)"><strong>TypeError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">include_pos</span></code> or <code class="docutils literal notranslate"><span class="pre">exclude_pos</span></code> is not a str, a set of str,
+    or a falsy value</p>
 </dd>
 </dl>
-<p class="rubric">References</p>
-<p>Taghva, Kazem, and Jeff Gilbreth. “Recognizing acronyms and their definitions.”
-International Journal on Document Analysis and Recognition 1.4 (1999): 191-198.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Filtering by part-of-speech tag uses the universal POS tag set; for details,
+check spaCy’s docs: <a class="reference external" href="https://spacy.io/api/annotation#pos-tagging">https://spacy.io/api/annotation#pos-tagging</a></p>
+</div>
 </dd></dl>
 
 <dl class="function">
-<dt id="textacy.extract.direct_quotations">
-<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">direct_quotations</code><span class="sig-paren">(</span><em class="sig-param">doc</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#direct_quotations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.direct_quotations" title="Permalink to this definition">¶</a></dt>
-<dd><p>Baseline, not-great attempt at direction quotation extraction (no indirect
-or mixed quotations) using rules and patterns. English only.</p>
+<dt id="textacy.extract.ngrams">
+<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">ngrams</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">n</em>, <em class="sig-param">filter_stops=True</em>, <em class="sig-param">filter_punct=True</em>, <em class="sig-param">filter_nums=False</em>, <em class="sig-param">include_pos=None</em>, <em class="sig-param">exclude_pos=None</em>, <em class="sig-param">min_freq=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.ngrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract an ordered sequence of n-grams (<code class="docutils literal notranslate"><span class="pre">n</span></code> consecutive words) from a
+spacy-parsed doc, optionally filtering n-grams by the types and
+parts-of-speech of the constituent words.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>doc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code>) – </p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>doc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>) – </p></li>
+<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – number of tokens per n-gram; 2 =&gt; bigrams, 3 =&gt; trigrams, etc.</p></li>
+<li><p><strong>filter_stops</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – if True, remove ngrams that start or end
+with a stop word</p></li>
+<li><p><strong>filter_punct</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – if True, remove ngrams that contain
+any punctuation-only tokens</p></li>
+<li><p><strong>filter_nums</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – if True, remove ngrams that contain
+any numbers or number-like tokens (e.g. 10, ‘ten’)</p></li>
+<li><p><strong>include_pos</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>Set</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – remove ngrams if any of their constituent
+tokens’ part-of-speech tags ARE NOT included in this param</p></li>
+<li><p><strong>exclude_pos</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>Set</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – remove ngrams if any of their constituent
+tokens’ part-of-speech tags ARE included in this param</p></li>
+<li><p><strong>min_freq</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – remove ngrams that occur in <code class="docutils literal notranslate"><span class="pre">doc</span></code> fewer than
+<code class="docutils literal notranslate"><span class="pre">min_freq</span></code> times</p></li>
+</ul>
 </dd>
 <dt class="field-even">Yields</dt>
-<dd class="field-even"><p>(<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Token</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>) – next quotation in <code class="docutils literal notranslate"><span class="pre">doc</span></code>
-represented as a (speaker, reporting verb, quotation) 3-tuple</p>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code> – the next ngram from <code class="docutils literal notranslate"><span class="pre">doc</span></code> passing all specified
+filters, in order of appearance in the document</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">n</span></code> &lt; 1</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#TypeError" title="(in Python v3.6)"><strong>TypeError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">include_pos</span></code> or <code class="docutils literal notranslate"><span class="pre">exclude_pos</span></code> is not a str, a set of str,
+    or a falsy value</p></li>
+</ul>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>Loosely inspired by Krestel, Bergler, Witte. “Minding the Source: Automatic
-Tagging of Reported Speech in Newspaper Articles”.</p>
-<p>TODO: Better approach would use ML, but needs a training dataset.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Filtering by part-of-speech tag uses the universal POS tag set; for details,
+check spaCy’s docs: <a class="reference external" href="https://spacy.io/api/annotation#pos-tagging">https://spacy.io/api/annotation#pos-tagging</a></p>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -125,6 +159,65 @@ all specified filters in order of appearance in the document</p>
     str, or a falsy value</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="textacy.extract.noun_chunks">
+<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">noun_chunks</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">drop_determiners=True</em>, <em class="sig-param">min_freq=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#noun_chunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.noun_chunks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract an ordered sequence of noun chunks from a spacy-parsed doc, optionally
+filtering by frequency and dropping leading determiners.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>doc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code>) – </p></li>
+<li><p><strong>drop_determiners</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – remove leading determiners (e.g. “the”)
+from phrases (e.g. “the quick brown fox” =&gt; “quick brown fox”)</p></li>
+<li><p><strong>min_freq</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – remove chunks that occur in <code class="docutils literal notranslate"><span class="pre">doc</span></code> fewer than
+<code class="docutils literal notranslate"><span class="pre">min_freq</span></code> times</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code> – the next noun chunk from <code class="docutils literal notranslate"><span class="pre">doc</span></code> in order of appearance
+in the document</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="textacy.extract.pos_regex_matches">
+<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">pos_regex_matches</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">pattern</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#pos_regex_matches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.pos_regex_matches" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract sequences of consecutive tokens from a spacy-parsed doc whose
+part-of-speech tags match the specified regex pattern.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>doc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>) – </p></li>
+<li><p><strong>pattern</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – <p>Pattern of consecutive POS tags whose corresponding words
+are to be extracted, inspired by the regex patterns used in NLTK’s
+<cite>nltk.chunk.regexp</cite>. Tags are uppercase, from the universal tag set;
+delimited by &lt; and &gt;, which are basically converted to parentheses
+with spaces as needed to correctly extract matching word sequences;
+white space in the input doesn’t matter.</p>
+<p>Examples (see <code class="docutils literal notranslate"><span class="pre">constants.POS_REGEX_PATTERNS</span></code>):</p>
+<ul>
+<li><p>noun phrase: r’&lt;DET&gt;? (&lt;NOUN&gt;+ &lt;ADP|CONJ&gt;)* &lt;NOUN&gt;+’</p></li>
+<li><p>compound nouns: r’&lt;NOUN&gt;+’</p></li>
+<li><p>verb phrase: r’&lt;VERB&gt;?&lt;ADV&gt;*&lt;VERB&gt;+’</p></li>
+<li><p>prepositional phrase: r’&lt;PREP&gt; &lt;DET&gt;? (&lt;NOUN&gt;+&lt;ADP&gt;)* &lt;NOUN&gt;+’</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code> – the next span of consecutive tokens from <code class="docutils literal notranslate"><span class="pre">doc</span></code> whose
+parts-of-speech match <code class="docutils literal notranslate"><span class="pre">pattern</span></code>, in order of apperance</p>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><em>DEPRECATED!</em> For similar but more powerful and performant functionality,
+use <a class="reference internal" href="#textacy.extract.matches" title="textacy.extract.matches"><code class="xref py py-func docutils literal notranslate"><span class="pre">textacy.extract.matches()</span></code></a> instead.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -191,106 +284,46 @@ in order of appearance</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="textacy.extract.ngrams">
-<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">ngrams</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">n</em>, <em class="sig-param">filter_stops=True</em>, <em class="sig-param">filter_punct=True</em>, <em class="sig-param">filter_nums=False</em>, <em class="sig-param">include_pos=None</em>, <em class="sig-param">exclude_pos=None</em>, <em class="sig-param">min_freq=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.ngrams" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extract an ordered sequence of n-grams (<code class="docutils literal notranslate"><span class="pre">n</span></code> consecutive words) from a
-spacy-parsed doc, optionally filtering n-grams by the types and
-parts-of-speech of the constituent words.</p>
+<dt id="textacy.extract.subject_verb_object_triples">
+<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">subject_verb_object_triples</code><span class="sig-paren">(</span><em class="sig-param">doc</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#subject_verb_object_triples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.subject_verb_object_triples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract an ordered sequence of subject-verb-object (SVO) triples from a
+spacy-parsed doc. Note that this only works for SVO languages.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>doc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>) – </p></li>
-<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – number of tokens per n-gram; 2 =&gt; bigrams, 3 =&gt; trigrams, etc.</p></li>
-<li><p><strong>filter_stops</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – if True, remove ngrams that start or end
-with a stop word</p></li>
-<li><p><strong>filter_punct</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – if True, remove ngrams that contain
-any punctuation-only tokens</p></li>
-<li><p><strong>filter_nums</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – if True, remove ngrams that contain
-any numbers or number-like tokens (e.g. 10, ‘ten’)</p></li>
-<li><p><strong>include_pos</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>Set</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – remove ngrams if any of their constituent
-tokens’ part-of-speech tags ARE NOT included in this param</p></li>
-<li><p><strong>exclude_pos</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>Set</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – remove ngrams if any of their constituent
-tokens’ part-of-speech tags ARE included in this param</p></li>
-<li><p><strong>min_freq</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – remove ngrams that occur in <code class="docutils literal notranslate"><span class="pre">doc</span></code> fewer than
-<code class="docutils literal notranslate"><span class="pre">min_freq</span></code> times</p></li>
-</ul>
+<dd class="field-odd"><p><strong>doc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>) – </p>
 </dd>
 <dt class="field-even">Yields</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code> – the next ngram from <code class="docutils literal notranslate"><span class="pre">doc</span></code> passing all specified
-filters, in order of appearance in the document</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">n</span></code> &lt; 1</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#TypeError" title="(in Python v3.6)"><strong>TypeError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">include_pos</span></code> or <code class="docutils literal notranslate"><span class="pre">exclude_pos</span></code> is not a str, a set of str,
-    or a falsy value</p></li>
-</ul>
-</dd>
-</dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Filtering by part-of-speech tag uses the universal POS tag set; for details,
-check spaCy’s docs: <a class="reference external" href="https://spacy.io/api/annotation#pos-tagging">https://spacy.io/api/annotation#pos-tagging</a></p>
-</div>
-</dd></dl>
-
-<dl class="function">
-<dt id="textacy.extract.noun_chunks">
-<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">noun_chunks</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">drop_determiners=True</em>, <em class="sig-param">min_freq=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#noun_chunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.noun_chunks" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extract an ordered sequence of noun chunks from a spacy-parsed doc, optionally
-filtering by frequency and dropping leading determiners.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>doc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code>) – </p></li>
-<li><p><strong>drop_determiners</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – remove leading determiners (e.g. “the”)
-from phrases (e.g. “the quick brown fox” =&gt; “quick brown fox”)</p></li>
-<li><p><strong>min_freq</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – remove chunks that occur in <code class="docutils literal notranslate"><span class="pre">doc</span></code> fewer than
-<code class="docutils literal notranslate"><span class="pre">min_freq</span></code> times</p></li>
-</ul>
-</dd>
-<dt class="field-even">Yields</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code> – the next noun chunk from <code class="docutils literal notranslate"><span class="pre">doc</span></code> in order of appearance
-in the document</p>
+<dd class="field-even"><p>Tuple[<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>] – The next 3-tuple of spans from <code class="docutils literal notranslate"><span class="pre">doc</span></code>
+representing a (subject, verb, object) triple, in order of appearance.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
-<dt id="textacy.extract.pos_regex_matches">
-<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">pos_regex_matches</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">pattern</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#pos_regex_matches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.pos_regex_matches" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extract sequences of consecutive tokens from a spacy-parsed doc whose
-part-of-speech tags match the specified regex pattern.</p>
+<dt id="textacy.extract.acronyms_and_definitions">
+<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">acronyms_and_definitions</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">known_acro_defs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#acronyms_and_definitions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.acronyms_and_definitions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract a collection of acronyms and their most likely definitions, if available,
+from a spacy-parsed doc. If multiple definitions are found for a given acronym,
+only the most frequently occurring definition is returned.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>doc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>) – </p></li>
-<li><p><strong>pattern</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – <p>Pattern of consecutive POS tags whose corresponding words
-are to be extracted, inspired by the regex patterns used in NLTK’s
-<cite>nltk.chunk.regexp</cite>. Tags are uppercase, from the universal tag set;
-delimited by &lt; and &gt;, which are basically converted to parentheses
-with spaces as needed to correctly extract matching word sequences;
-white space in the input doesn’t matter.</p>
-<p>Examples (see <code class="docutils literal notranslate"><span class="pre">constants.POS_REGEX_PATTERNS</span></code>):</p>
-<ul>
-<li><p>noun phrase: r’&lt;DET&gt;? (&lt;NOUN&gt;+ &lt;ADP|CONJ&gt;)* &lt;NOUN&gt;+’</p></li>
-<li><p>compound nouns: r’&lt;NOUN&gt;+’</p></li>
-<li><p>verb phrase: r’&lt;VERB&gt;?&lt;ADV&gt;*&lt;VERB&gt;+’</p></li>
-<li><p>prepositional phrase: r’&lt;PREP&gt; &lt;DET&gt;? (&lt;NOUN&gt;+&lt;ADP&gt;)* &lt;NOUN&gt;+’</p></li>
-</ul>
-</p></li>
+<li><p><strong>known_acro_defs</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – if certain acronym/definition pairs
+are known, pass them in as {acronym (str): definition (str)};
+algorithm will not attempt to find new definitions</p></li>
 </ul>
 </dd>
-<dt class="field-even">Yields</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code> – the next span of consecutive tokens from <code class="docutils literal notranslate"><span class="pre">doc</span></code> whose
-parts-of-speech match <code class="docutils literal notranslate"><span class="pre">pattern</span></code>, in order of apperance</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>unique acronyms (keys) with matched definitions (values)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)">dict</a></p>
 </dd>
 </dl>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p><em>DEPRECATED!</em> For similar but more powerful and performant functionality,
-use <a class="reference internal" href="#textacy.extract.matches" title="textacy.extract.matches"><code class="xref py py-func docutils literal notranslate"><span class="pre">textacy.extract.matches()</span></code></a> instead.</p>
-</div>
+<p class="rubric">References</p>
+<p>Taghva, Kazem, and Jeff Gilbreth. “Recognizing acronyms and their definitions.”
+International Journal on Document Analysis and Recognition 1.4 (1999): 191-198.</p>
 </dd></dl>
 
 <dl class="function">
@@ -325,56 +358,23 @@ the Web. In Proc. ICETAL 2010, LNAI 6233, 345-356. Heidelberg, Springer.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="textacy.extract.subject_verb_object_triples">
-<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">subject_verb_object_triples</code><span class="sig-paren">(</span><em class="sig-param">doc</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#subject_verb_object_triples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.subject_verb_object_triples" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extract an ordered sequence of subject-verb-object (SVO) triples from a
-spacy-parsed doc. Note that this only works for SVO languages.</p>
+<dt id="textacy.extract.direct_quotations">
+<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">direct_quotations</code><span class="sig-paren">(</span><em class="sig-param">doc</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#direct_quotations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.direct_quotations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Baseline, not-great attempt at direction quotation extraction (no indirect
+or mixed quotations) using rules and patterns. English only.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>doc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>) – </p>
+<dd class="field-odd"><p><strong>doc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code>) – </p>
 </dd>
 <dt class="field-even">Yields</dt>
-<dd class="field-even"><p>Tuple[<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>] – The next 3-tuple of spans from <code class="docutils literal notranslate"><span class="pre">doc</span></code>
-representing a (subject, verb, object) triple, in order of appearance.</p>
+<dd class="field-even"><p>(<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Token</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>) – next quotation in <code class="docutils literal notranslate"><span class="pre">doc</span></code>
+represented as a (speaker, reporting verb, quotation) 3-tuple</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="textacy.extract.words">
-<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">words</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">filter_stops=True</em>, <em class="sig-param">filter_punct=True</em>, <em class="sig-param">filter_nums=False</em>, <em class="sig-param">include_pos=None</em>, <em class="sig-param">exclude_pos=None</em>, <em class="sig-param">min_freq=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#words"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.words" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extract an ordered sequence of words from a document processed by spaCy,
-optionally filtering words by part-of-speech tag and frequency.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>doc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>) – </p></li>
-<li><p><strong>filter_stops</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, remove stop words from word list.</p></li>
-<li><p><strong>filter_punct</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, remove punctuation from word list.</p></li>
-<li><p><strong>filter_nums</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, remove number-like words (e.g. 10, “ten”)
-from word list.</p></li>
-<li><p><strong>include_pos</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>Set</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – Remove words whose part-of-speech tag
-IS NOT included in this param.</p></li>
-<li><p><strong>exclude_pos</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>Set</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – Remove words whose part-of-speech tag
-IS in the specified tags.</p></li>
-<li><p><strong>min_freq</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Remove words that occur in <code class="docutils literal notranslate"><span class="pre">doc</span></code> fewer than
-<code class="docutils literal notranslate"><span class="pre">min_freq</span></code> times.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Yields</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Token</span></code> – Next token from <code class="docutils literal notranslate"><span class="pre">doc</span></code> passing specified filters
-in order of appearance in the document.</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#TypeError" title="(in Python v3.6)"><strong>TypeError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">include_pos</span></code> or <code class="docutils literal notranslate"><span class="pre">exclude_pos</span></code> is not a str, a set of str,
-    or a falsy value</p>
-</dd>
-</dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Filtering by part-of-speech tag uses the universal POS tag set; for details,
-check spaCy’s docs: <a class="reference external" href="https://spacy.io/api/annotation#pos-tagging">https://spacy.io/api/annotation#pos-tagging</a></p>
-</div>
+<p class="rubric">Notes</p>
+<p>Loosely inspired by Krestel, Bergler, Witte. “Minding the Source: Automatic
+Tagging of Reported Speech in Newspaper Articles”.</p>
+<p>TODO: Better approach would use ML, but needs a training dataset.</p>
 </dd></dl>
 
 <div class="section" id="module-textacy.ke.textrank">
@@ -583,6 +583,27 @@ Lexical and Computational Semantics (* SEM 2015) (2015): 117.</p>
 <span class="target" id="module-textacy.ke.utils"></span><div class="section" id="keyterm-extraction-utils">
 <h3>Keyterm Extraction Utils<a class="headerlink" href="#keyterm-extraction-utils" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
+<dt id="textacy.ke.utils.normalize_terms">
+<code class="sig-prename descclassname">textacy.ke.utils.</code><code class="sig-name descname">normalize_terms</code><span class="sig-paren">(</span><em class="sig-param">terms</em>, <em class="sig-param">normalize</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/utils.html#normalize_terms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.utils.normalize_terms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform a sequence of terms from spaCy <code class="docutils literal notranslate"><span class="pre">Token</span></code> or <code class="docutils literal notranslate"><span class="pre">Span</span></code> s into
+strings, normalized by <code class="docutils literal notranslate"><span class="pre">normalize</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>terms</strong> (Sequence[<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Token</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>]) – </p></li>
+<li><p><strong>normalize</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>Callable</em>) – If “lemma”, lemmatize terms; if “lower”,
+lowercase terms; if falsy, use the form of terms as they appear
+in <code class="docutils literal notranslate"><span class="pre">terms</span></code>; if a callable, must accept a <code class="docutils literal notranslate"><span class="pre">Token</span></code> or <code class="docutils literal notranslate"><span class="pre">Span</span></code>
+and return a str, e.g. <a class="reference internal" href="spacier.html#textacy.spacier.utils.get_normalized_text" title="textacy.spacier.utils.get_normalized_text"><code class="xref py py-func docutils literal notranslate"><span class="pre">textacy.spacier.utils.get_normalized_text()</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="textacy.ke.utils.aggregate_term_variants">
 <code class="sig-prename descclassname">textacy.ke.utils.</code><code class="sig-name descname">aggregate_term_variants</code><span class="sig-paren">(</span><em class="sig-param">terms</em>, <em class="sig-param">acro_defs=None</em>, <em class="sig-param">fuzzy_dedupe=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/utils.html#aggregate_term_variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.utils.aggregate_term_variants" title="Permalink to this definition">¶</a></dt>
 <dd><p>Take a set of unique terms and aggregate terms that are symbolic, lexical,
@@ -611,30 +632,6 @@ Park, Youngja, Roy J. Byrd, and Branimir K. Boguraev.
 “Automatic glossary extraction: beyond terminology identification.”
 Proceedings of the 19th international conference on Computational linguistics-Volume 1.
 Association for Computational Linguistics, 2002.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="textacy.ke.utils.get_filtered_topn_terms">
-<code class="sig-prename descclassname">textacy.ke.utils.</code><code class="sig-name descname">get_filtered_topn_terms</code><span class="sig-paren">(</span><em class="sig-param">term_scores</em>, <em class="sig-param">topn</em>, <em class="sig-param">match_threshold=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/utils.html#get_filtered_topn_terms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.utils.get_filtered_topn_terms" title="Permalink to this definition">¶</a></dt>
-<dd><p>Build up a list of the <code class="docutils literal notranslate"><span class="pre">topn</span></code> terms, filtering out any that are substrings
-of better-scoring terms and optionally filtering out any that are sufficiently
-similar to better-scoring terms.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>term_scores</strong> (<em>List</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em><em>]</em>) – List of (term, score) pairs,
-sorted in order from best score to worst. Note that this may be
-from high to low value or low to high, depending on the algorithm.</p></li>
-<li><p><strong>topn</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Maximum number of top-scoring terms to get.</p></li>
-<li><p><strong>match_threshold</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Minimal edit distance between a term and previously
-seen terms, used to filter out terms that are sufficiently similar
-to higher-scoring terms. Uses <a class="reference internal" href="misc.html#textacy.similarity.token_sort_ratio" title="textacy.similarity.token_sort_ratio"><code class="xref py py-func docutils literal notranslate"><span class="pre">textacy.similarity.token_sort_ratio()</span></code></a>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>List[Tuple[str, float]]</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="function">
@@ -709,6 +706,30 @@ as a tuple of constituent Tokens.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="textacy.ke.utils.get_filtered_topn_terms">
+<code class="sig-prename descclassname">textacy.ke.utils.</code><code class="sig-name descname">get_filtered_topn_terms</code><span class="sig-paren">(</span><em class="sig-param">term_scores</em>, <em class="sig-param">topn</em>, <em class="sig-param">match_threshold=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/utils.html#get_filtered_topn_terms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.utils.get_filtered_topn_terms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build up a list of the <code class="docutils literal notranslate"><span class="pre">topn</span></code> terms, filtering out any that are substrings
+of better-scoring terms and optionally filtering out any that are sufficiently
+similar to better-scoring terms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>term_scores</strong> (<em>List</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em><em>]</em>) – List of (term, score) pairs,
+sorted in order from best score to worst. Note that this may be
+from high to low value or low to high, depending on the algorithm.</p></li>
+<li><p><strong>topn</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Maximum number of top-scoring terms to get.</p></li>
+<li><p><strong>match_threshold</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Minimal edit distance between a term and previously
+seen terms, used to filter out terms that are sufficiently similar
+to higher-scoring terms. Uses <a class="reference internal" href="misc.html#textacy.similarity.token_sort_ratio" title="textacy.similarity.token_sort_ratio"><code class="xref py py-func docutils literal notranslate"><span class="pre">textacy.similarity.token_sort_ratio()</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List[Tuple[str, float]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="textacy.ke.utils.most_discriminating_terms">
 <code class="sig-prename descclassname">textacy.ke.utils.</code><code class="sig-name descname">most_discriminating_terms</code><span class="sig-paren">(</span><em class="sig-param">terms_lists</em>, <em class="sig-param">bool_array_grp1</em>, <em class="sig-param">max_n_terms=1000</em>, <em class="sig-param">top_n_terms=25</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/utils.html#most_discriminating_terms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.utils.most_discriminating_terms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a collection of documents assigned to 1 of 2 exclusive groups, get the
@@ -741,27 +762,6 @@ List[str]: Top <code class="docutils literal notranslate"><span class="pre">top_
 <p>King, Gary, Patrick Lam, and Margaret Roberts. “Computer-Assisted Keyword
 and Document Set Discovery from Unstructured Text.” (2014).
 <a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.458.1445&amp;rep=rep1&amp;type=pdf">http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.458.1445&amp;rep=rep1&amp;type=pdf</a></p>
-</dd></dl>
-
-<dl class="function">
-<dt id="textacy.ke.utils.normalize_terms">
-<code class="sig-prename descclassname">textacy.ke.utils.</code><code class="sig-name descname">normalize_terms</code><span class="sig-paren">(</span><em class="sig-param">terms</em>, <em class="sig-param">normalize</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/utils.html#normalize_terms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.utils.normalize_terms" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transform a sequence of terms from spaCy <code class="docutils literal notranslate"><span class="pre">Token</span></code> or <code class="docutils literal notranslate"><span class="pre">Span</span></code> s into
-strings, normalized by <code class="docutils literal notranslate"><span class="pre">normalize</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>terms</strong> (Sequence[<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Token</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>]) – </p></li>
-<li><p><strong>normalize</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>Callable</em>) – If “lemma”, lemmatize terms; if “lower”,
-lowercase terms; if falsy, use the form of terms as they appear
-in <code class="docutils literal notranslate"><span class="pre">terms</span></code>; if a callable, must accept a <code class="docutils literal notranslate"><span class="pre">Token</span></code> or <code class="docutils literal notranslate"><span class="pre">Span</span></code>
-and return a str, e.g. <a class="reference internal" href="spacier.html#textacy.spacier.utils.get_normalized_text" title="textacy.spacier.utils.get_normalized_text"><code class="xref py py-func docutils literal notranslate"><span class="pre">textacy.spacier.utils.get_normalized_text()</span></code></a>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Yields</dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
 </dd></dl>
 
 </div>

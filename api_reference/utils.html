@@ -202,68 +202,6 @@ where the value must be an integer (in bytes). Otherwise, the max size is 2GB.</
 </dd></dl>
 
 <dl class="function">
-<dt id="textacy.cache.load_depechemood">
-<code class="sig-prename descclassname">textacy.cache.</code><code class="sig-name descname">load_depechemood</code><span class="sig-paren">(</span><em class="sig-param">data_dir=None</em>, <em class="sig-param">weighting='normfreq'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/cache.html#load_depechemood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.cache.load_depechemood" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load DepecheMood lexicon text file from disk, munge into nested dictionary
-for convenient lookup by lemma#POS. NB: English only!</p>
-<p>Each version of DepecheMood is built starting from word-by-document matrices
-either using raw frequencies (DepecheMood_freq.txt), normalized frequencies
-(DepecheMood_normfreq.txt) or tf-idf (DepecheMood_tfidf.txt). The files are
-tab-separated; each row contains one Lemma#PoS followed by the scores for the
-following emotions: AFRAID, AMUSED, ANGRY, ANNOYED, DONT_CARE, HAPPY, INSPIRED, SAD.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data_dir</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Directory on disk where DepecheMood lexicon text fields,
-i.e. the location of the ‘DepecheMood_V1.0’ directory created when
-unzipping the DM dataset.</p></li>
-<li><p><strong>weighting</strong> (<em>{'freq'</em><em>, </em><em>'normfreq'</em><em>, </em><em>'tfidf'}</em>) – Type of word
-weighting used in building DepecheMood matrix.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Top-level keys are Lemma#POS strings, values are nested dicts
-with emotion names as keys and weights as floats.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)">dict</a>]</p>
-</dd>
-</dl>
-<p class="rubric">References</p>
-<p>Staiano, J., &amp; Guerini, M. (2014). “DepecheMood: a Lexicon for Emotion
-Analysis from Crowd-Annotated News”. Proceedings of ACL-2014. (arXiv:1405.1605)
-Data available at https://github.com/marcoguerini/DepecheMood/releases .</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><a class="reference internal" href="misc.html#textacy.lexicon_methods.download_depechemood" title="textacy.lexicon_methods.download_depechemood"><code class="xref py py-func docutils literal notranslate"><span class="pre">download_depechemood</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="function">
-<dt id="textacy.cache.load_hyphenator">
-<code class="sig-prename descclassname">textacy.cache.</code><code class="sig-name descname">load_hyphenator</code><span class="sig-paren">(</span><em class="sig-param">lang</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/cache.html#load_hyphenator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.cache.load_hyphenator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load an object that hyphenates words at valid points, as used in LaTex typesetting.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>lang</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – <p>Standard 2-letter language abbreviation. To get a list of
-valid values:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyphen</span><span class="p">;</span> <span class="n">pyphen</span><span class="o">.</span><span class="n">LANGUAGES</span>
-</pre></div>
-</div>
-</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pyphen.Pyphen()</span></code></p>
-</dd>
-</dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>While hyphenation points always fall on syllable divisions,
-not all syllable divisions are valid hyphenation points. But it’s decent.</p>
-</div>
-</dd></dl>
-
-<dl class="function">
 <dt id="textacy.cache.load_spacy_lang">
 <code class="sig-prename descclassname">textacy.cache.</code><code class="sig-name descname">load_spacy_lang</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">disable=None</em>, <em class="sig-param">allow_blank=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/cache.html#load_spacy_lang"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.cache.load_spacy_lang" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a spaCy <code class="docutils literal notranslate"><span class="pre">Language</span></code>: a shared vocabulary and language-specific data
@@ -310,6 +248,68 @@ are missing key functionality, e.g. POS tags, entities, sentences.</p></li>
 <li><p><a class="reference external" href="https://spacy.io/api/top-level#spacy.load">https://spacy.io/api/top-level#spacy.load</a></p></li>
 <li><p><a class="reference external" href="https://spacy.io/api/top-level#spacy.blank">https://spacy.io/api/top-level#spacy.blank</a></p></li>
 </ul>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="textacy.cache.load_hyphenator">
+<code class="sig-prename descclassname">textacy.cache.</code><code class="sig-name descname">load_hyphenator</code><span class="sig-paren">(</span><em class="sig-param">lang</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/cache.html#load_hyphenator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.cache.load_hyphenator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load an object that hyphenates words at valid points, as used in LaTex typesetting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lang</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – <p>Standard 2-letter language abbreviation. To get a list of
+valid values:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyphen</span><span class="p">;</span> <span class="n">pyphen</span><span class="o">.</span><span class="n">LANGUAGES</span>
+</pre></div>
+</div>
+</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pyphen.Pyphen()</span></code></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>While hyphenation points always fall on syllable divisions,
+not all syllable divisions are valid hyphenation points. But it’s decent.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="textacy.cache.load_depechemood">
+<code class="sig-prename descclassname">textacy.cache.</code><code class="sig-name descname">load_depechemood</code><span class="sig-paren">(</span><em class="sig-param">data_dir=None</em>, <em class="sig-param">weighting='normfreq'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/cache.html#load_depechemood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.cache.load_depechemood" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load DepecheMood lexicon text file from disk, munge into nested dictionary
+for convenient lookup by lemma#POS. NB: English only!</p>
+<p>Each version of DepecheMood is built starting from word-by-document matrices
+either using raw frequencies (DepecheMood_freq.txt), normalized frequencies
+(DepecheMood_normfreq.txt) or tf-idf (DepecheMood_tfidf.txt). The files are
+tab-separated; each row contains one Lemma#PoS followed by the scores for the
+following emotions: AFRAID, AMUSED, ANGRY, ANNOYED, DONT_CARE, HAPPY, INSPIRED, SAD.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_dir</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Directory on disk where DepecheMood lexicon text fields,
+i.e. the location of the ‘DepecheMood_V1.0’ directory created when
+unzipping the DM dataset.</p></li>
+<li><p><strong>weighting</strong> (<em>{'freq'</em><em>, </em><em>'normfreq'</em><em>, </em><em>'tfidf'}</em>) – Type of word
+weighting used in building DepecheMood matrix.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Top-level keys are Lemma#POS strings, values are nested dicts
+with emotion names as keys and weights as floats.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Dict[<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)">dict</a>]</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<p>Staiano, J., &amp; Guerini, M. (2014). “DepecheMood: a Lexicon for Emotion
+Analysis from Crowd-Annotated News”. Proceedings of ACL-2014. (arXiv:1405.1605)
+Data available at https://github.com/marcoguerini/DepecheMood/releases .</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="misc.html#textacy.lexicon_methods.download_depechemood" title="textacy.lexicon_methods.download_depechemood"><code class="xref py py-func docutils literal notranslate"><span class="pre">download_depechemood</span></code></a></p>
 </div>
 </dd></dl>
 

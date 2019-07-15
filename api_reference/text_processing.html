@@ -236,9 +236,9 @@ to represent the unicode data for things like emoticons. Sorry!</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="textacy.preprocessing.replace.replace_hashtags">
-<code class="sig-prename descclassname">textacy.preprocessing.replace.</code><code class="sig-name descname">replace_hashtags</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">replace_with='_TAG_'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/preprocessing/replace.html#replace_hashtags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.preprocessing.replace.replace_hashtags" title="Permalink to this definition">¶</a></dt>
-<dd><p>Replace all hashtags in <code class="docutils literal notranslate"><span class="pre">text</span></code> with <code class="docutils literal notranslate"><span class="pre">replace_with</span></code>.</p>
+<dt id="textacy.preprocessing.replace.replace_numbers">
+<code class="sig-prename descclassname">textacy.preprocessing.replace.</code><code class="sig-name descname">replace_numbers</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">replace_with='_NUMBER_'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/preprocessing/replace.html#replace_numbers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.preprocessing.replace.replace_numbers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace all numbers in <code class="docutils literal notranslate"><span class="pre">text</span></code> with <code class="docutils literal notranslate"><span class="pre">replace_with</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -253,9 +253,9 @@ to represent the unicode data for things like emoticons. Sorry!</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="textacy.preprocessing.replace.replace_numbers">
-<code class="sig-prename descclassname">textacy.preprocessing.replace.</code><code class="sig-name descname">replace_numbers</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">replace_with='_NUMBER_'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/preprocessing/replace.html#replace_numbers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.preprocessing.replace.replace_numbers" title="Permalink to this definition">¶</a></dt>
-<dd><p>Replace all numbers in <code class="docutils literal notranslate"><span class="pre">text</span></code> with <code class="docutils literal notranslate"><span class="pre">replace_with</span></code>.</p>
+<dt id="textacy.preprocessing.replace.replace_hashtags">
+<code class="sig-prename descclassname">textacy.preprocessing.replace.</code><code class="sig-name descname">replace_hashtags</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">replace_with='_TAG_'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/preprocessing/replace.html#replace_hashtags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.preprocessing.replace.replace_hashtags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace all hashtags in <code class="docutils literal notranslate"><span class="pre">text</span></code> with <code class="docutils literal notranslate"><span class="pre">replace_with</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -325,34 +325,6 @@ to represent the unicode data for things like emoticons. Sorry!</p>
 <h2>Text Utils<a class="headerlink" href="#text-utils" title="Permalink to this headline">¶</a></h2>
 <p>Set of small utility functions that take text strings as input.</p>
 <dl class="function">
-<dt id="textacy.text_utils.KWIC">
-<code class="sig-prename descclassname">textacy.text_utils.</code><code class="sig-name descname">KWIC</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">keyword</em>, <em class="sig-param">ignore_case=True</em>, <em class="sig-param">window_width=50</em>, <em class="sig-param">print_only=True</em><span class="sig-paren">)</span><a class="headerlink" href="#textacy.text_utils.KWIC" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias of <a class="reference internal" href="#textacy.text_utils.keyword_in_context" title="textacy.text_utils.keyword_in_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">keyword_in_context</span></code></a>.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="textacy.text_utils.clean_terms">
-<code class="sig-prename descclassname">textacy.text_utils.</code><code class="sig-name descname">clean_terms</code><span class="sig-paren">(</span><em class="sig-param">terms</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/text_utils.html#clean_terms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.text_utils.clean_terms" title="Permalink to this definition">¶</a></dt>
-<dd><p>Clean up a sequence of single- or multi-word strings: strip leading/trailing
-junk chars, handle dangling parens and odd hyphenation, etc.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>terms</strong> (<em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – sequence of terms such as “presidency”, “epic failure”,
-or “George W. Bush” that may be _unclean_ for whatever reason</p>
-</dd>
-<dt class="field-even">Yields</dt>
-<dd class="field-even"><p><em>str</em> – next term in <cite>terms</cite> but with the cruft cleaned up, excluding terms
-that were _entirely_ cruft</p>
-</dd>
-</dl>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Terms with (intentionally) unusual punctuation may get “cleaned”
-into a form that changes or obscures the original meaning of the term.</p>
-</div>
-</dd></dl>
-
-<dl class="function">
 <dt id="textacy.text_utils.is_acronym">
 <code class="sig-prename descclassname">textacy.text_utils.</code><code class="sig-name descname">is_acronym</code><span class="sig-paren">(</span><em class="sig-param">token</em>, <em class="sig-param">exclude=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/text_utils.html#is_acronym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.text_utils.is_acronym" title="Permalink to this definition">¶</a></dt>
 <dd><p>Pass single token as a string, return True/False if is/is not valid acronym.</p>
@@ -396,6 +368,34 @@ if False, return all (pre, kw, post) matches as generator of raw strings</p></li
 <dd class="field-even"><p>generator(Tuple[str, str, str]), or None</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="textacy.text_utils.KWIC">
+<code class="sig-prename descclassname">textacy.text_utils.</code><code class="sig-name descname">KWIC</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">keyword</em>, <em class="sig-param">ignore_case=True</em>, <em class="sig-param">window_width=50</em>, <em class="sig-param">print_only=True</em><span class="sig-paren">)</span><a class="headerlink" href="#textacy.text_utils.KWIC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias of <a class="reference internal" href="#textacy.text_utils.keyword_in_context" title="textacy.text_utils.keyword_in_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">keyword_in_context</span></code></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="textacy.text_utils.clean_terms">
+<code class="sig-prename descclassname">textacy.text_utils.</code><code class="sig-name descname">clean_terms</code><span class="sig-paren">(</span><em class="sig-param">terms</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/text_utils.html#clean_terms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.text_utils.clean_terms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clean up a sequence of single- or multi-word strings: strip leading/trailing
+junk chars, handle dangling parens and odd hyphenation, etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>terms</strong> (<em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – sequence of terms such as “presidency”, “epic failure”,
+or “George W. Bush” that may be _unclean_ for whatever reason</p>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p><em>str</em> – next term in <cite>terms</cite> but with the cruft cleaned up, excluding terms
+that were _entirely_ cruft</p>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Terms with (intentionally) unusual punctuation may get “cleaned”
+into a form that changes or obscures the original meaning of the term.</p>
+</div>
 </dd></dl>
 
 </div>

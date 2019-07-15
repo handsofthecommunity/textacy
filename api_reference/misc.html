@@ -301,28 +301,6 @@ above between <code class="docutils literal notranslate"><span class="pre">flesc
 </dd></dl>
 
 <dl class="function">
-<dt id="textacy.text_stats.automated_readability_index">
-<code class="sig-prename descclassname">textacy.text_stats.</code><code class="sig-name descname">automated_readability_index</code><span class="sig-paren">(</span><em class="sig-param">n_chars</em>, <em class="sig-param">n_words</em>, <em class="sig-param">n_sents</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/text_stats.html#automated_readability_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.text_stats.automated_readability_index" title="Permalink to this definition">¶</a></dt>
-<dd><p>Readability score whose value estimates the U.S. grade level required to
-understand a text, most similarly to <a class="reference internal" href="#textacy.text_stats.flesch_kincaid_grade_level" title="textacy.text_stats.flesch_kincaid_grade_level"><code class="xref py py-func docutils literal notranslate"><span class="pre">flesch_kincaid_grade_level()</span></code></a>,
-but using characters instead of syllables like <a class="reference internal" href="#textacy.text_stats.coleman_liau_index" title="textacy.text_stats.coleman_liau_index"><code class="xref py py-func docutils literal notranslate"><span class="pre">coleman_liau_index()</span></code></a>.
-Higher value =&gt; more difficult text.</p>
-<p class="rubric">References</p>
-<p><a class="reference external" href="https://en.wikipedia.org/wiki/Automated_readability_index">https://en.wikipedia.org/wiki/Automated_readability_index</a></p>
-</dd></dl>
-
-<dl class="function">
-<dt id="textacy.text_stats.coleman_liau_index">
-<code class="sig-prename descclassname">textacy.text_stats.</code><code class="sig-name descname">coleman_liau_index</code><span class="sig-paren">(</span><em class="sig-param">n_chars</em>, <em class="sig-param">n_words</em>, <em class="sig-param">n_sents</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/text_stats.html#coleman_liau_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.text_stats.coleman_liau_index" title="Permalink to this definition">¶</a></dt>
-<dd><p>Readability score whose value estimates the number of years of education
-required to understand a text, similar to <a class="reference internal" href="#textacy.text_stats.flesch_kincaid_grade_level" title="textacy.text_stats.flesch_kincaid_grade_level"><code class="xref py py-func docutils literal notranslate"><span class="pre">flesch_kincaid_grade_level()</span></code></a>
-and <a class="reference internal" href="#textacy.text_stats.smog_index" title="textacy.text_stats.smog_index"><code class="xref py py-func docutils literal notranslate"><span class="pre">smog_index()</span></code></a>, but using characters instead of syllables.
-Higher value =&gt; more difficult text.</p>
-<p class="rubric">References</p>
-<p><a class="reference external" href="https://en.wikipedia.org/wiki/Coleman%E2%80%93Liau_index">https://en.wikipedia.org/wiki/Coleman%E2%80%93Liau_index</a></p>
-</dd></dl>
-
-<dl class="function">
 <dt id="textacy.text_stats.flesch_kincaid_grade_level">
 <code class="sig-prename descclassname">textacy.text_stats.</code><code class="sig-name descname">flesch_kincaid_grade_level</code><span class="sig-paren">(</span><em class="sig-param">n_syllables</em>, <em class="sig-param">n_words</em>, <em class="sig-param">n_sents</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/text_stats.html#flesch_kincaid_grade_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.text_stats.flesch_kincaid_grade_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Readability score used widely in education, whose value estimates the U.S.
@@ -353,13 +331,14 @@ Russian: <a class="reference external" href="https://ru.wikipedia.org/wiki/%D0%9
 </dd></dl>
 
 <dl class="function">
-<dt id="textacy.text_stats.gulpease_index">
-<code class="sig-prename descclassname">textacy.text_stats.</code><code class="sig-name descname">gulpease_index</code><span class="sig-paren">(</span><em class="sig-param">n_chars</em>, <em class="sig-param">n_words</em>, <em class="sig-param">n_sents</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/text_stats.html#gulpease_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.text_stats.gulpease_index" title="Permalink to this definition">¶</a></dt>
-<dd><p>Readability score for Italian-language texts, whose value is in the range
-[0, 100] similar to <a class="reference internal" href="#textacy.text_stats.flesch_reading_ease" title="textacy.text_stats.flesch_reading_ease"><code class="xref py py-func docutils literal notranslate"><span class="pre">flesch_reading_ease()</span></code></a>. Higher value =&gt;
-easier text.</p>
+<dt id="textacy.text_stats.smog_index">
+<code class="sig-prename descclassname">textacy.text_stats.</code><code class="sig-name descname">smog_index</code><span class="sig-paren">(</span><em class="sig-param">n_polysyllable_words</em>, <em class="sig-param">n_sents</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/text_stats.html#smog_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.text_stats.smog_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Readability score commonly used in healthcare, whose value estimates the
+number of years of education required to understand a text, similar to
+<a class="reference internal" href="#textacy.text_stats.flesch_kincaid_grade_level" title="textacy.text_stats.flesch_kincaid_grade_level"><code class="xref py py-func docutils literal notranslate"><span class="pre">flesch_kincaid_grade_level()</span></code></a> and intended as a substitute for
+<a class="reference internal" href="#textacy.text_stats.gunning_fog_index" title="textacy.text_stats.gunning_fog_index"><code class="xref py py-func docutils literal notranslate"><span class="pre">gunning_fog_index()</span></code></a>. Higher value =&gt; more difficult text.</p>
 <p class="rubric">References</p>
-<p><a class="reference external" href="https://it.wikipedia.org/wiki/Indice_Gulpease">https://it.wikipedia.org/wiki/Indice_Gulpease</a></p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/SMOG">https://en.wikipedia.org/wiki/SMOG</a></p>
 </dd></dl>
 
 <dl class="function">
@@ -373,23 +352,34 @@ and <a class="reference internal" href="#textacy.text_stats.smog_index" title="t
 </dd></dl>
 
 <dl class="function">
+<dt id="textacy.text_stats.coleman_liau_index">
+<code class="sig-prename descclassname">textacy.text_stats.</code><code class="sig-name descname">coleman_liau_index</code><span class="sig-paren">(</span><em class="sig-param">n_chars</em>, <em class="sig-param">n_words</em>, <em class="sig-param">n_sents</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/text_stats.html#coleman_liau_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.text_stats.coleman_liau_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Readability score whose value estimates the number of years of education
+required to understand a text, similar to <a class="reference internal" href="#textacy.text_stats.flesch_kincaid_grade_level" title="textacy.text_stats.flesch_kincaid_grade_level"><code class="xref py py-func docutils literal notranslate"><span class="pre">flesch_kincaid_grade_level()</span></code></a>
+and <a class="reference internal" href="#textacy.text_stats.smog_index" title="textacy.text_stats.smog_index"><code class="xref py py-func docutils literal notranslate"><span class="pre">smog_index()</span></code></a>, but using characters instead of syllables.
+Higher value =&gt; more difficult text.</p>
+<p class="rubric">References</p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Coleman%E2%80%93Liau_index">https://en.wikipedia.org/wiki/Coleman%E2%80%93Liau_index</a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="textacy.text_stats.automated_readability_index">
+<code class="sig-prename descclassname">textacy.text_stats.</code><code class="sig-name descname">automated_readability_index</code><span class="sig-paren">(</span><em class="sig-param">n_chars</em>, <em class="sig-param">n_words</em>, <em class="sig-param">n_sents</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/text_stats.html#automated_readability_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.text_stats.automated_readability_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Readability score whose value estimates the U.S. grade level required to
+understand a text, most similarly to <a class="reference internal" href="#textacy.text_stats.flesch_kincaid_grade_level" title="textacy.text_stats.flesch_kincaid_grade_level"><code class="xref py py-func docutils literal notranslate"><span class="pre">flesch_kincaid_grade_level()</span></code></a>,
+but using characters instead of syllables like <a class="reference internal" href="#textacy.text_stats.coleman_liau_index" title="textacy.text_stats.coleman_liau_index"><code class="xref py py-func docutils literal notranslate"><span class="pre">coleman_liau_index()</span></code></a>.
+Higher value =&gt; more difficult text.</p>
+<p class="rubric">References</p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Automated_readability_index">https://en.wikipedia.org/wiki/Automated_readability_index</a></p>
+</dd></dl>
+
+<dl class="function">
 <dt id="textacy.text_stats.lix">
 <code class="sig-prename descclassname">textacy.text_stats.</code><code class="sig-name descname">lix</code><span class="sig-paren">(</span><em class="sig-param">n_words</em>, <em class="sig-param">n_long_words</em>, <em class="sig-param">n_sents</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/text_stats.html#lix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.text_stats.lix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Readability score commonly used in Sweden, whose value estimates the
 difficulty of reading a foreign text. Higher value =&gt; more difficult text.</p>
 <p class="rubric">References</p>
 <p><a class="reference external" href="https://en.wikipedia.org/wiki/LIX">https://en.wikipedia.org/wiki/LIX</a></p>
-</dd></dl>
-
-<dl class="function">
-<dt id="textacy.text_stats.smog_index">
-<code class="sig-prename descclassname">textacy.text_stats.</code><code class="sig-name descname">smog_index</code><span class="sig-paren">(</span><em class="sig-param">n_polysyllable_words</em>, <em class="sig-param">n_sents</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/text_stats.html#smog_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.text_stats.smog_index" title="Permalink to this definition">¶</a></dt>
-<dd><p>Readability score commonly used in healthcare, whose value estimates the
-number of years of education required to understand a text, similar to
-<a class="reference internal" href="#textacy.text_stats.flesch_kincaid_grade_level" title="textacy.text_stats.flesch_kincaid_grade_level"><code class="xref py py-func docutils literal notranslate"><span class="pre">flesch_kincaid_grade_level()</span></code></a> and intended as a substitute for
-<a class="reference internal" href="#textacy.text_stats.gunning_fog_index" title="textacy.text_stats.gunning_fog_index"><code class="xref py py-func docutils literal notranslate"><span class="pre">gunning_fog_index()</span></code></a>. Higher value =&gt; more difficult text.</p>
-<p class="rubric">References</p>
-<p><a class="reference external" href="https://en.wikipedia.org/wiki/SMOG">https://en.wikipedia.org/wiki/SMOG</a></p>
 </dd></dl>
 
 <dl class="function">
@@ -401,59 +391,22 @@ level required to understand a text. Higher value =&gt; more difficult text.</p>
 <p><a class="reference external" href="https://de.wikipedia.org/wiki/Lesbarkeitsindex#Wiener_Sachtextformel">https://de.wikipedia.org/wiki/Lesbarkeitsindex#Wiener_Sachtextformel</a></p>
 </dd></dl>
 
+<dl class="function">
+<dt id="textacy.text_stats.gulpease_index">
+<code class="sig-prename descclassname">textacy.text_stats.</code><code class="sig-name descname">gulpease_index</code><span class="sig-paren">(</span><em class="sig-param">n_chars</em>, <em class="sig-param">n_words</em>, <em class="sig-param">n_sents</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/text_stats.html#gulpease_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.text_stats.gulpease_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Readability score for Italian-language texts, whose value is in the range
+[0, 100] similar to <a class="reference internal" href="#textacy.text_stats.flesch_reading_ease" title="textacy.text_stats.flesch_reading_ease"><code class="xref py py-func docutils literal notranslate"><span class="pre">flesch_reading_ease()</span></code></a>. Higher value =&gt;
+easier text.</p>
+<p class="rubric">References</p>
+<p><a class="reference external" href="https://it.wikipedia.org/wiki/Indice_Gulpease">https://it.wikipedia.org/wiki/Indice_Gulpease</a></p>
+</dd></dl>
+
 </div>
 <span class="target" id="module-textacy.network"></span><div class="section" id="semantic-networks">
 <h2>Semantic Networks<a class="headerlink" href="#semantic-networks" title="Permalink to this headline">¶</a></h2>
 <p>Represent documents as semantic networks, where nodes are individual terms or
 whole sentences and edges are weighted by the strength of their co-occurrence or
 similarity, respectively.</p>
-<dl class="function">
-<dt id="textacy.network.sents_to_semantic_network">
-<code class="sig-prename descclassname">textacy.network.</code><code class="sig-name descname">sents_to_semantic_network</code><span class="sig-paren">(</span><em class="sig-param">sents</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">edge_weighting='cosine'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/network.html#sents_to_semantic_network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.network.sents_to_semantic_network" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transform a list of sentences into a semantic network, where each sentence is
-represented by a node with edges linking it to other sentences weighted by
-the (cosine or jaccard) similarity of their constituent words.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>sents</strong> (List[str] or List[<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>]) – </p></li>
-<li><p><strong>normalize</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>Callable</em>) – <p>If ‘lemma’, lemmatize words in sents;
-if ‘lower’, lowercase word in sents; if false-y, use the form of words
-as they appear in sents; if a callable, must accept a <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Token</span></code> .
-and return a str, e.g. <a class="reference internal" href="spacier.html#textacy.spacier.utils.get_normalized_text" title="textacy.spacier.utils.get_normalized_text"><code class="xref py py-func docutils literal notranslate"><span class="pre">textacy.spacier.utils.get_normalized_text()</span></code></a>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This is applied to the elements of <code class="docutils literal notranslate"><span class="pre">sents</span></code> <em>only</em> if
-it’s a list of <code class="docutils literal notranslate"><span class="pre">Span</span></code> s.</p>
-</div>
-</p></li>
-<li><p><strong>edge_weighting</strong> (<em>{'cosine'</em><em>, </em><em>'jaccard'}</em>) – Similarity metric to use for
-weighting edges between sentences. If ‘cosine’, use the cosine
-similarity between sentences represented as tf-idf word vectors;
-if ‘jaccard’, use the set intersection divided by the set union of
-all words in a given sentence pair.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Nodes are the integer indexes of the sentences
-in <code class="docutils literal notranslate"><span class="pre">sents</span></code>, <em>not</em> the actual text of the sentences! Edges connect
-every node, with weights determined by <code class="docutils literal notranslate"><span class="pre">edge_weighting</span></code>.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.Graph</span></code></p>
-</dd>
-</dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<ul class="simple">
-<li><p>If passing sentences as strings, be sure to filter out stopwords, punctuation,
-certain parts of speech, etc. beforehand</p></li>
-<li><p>Consider normalizing the strings so that like terms are counted together
-(see <a class="reference internal" href="spacier.html#textacy.spacier.utils.get_normalized_text" title="textacy.spacier.utils.get_normalized_text"><code class="xref py py-func docutils literal notranslate"><span class="pre">textacy.spacier.utils.get_normalized_text()</span></code></a>)</p></li>
-</ul>
-</div>
-</dd></dl>
-
 <dl class="function">
 <dt id="textacy.network.terms_to_semantic_network">
 <code class="sig-prename descclassname">textacy.network.</code><code class="sig-name descname">terms_to_semantic_network</code><span class="sig-paren">(</span><em class="sig-param">terms</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">window_width=10</em>, <em class="sig-param">edge_weighting='cooc_freq'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/network.html#terms_to_semantic_network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.network.terms_to_semantic_network" title="Permalink to this definition">¶</a></dt>
@@ -506,6 +459,53 @@ like terms are counted together; for example, by applying
 </div>
 </dd></dl>
 
+<dl class="function">
+<dt id="textacy.network.sents_to_semantic_network">
+<code class="sig-prename descclassname">textacy.network.</code><code class="sig-name descname">sents_to_semantic_network</code><span class="sig-paren">(</span><em class="sig-param">sents</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">edge_weighting='cosine'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/network.html#sents_to_semantic_network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.network.sents_to_semantic_network" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform a list of sentences into a semantic network, where each sentence is
+represented by a node with edges linking it to other sentences weighted by
+the (cosine or jaccard) similarity of their constituent words.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sents</strong> (List[str] or List[<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>]) – </p></li>
+<li><p><strong>normalize</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>Callable</em>) – <p>If ‘lemma’, lemmatize words in sents;
+if ‘lower’, lowercase word in sents; if false-y, use the form of words
+as they appear in sents; if a callable, must accept a <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Token</span></code> .
+and return a str, e.g. <a class="reference internal" href="spacier.html#textacy.spacier.utils.get_normalized_text" title="textacy.spacier.utils.get_normalized_text"><code class="xref py py-func docutils literal notranslate"><span class="pre">textacy.spacier.utils.get_normalized_text()</span></code></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is applied to the elements of <code class="docutils literal notranslate"><span class="pre">sents</span></code> <em>only</em> if
+it’s a list of <code class="docutils literal notranslate"><span class="pre">Span</span></code> s.</p>
+</div>
+</p></li>
+<li><p><strong>edge_weighting</strong> (<em>{'cosine'</em><em>, </em><em>'jaccard'}</em>) – Similarity metric to use for
+weighting edges between sentences. If ‘cosine’, use the cosine
+similarity between sentences represented as tf-idf word vectors;
+if ‘jaccard’, use the set intersection divided by the set union of
+all words in a given sentence pair.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Nodes are the integer indexes of the sentences
+in <code class="docutils literal notranslate"><span class="pre">sents</span></code>, <em>not</em> the actual text of the sentences! Edges connect
+every node, with weights determined by <code class="docutils literal notranslate"><span class="pre">edge_weighting</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.Graph</span></code></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>If passing sentences as strings, be sure to filter out stopwords, punctuation,
+certain parts of speech, etc. beforehand</p></li>
+<li><p>Consider normalizing the strings so that like terms are counted together
+(see <a class="reference internal" href="spacier.html#textacy.spacier.utils.get_normalized_text" title="textacy.spacier.utils.get_normalized_text"><code class="xref py py-func docutils literal notranslate"><span class="pre">textacy.spacier.utils.get_normalized_text()</span></code></a>)</p></li>
+</ul>
+</div>
+</dd></dl>
+
 </div>
 <span class="target" id="module-textacy.similarity"></span><div class="section" id="similarity">
 <h2>Similarity<a class="headerlink" href="#similarity" title="Permalink to this headline">¶</a></h2>
@@ -513,33 +513,57 @@ like terms are counted together; for example, by applying
 and sequences thereof, returning values between 0.0 (totally dissimilar)
 and 1.0 (totally similar).</p>
 <dl class="function">
-<dt id="textacy.similarity.character_ngrams">
-<code class="sig-prename descclassname">textacy.similarity.</code><code class="sig-name descname">character_ngrams</code><span class="sig-paren">(</span><em class="sig-param">str1</em>, <em class="sig-param">str2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/similarity.html#character_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.similarity.character_ngrams" title="Permalink to this definition">¶</a></dt>
-<dd><p>Measure the similarity between two strings using a character ngrams similarity
-metric, in which strings are transformed into trigrams of alnum-only characters,
-vectorized and weighted by tf-idf, then compared by cosine similarity.</p>
+<dt id="textacy.similarity.word_movers">
+<code class="sig-prename descclassname">textacy.similarity.</code><code class="sig-name descname">word_movers</code><span class="sig-paren">(</span><em class="sig-param">doc1</em>, <em class="sig-param">doc2</em>, <em class="sig-param">metric='cosine'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/similarity.html#word_movers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.similarity.word_movers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Measure the semantic similarity between two documents using Word Movers
+Distance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>str1</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – </p></li>
-<li><p><strong>str2</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – </p></li>
+<li><p><strong>doc1</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code>) – </p></li>
+<li><p><strong>doc2</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code>) – </p></li>
+<li><p><strong>metric</strong> (<em>{&quot;cosine&quot;</em><em>, </em><em>&quot;euclidean&quot;</em><em>, </em><em>&quot;l1&quot;</em><em>, </em><em>&quot;l2&quot;</em><em>, </em><em>&quot;manhattan&quot;}</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Similarity between <code class="docutils literal notranslate"><span class="pre">str1</span></code> and <code class="docutils literal notranslate"><span class="pre">str2</span></code> in the interval [0.0, 1.0],
-where larger values correspond to more similar strings</p>
+<dd class="field-even"><p>Similarity between <code class="docutils literal notranslate"><span class="pre">doc1</span></code> and <code class="docutils literal notranslate"><span class="pre">doc2</span></code> in the interval [0.0, 1.0],
+where larger values correspond to more similar documents.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)">float</a></p>
 </dd>
 </dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This method has been used in cross-lingual plagiarism detection and
-authorship attribution, and seems to work better on longer texts.
-At the very least, it is <em>slow</em> on shorter texts relative to the other
-similarity measures.</p>
-</div>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p>Ofir Pele and Michael Werman, “A linear time histogram metric for improved
+SIFT matching,” in Computer Vision - ECCV 2008, Marseille, France, 2008.</p></li>
+<li><p>Ofir Pele and Michael Werman, “Fast and robust earth mover’s distances,”
+in Proc. 2009 IEEE 12th Int. Conf. on Computer Vision, Kyoto, Japan, 2009.</p></li>
+<li><p>Kusner, Matt J., et al. “From word embeddings to document distances.”
+Proceedings of the 32nd International Conference on Machine Learning
+(ICML 2015). 2015. <a class="reference external" href="http://jmlr.org/proceedings/papers/v37/kusnerb15.pdf">http://jmlr.org/proceedings/papers/v37/kusnerb15.pdf</a></p></li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="textacy.similarity.word2vec">
+<code class="sig-prename descclassname">textacy.similarity.</code><code class="sig-name descname">word2vec</code><span class="sig-paren">(</span><em class="sig-param">obj1</em>, <em class="sig-param">obj2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/similarity.html#word2vec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.similarity.word2vec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Measure the semantic similarity between one spacy Doc, Span, Token,
+or Lexeme and another like object using the cosine distance between the
+objects’ (average) word2vec vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj1</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Token</span></code>, or <code class="docutils literal notranslate"><span class="pre">spacy.Lexeme</span></code>) – </p></li>
+<li><p><strong>obj2</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Token</span></code>, or <code class="docutils literal notranslate"><span class="pre">spacy.Lexeme</span></code>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Returns</dt><dd><p>float: Similarity between <code class="docutils literal notranslate"><span class="pre">obj1</span></code> and <code class="docutils literal notranslate"><span class="pre">obj2</span></code> in the interval [0.0, 1.0],
+where larger values correspond to more similar objects</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -624,57 +648,33 @@ where larger values correspond to more similar strings.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="textacy.similarity.word2vec">
-<code class="sig-prename descclassname">textacy.similarity.</code><code class="sig-name descname">word2vec</code><span class="sig-paren">(</span><em class="sig-param">obj1</em>, <em class="sig-param">obj2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/similarity.html#word2vec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.similarity.word2vec" title="Permalink to this definition">¶</a></dt>
-<dd><p>Measure the semantic similarity between one spacy Doc, Span, Token,
-or Lexeme and another like object using the cosine distance between the
-objects’ (average) word2vec vectors.</p>
+<dt id="textacy.similarity.character_ngrams">
+<code class="sig-prename descclassname">textacy.similarity.</code><code class="sig-name descname">character_ngrams</code><span class="sig-paren">(</span><em class="sig-param">str1</em>, <em class="sig-param">str2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/similarity.html#character_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.similarity.character_ngrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Measure the similarity between two strings using a character ngrams similarity
+metric, in which strings are transformed into trigrams of alnum-only characters,
+vectorized and weighted by tf-idf, then compared by cosine similarity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>obj1</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Token</span></code>, or <code class="docutils literal notranslate"><span class="pre">spacy.Lexeme</span></code>) – </p></li>
-<li><p><strong>obj2</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Span</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Token</span></code>, or <code class="docutils literal notranslate"><span class="pre">spacy.Lexeme</span></code>) – </p></li>
-</ul>
-</dd>
-</dl>
-<dl class="simple">
-<dt>Returns</dt><dd><p>float: Similarity between <code class="docutils literal notranslate"><span class="pre">obj1</span></code> and <code class="docutils literal notranslate"><span class="pre">obj2</span></code> in the interval [0.0, 1.0],
-where larger values correspond to more similar objects</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="textacy.similarity.word_movers">
-<code class="sig-prename descclassname">textacy.similarity.</code><code class="sig-name descname">word_movers</code><span class="sig-paren">(</span><em class="sig-param">doc1</em>, <em class="sig-param">doc2</em>, <em class="sig-param">metric='cosine'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/similarity.html#word_movers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.similarity.word_movers" title="Permalink to this definition">¶</a></dt>
-<dd><p>Measure the semantic similarity between two documents using Word Movers
-Distance.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>doc1</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code>) – </p></li>
-<li><p><strong>doc2</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code>) – </p></li>
-<li><p><strong>metric</strong> (<em>{&quot;cosine&quot;</em><em>, </em><em>&quot;euclidean&quot;</em><em>, </em><em>&quot;l1&quot;</em><em>, </em><em>&quot;l2&quot;</em><em>, </em><em>&quot;manhattan&quot;}</em>) – </p></li>
+<li><p><strong>str1</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – </p></li>
+<li><p><strong>str2</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Similarity between <code class="docutils literal notranslate"><span class="pre">doc1</span></code> and <code class="docutils literal notranslate"><span class="pre">doc2</span></code> in the interval [0.0, 1.0],
-where larger values correspond to more similar documents.</p>
+<dd class="field-even"><p>Similarity between <code class="docutils literal notranslate"><span class="pre">str1</span></code> and <code class="docutils literal notranslate"><span class="pre">str2</span></code> in the interval [0.0, 1.0],
+where larger values correspond to more similar strings</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)">float</a></p>
 </dd>
 </dl>
-<p class="rubric">References</p>
-<ul class="simple">
-<li><p>Ofir Pele and Michael Werman, “A linear time histogram metric for improved
-SIFT matching,” in Computer Vision - ECCV 2008, Marseille, France, 2008.</p></li>
-<li><p>Ofir Pele and Michael Werman, “Fast and robust earth mover’s distances,”
-in Proc. 2009 IEEE 12th Int. Conf. on Computer Vision, Kyoto, Japan, 2009.</p></li>
-<li><p>Kusner, Matt J., et al. “From word embeddings to document distances.”
-Proceedings of the 32nd International Conference on Machine Learning
-(ICML 2015). 2015. <a class="reference external" href="http://jmlr.org/proceedings/papers/v37/kusnerb15.pdf">http://jmlr.org/proceedings/papers/v37/kusnerb15.pdf</a></p></li>
-</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method has been used in cross-lingual plagiarism detection and
+authorship attribution, and seems to work better on longer texts.
+At the very least, it is <em>slow</em> on shorter texts relative to the other
+similarity measures.</p>
+</div>
 </dd></dl>
 
 </div>
@@ -683,21 +683,6 @@ Proceedings of the 32nd International Conference on Machine Learning
 <p>Collection of lexicon-based methods for characterizing texts by sentiment,
 emotional valence, etc.</p>
 <p>This module is a bit of an orphan right now…</p>
-<dl class="function">
-<dt id="textacy.lexicon_methods.download_depechemood">
-<code class="sig-prename descclassname">textacy.lexicon_methods.</code><code class="sig-name descname">download_depechemood</code><span class="sig-paren">(</span><em class="sig-param">data_dir=None</em>, <em class="sig-param">force=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/lexicon_methods.html#download_depechemood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.lexicon_methods.download_depechemood" title="Permalink to this definition">¶</a></dt>
-<dd><p>Download the DepecheMood dataset from GitHub, save to disk as .txt files.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data_dir</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Path to directory on disk where data files are to be saved.</p></li>
-<li><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, download the data, even if it already exists
-on disk under <code class="docutils literal notranslate"><span class="pre">data_dir</span></code>.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="function">
 <dt id="textacy.lexicon_methods.emotional_valence">
 <code class="sig-prename descclassname">textacy.lexicon_methods.</code><code class="sig-name descname">emotional_valence</code><span class="sig-paren">(</span><em class="sig-param">words</em>, <em class="sig-param">threshold=0.0</em>, <em class="sig-param">dm_data_dir=None</em>, <em class="sig-param">dm_weighting='normfreq'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/lexicon_methods.html#emotional_valence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.lexicon_methods.emotional_valence" title="Permalink to this definition">¶</a></dt>
@@ -737,6 +722,21 @@ Data available at <a class="reference external" href="https://github.com/marcogu
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="utils.html#textacy.cache.load_depechemood" title="textacy.cache.load_depechemood"><code class="xref py py-func docutils literal notranslate"><span class="pre">cache.load_depechemood()</span></code></a></p>
 </div>
+</dd></dl>
+
+<dl class="function">
+<dt id="textacy.lexicon_methods.download_depechemood">
+<code class="sig-prename descclassname">textacy.lexicon_methods.</code><code class="sig-name descname">download_depechemood</code><span class="sig-paren">(</span><em class="sig-param">data_dir=None</em>, <em class="sig-param">force=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/lexicon_methods.html#download_depechemood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.lexicon_methods.download_depechemood" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download the DepecheMood dataset from GitHub, save to disk as .txt files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_dir</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Path to directory on disk where data files are to be saved.</p></li>
+<li><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, download the data, even if it already exists
+on disk under <code class="docutils literal notranslate"><span class="pre">data_dir</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
