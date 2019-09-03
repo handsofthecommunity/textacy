@@ -166,7 +166,7 @@
             <span class="p">)</span>
         <span class="k">elif</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">&quot;lda&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">LatentDirichletAllocation</span><span class="p">(</span>
-                <span class="n">n_topics</span><span class="o">=</span><span class="n">n_topics</span><span class="p">,</span>
+                <span class="n">n_components</span><span class="o">=</span><span class="n">n_topics</span><span class="p">,</span>
                 <span class="n">max_iter</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_iter&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
                 <span class="n">random_state</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;random_state&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
                 <span class="n">learning_method</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;learning_method&quot;</span><span class="p">,</span> <span class="s2">&quot;online&quot;</span><span class="p">),</span>
@@ -197,7 +197,7 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
-        <span class="n">n_topics</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">n_topics</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;n_topics&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">model</span><span class="o">.</span><span class="n">n_components</span>
+        <span class="n">n_topics</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">n_components</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;n_components&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">model</span><span class="o">.</span><span class="n">n_topics</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">n_topics</span><span class="o">=</span><span class="n">n_topics</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_term_matrix</span><span class="p">):</span>
@@ -215,9 +215,9 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">n_topics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">n_topics</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">n_components</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">n_topics</span>
 
 <div class="viewcode-block" id="TopicModel.get_doc_topic_matrix"><a class="viewcode-back" href="../../../api_reference/vsm_and_tm.html#textacy.tm.topic_model.TopicModel.get_doc_topic_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">get_doc_topic_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_term_matrix</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
