@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>textacy.ke.utils &#8212; textacy 0.8.0 documentation</title>
+    <title>textacy.ke.utils &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -31,13 +31,10 @@
           <div class="body" role="main">
             
   <h1>Source code for textacy.ke.utils</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Keyterm Extraction Utils</span>
 <span class="sd">------------------------</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
-
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">operator</span>
@@ -46,8 +43,10 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">cytoolz</span> <span class="k">import</span> <span class="n">itertoolz</span>
 
-<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">compat</span><span class="p">,</span> <span class="n">extract</span><span class="p">,</span> <span class="n">similarity</span><span class="p">,</span> <span class="n">vsm</span>
-<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">utils</span> <span class="k">as</span> <span class="n">t_utils</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">extract</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">similarity</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">vsm</span>
 
 
 <div class="viewcode-block" id="normalize_terms"><a class="viewcode-back" href="../../../api_reference/information_extraction.html#textacy.ke.utils.normalize_terms">[docs]</a><span class="k">def</span> <span class="nf">normalize_terms</span><span class="p">(</span><span class="n">terms</span><span class="p">,</span> <span class="n">normalize</span><span class="p">):</span>
@@ -82,7 +81,7 @@
         <span class="k">yield</span> <span class="n">term</span></div>
 
 
-<div class="viewcode-block" id="aggregate_term_variants"><a class="viewcode-back" href="../../../api_reference/information_extraction.html#textacy.ke.utils.aggregate_term_variants">[docs]</a><span class="k">def</span> <span class="nf">aggregate_term_variants</span><span class="p">(</span><span class="n">terms</span><span class="p">,</span> <span class="n">acro_defs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fuzzy_dedupe</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="aggregate_term_variants"><a class="viewcode-back" href="../../../api_reference/information_extraction.html#textacy.ke.utils.aggregate_term_variants">[docs]</a><span class="k">def</span> <span class="nf">aggregate_term_variants</span><span class="p">(</span><span class="n">terms</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">acro_defs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fuzzy_dedupe</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Take a set of unique terms and aggregate terms that are symbolic, lexical,</span>
 <span class="sd">    and ordering variants of each other, as well as acronyms and fuzzy string matches.</span>
@@ -209,7 +208,7 @@
             <span class="k">yield</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">words_grp</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_ngram_candidates"><a class="viewcode-back" href="../../../api_reference/information_extraction.html#textacy.ke.utils.get_ngram_candidates">[docs]</a><span class="k">def</span> <span class="nf">get_ngram_candidates</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">ns</span><span class="p">,</span> <span class="n">include_pos</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">)):</span>
+<div class="viewcode-block" id="get_ngram_candidates"><a class="viewcode-back" href="../../../api_reference/information_extraction.html#textacy.ke.utils.get_ngram_candidates">[docs]</a><span class="k">def</span> <span class="nf">get_ngram_candidates</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">ns</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">include_pos</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">)):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get candidate keyterms from ``doc``, where candidates are n-length sequences</span>
 <span class="sd">    of tokens (for all n in ``ns``) that don&#39;t start/end with a stop word or</span>
@@ -229,8 +228,8 @@
 <span class="sd">    See Also:</span>
 <span class="sd">        :func:`textacy.extract.ngrams()`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ns</span> <span class="o">=</span> <span class="n">t_utils</span><span class="o">.</span><span class="n">to_collection</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
-    <span class="n">include_pos</span> <span class="o">=</span> <span class="n">t_utils</span><span class="o">.</span><span class="n">to_collection</span><span class="p">(</span><span class="n">include_pos</span><span class="p">,</span> <span class="n">compat</span><span class="o">.</span><span class="n">unicode_</span><span class="p">,</span> <span class="nb">set</span><span class="p">)</span>
+    <span class="n">ns</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">to_collection</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
+    <span class="n">include_pos</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">to_collection</span><span class="p">(</span><span class="n">include_pos</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">set</span><span class="p">)</span>
     <span class="n">ngrams</span> <span class="o">=</span> <span class="n">itertoolz</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">itertoolz</span><span class="o">.</span><span class="n">sliding_window</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">ns</span><span class="p">)</span>
     <span class="n">ngrams</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">ngram</span>
@@ -270,7 +269,7 @@
         <span class="k">yield</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">match</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_filtered_topn_terms"><a class="viewcode-back" href="../../../api_reference/information_extraction.html#textacy.ke.utils.get_filtered_topn_terms">[docs]</a><span class="k">def</span> <span class="nf">get_filtered_topn_terms</span><span class="p">(</span><span class="n">term_scores</span><span class="p">,</span> <span class="n">topn</span><span class="p">,</span> <span class="n">match_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="get_filtered_topn_terms"><a class="viewcode-back" href="../../../api_reference/information_extraction.html#textacy.ke.utils.get_filtered_topn_terms">[docs]</a><span class="k">def</span> <span class="nf">get_filtered_topn_terms</span><span class="p">(</span><span class="n">term_scores</span><span class="p">,</span> <span class="n">topn</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">match_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Build up a list of the ``topn`` terms, filtering out any that are substrings</span>
 <span class="sd">    of better-scoring terms and optionally filtering out any that are sufficiently</span>
@@ -309,7 +308,7 @@
 
 
 <div class="viewcode-block" id="most_discriminating_terms"><a class="viewcode-back" href="../../../api_reference/information_extraction.html#textacy.ke.utils.most_discriminating_terms">[docs]</a><span class="k">def</span> <span class="nf">most_discriminating_terms</span><span class="p">(</span>
-    <span class="n">terms_lists</span><span class="p">,</span> <span class="n">bool_array_grp1</span><span class="p">,</span> <span class="n">max_n_terms</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">top_n_terms</span><span class="o">=</span><span class="mi">25</span>
+    <span class="n">terms_lists</span><span class="p">,</span> <span class="n">bool_array_grp1</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">max_n_terms</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">top_n_terms</span><span class="o">=</span><span class="mi">25</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Given a collection of documents assigned to 1 of 2 exclusive groups, get the</span>

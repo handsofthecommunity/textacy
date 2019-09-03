@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Quickstart &#8212; textacy 0.8.0 documentation</title>
+    <title>Quickstart &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -414,15 +414,15 @@ only analyze those for which models are available:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">try</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="n">doc</span> <span class="o">=</span> <span class="n">textacy</span><span class="o">.</span><span class="n">make_spacy_doc</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">IOError</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="k">continue</span>
 <span class="gp">... </span>    <span class="c1"># do stuff...</span>
 </pre></div>
 </div>
 <p>When the <code class="docutils literal notranslate"><span class="pre">lang</span></code> param is unspecified, textacy tries to auto-detect the text’s
 language and load the corresponding model; if that model is unavailable, spaCy
-will raise an <code class="docutils literal notranslate"><span class="pre">OSError</span></code> (or an <code class="docutils literal notranslate"><span class="pre">IOError</span></code> in PY2). This try/except also handles
-the case where language detection fails and returns, say, “un” for “unknown”.</p>
+will raise an <code class="docutils literal notranslate"><span class="pre">OSError</span></code>. This try/except also handles the case where
+language detection fails and returns, say, “un” for “unknown”.</p>
 <p>It’s worth noting that, although spaCy has statistical models for annotating texts
 in only 10 or so languages, it supports tokenization in dozens of other languages.
 See <a class="reference external" href="https://spacy.io/usage/models#languages">https://spacy.io/usage/models#languages</a> for details. You can load such languages

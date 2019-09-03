@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>textacy.preprocessing.remove &#8212; textacy 0.8.0 documentation</title>
+    <title>textacy.preprocessing.remove &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -31,22 +31,19 @@
           <div class="body" role="main">
             
   <h1>Source code for textacy.preprocessing.remove</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Remove</span>
 <span class="sd">------</span>
 
 <span class="sd">Remove aspects of raw text that may be unwanted for certain use cases.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
-
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">unicodedata</span>
 
 <span class="kn">from</span> <span class="nn">.resources</span> <span class="k">import</span> <span class="n">_get_punct_translation_table</span>
 
 
-<div class="viewcode-block" id="remove_accents"><a class="viewcode-back" href="../../../api_reference/text_processing.html#textacy.preprocessing.remove.remove_accents">[docs]</a><span class="k">def</span> <span class="nf">remove_accents</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">fast</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="remove_accents"><a class="viewcode-back" href="../../../api_reference/text_processing.html#textacy.preprocessing.remove.remove_accents">[docs]</a><span class="k">def</span> <span class="nf">remove_accents</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">fast</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Remove accents from any accented unicode characters in ``text``, either by</span>
 <span class="sd">    replacing them with ASCII equivalents or removing them entirely.</span>
@@ -85,7 +82,7 @@
         <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="remove_punctuation"><a class="viewcode-back" href="../../../api_reference/text_processing.html#textacy.preprocessing.remove.remove_punctuation">[docs]</a><span class="k">def</span> <span class="nf">remove_punctuation</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">marks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="remove_punctuation"><a class="viewcode-back" href="../../../api_reference/text_processing.html#textacy.preprocessing.remove.remove_punctuation">[docs]</a><span class="k">def</span> <span class="nf">remove_punctuation</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">marks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Remove punctuation from ``text`` by replacing all instances of ``marks``</span>
 <span class="sd">    with whitespace.</span>

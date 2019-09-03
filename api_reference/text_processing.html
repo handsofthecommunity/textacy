@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Text (Pre-)Processing &#8212; textacy 0.8.0 documentation</title>
+    <title>Text (Pre-)Processing &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -15,7 +15,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Information Extraction" href="information_extraction.html" />
-    <link rel="prev" title="Datasets" href="datasets.html" />
+    <link rel="prev" title="Resources" href="resources.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -57,7 +57,8 @@ sans hyphen and whitespace.</p>
 <dt id="textacy.preprocessing.normalize.normalize_quotation_marks">
 <code class="sig-prename descclassname">textacy.preprocessing.normalize.</code><code class="sig-name descname">normalize_quotation_marks</code><span class="sig-paren">(</span><em class="sig-param">text</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/preprocessing/normalize.html#normalize_quotation_marks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.preprocessing.normalize.normalize_quotation_marks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Normalize all “fancy” single- and double-quotation marks in <code class="docutils literal notranslate"><span class="pre">text</span></code>
-to just the basic ASCII equivalents.</p>
+to just the basic ASCII equivalents. Note that this will also normalize fancy
+apostrophes, which are typically represented as single quotation marks.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – </p>
@@ -70,7 +71,7 @@ to just the basic ASCII equivalents.</p>
 
 <dl class="function">
 <dt id="textacy.preprocessing.normalize.normalize_unicode">
-<code class="sig-prename descclassname">textacy.preprocessing.normalize.</code><code class="sig-name descname">normalize_unicode</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">form='NFC'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/preprocessing/normalize.html#normalize_unicode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.preprocessing.normalize.normalize_unicode" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.preprocessing.normalize.</code><code class="sig-name descname">normalize_unicode</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">*</em>, <em class="sig-param">form='NFC'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/preprocessing/normalize.html#normalize_unicode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.preprocessing.normalize.normalize_unicode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Normalize unicode characters in <code class="docutils literal notranslate"><span class="pre">text</span></code> into canonical forms.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -114,7 +115,7 @@ strip any leading/trailing whitespace.</p>
 <p>Remove aspects of raw text that may be unwanted for certain use cases.</p>
 <dl class="function">
 <dt id="textacy.preprocessing.remove.remove_accents">
-<code class="sig-prename descclassname">textacy.preprocessing.remove.</code><code class="sig-name descname">remove_accents</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">fast=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/preprocessing/remove.html#remove_accents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.preprocessing.remove.remove_accents" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.preprocessing.remove.</code><code class="sig-name descname">remove_accents</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">*</em>, <em class="sig-param">fast=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/preprocessing/remove.html#remove_accents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.preprocessing.remove.remove_accents" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove accents from any accented unicode characters in <code class="docutils literal notranslate"><span class="pre">text</span></code>, either by
 replacing them with ASCII equivalents or removing them entirely.</p>
 <dl class="field-list simple">
@@ -149,7 +150,7 @@ to result in changes of meaning, spelling errors, etc.</p>
 
 <dl class="function">
 <dt id="textacy.preprocessing.remove.remove_punctuation">
-<code class="sig-prename descclassname">textacy.preprocessing.remove.</code><code class="sig-name descname">remove_punctuation</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">marks=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/preprocessing/remove.html#remove_punctuation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.preprocessing.remove.remove_punctuation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.preprocessing.remove.</code><code class="sig-name descname">remove_punctuation</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">*</em>, <em class="sig-param">marks=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/preprocessing/remove.html#remove_punctuation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.preprocessing.remove.remove_punctuation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove punctuation from <code class="docutils literal notranslate"><span class="pre">text</span></code> by replacing all instances of <code class="docutils literal notranslate"><span class="pre">marks</span></code>
 with whitespace.</p>
 <dl class="field-list simple">
@@ -236,9 +237,9 @@ to represent the unicode data for things like emoticons. Sorry!</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="textacy.preprocessing.replace.replace_numbers">
-<code class="sig-prename descclassname">textacy.preprocessing.replace.</code><code class="sig-name descname">replace_numbers</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">replace_with='_NUMBER_'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/preprocessing/replace.html#replace_numbers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.preprocessing.replace.replace_numbers" title="Permalink to this definition">¶</a></dt>
-<dd><p>Replace all numbers in <code class="docutils literal notranslate"><span class="pre">text</span></code> with <code class="docutils literal notranslate"><span class="pre">replace_with</span></code>.</p>
+<dt id="textacy.preprocessing.replace.replace_hashtags">
+<code class="sig-prename descclassname">textacy.preprocessing.replace.</code><code class="sig-name descname">replace_hashtags</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">replace_with='_TAG_'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/preprocessing/replace.html#replace_hashtags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.preprocessing.replace.replace_hashtags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace all hashtags in <code class="docutils literal notranslate"><span class="pre">text</span></code> with <code class="docutils literal notranslate"><span class="pre">replace_with</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -253,9 +254,9 @@ to represent the unicode data for things like emoticons. Sorry!</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="textacy.preprocessing.replace.replace_hashtags">
-<code class="sig-prename descclassname">textacy.preprocessing.replace.</code><code class="sig-name descname">replace_hashtags</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">replace_with='_TAG_'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/preprocessing/replace.html#replace_hashtags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.preprocessing.replace.replace_hashtags" title="Permalink to this definition">¶</a></dt>
-<dd><p>Replace all hashtags in <code class="docutils literal notranslate"><span class="pre">text</span></code> with <code class="docutils literal notranslate"><span class="pre">replace_with</span></code>.</p>
+<dt id="textacy.preprocessing.replace.replace_numbers">
+<code class="sig-prename descclassname">textacy.preprocessing.replace.</code><code class="sig-name descname">replace_numbers</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">replace_with='_NUMBER_'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/preprocessing/replace.html#replace_numbers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.preprocessing.replace.replace_numbers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace all numbers in <code class="docutils literal notranslate"><span class="pre">text</span></code> with <code class="docutils literal notranslate"><span class="pre">replace_with</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -345,7 +346,7 @@ tokens will return False.</p></li>
 
 <dl class="function">
 <dt id="textacy.text_utils.keyword_in_context">
-<code class="sig-prename descclassname">textacy.text_utils.</code><code class="sig-name descname">keyword_in_context</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">keyword</em>, <em class="sig-param">ignore_case=True</em>, <em class="sig-param">window_width=50</em>, <em class="sig-param">print_only=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/text_utils.html#keyword_in_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.text_utils.keyword_in_context" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.text_utils.</code><code class="sig-name descname">keyword_in_context</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">keyword</em>, <em class="sig-param">*</em>, <em class="sig-param">ignore_case=True</em>, <em class="sig-param">window_width=50</em>, <em class="sig-param">print_only=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/text_utils.html#keyword_in_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.text_utils.keyword_in_context" title="Permalink to this definition">¶</a></dt>
 <dd><p>Search for <code class="docutils literal notranslate"><span class="pre">keyword</span></code> in <code class="docutils literal notranslate"><span class="pre">text</span></code> via regular expression, return or print strings
 spanning <code class="docutils literal notranslate"><span class="pre">window_width</span></code> characters before and after each occurrence of keyword.</p>
 <dl class="field-list simple">
@@ -372,7 +373,7 @@ if False, return all (pre, kw, post) matches as generator of raw strings</p></li
 
 <dl class="function">
 <dt id="textacy.text_utils.KWIC">
-<code class="sig-prename descclassname">textacy.text_utils.</code><code class="sig-name descname">KWIC</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">keyword</em>, <em class="sig-param">ignore_case=True</em>, <em class="sig-param">window_width=50</em>, <em class="sig-param">print_only=True</em><span class="sig-paren">)</span><a class="headerlink" href="#textacy.text_utils.KWIC" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.text_utils.</code><code class="sig-name descname">KWIC</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">keyword</em>, <em class="sig-param">*</em>, <em class="sig-param">ignore_case=True</em>, <em class="sig-param">window_width=50</em>, <em class="sig-param">print_only=True</em><span class="sig-paren">)</span><a class="headerlink" href="#textacy.text_utils.KWIC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias of <a class="reference internal" href="#textacy.text_utils.keyword_in_context" title="textacy.text_utils.keyword_in_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">keyword_in_context</span></code></a>.</p>
 </dd></dl>
 
@@ -409,7 +410,7 @@ into a form that changes or obscures the original meaning of the term.</p>
     <ul>
         <li>
           &larr;
-          <a href="datasets.html" title="Previous document">Datasets</a>
+          <a href="resources.html" title="Previous document">Resources</a>
         </li>
         <li>
           <a href="information_extraction.html" title="Next document">Information Extraction</a>
@@ -444,14 +445,16 @@ into a form that changes or obscures the original meaning of the term.</p>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/quickstart.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="root.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="doc_and_corpus.html">Doc and Corpus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang_doc_corpus.html">Lang, Doc, Corpus</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spacier.html">spaCy extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="datasets.html">Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html">Resources</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Text (Pre-)Processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="information_extraction.html">Information Extraction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vsm_and_tm.html">Vectorization &amp; Topic Modeling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io.html">IO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="viz.html">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="augmentation.html">Data Augmentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellany</a></li>
 </ul>
@@ -465,7 +468,7 @@ into a form that changes or obscures the original meaning of the term.</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="root.html">API Reference</a><ul>
-      <li>Previous: <a href="datasets.html" title="previous chapter">Datasets</a></li>
+      <li>Previous: <a href="resources.html" title="previous chapter">Resources</a></li>
       <li>Next: <a href="information_extraction.html" title="next chapter">Information Extraction</a></li>
   </ul></li>
   </ul></li>

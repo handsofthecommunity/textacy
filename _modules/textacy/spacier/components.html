@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>textacy.spacier.components &#8212; textacy 0.8.0 documentation</title>
+    <title>textacy.spacier.components &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -37,19 +37,16 @@
 
 <span class="sd">Custom components to add to a spaCy language pipeline.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
-
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">from</span> <span class="nn">spacy.tokens</span> <span class="k">import</span> <span class="n">Doc</span>
 
-<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">compat</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">text_stats</span>
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="TextStatsComponent"><a class="viewcode-back" href="../../../api_reference/spacier.html#textacy.spacier.components.TextStatsComponent">[docs]</a><span class="k">class</span> <span class="nc">TextStatsComponent</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="TextStatsComponent"><a class="viewcode-back" href="../../../api_reference/spacier.html#textacy.spacier.components.TextStatsComponent">[docs]</a><span class="k">class</span> <span class="nc">TextStatsComponent</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A custom component to be added to a spaCy language pipeline that computes</span>
 <span class="sd">    one, some, or all text stats for a parsed doc and sets the values</span>
@@ -120,7 +117,7 @@
                 <span class="s2">&quot;gulpease_index&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;wiener_sachtextformel&quot;</span><span class="p">,</span>
             <span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attrs</span><span class="p">,</span> <span class="n">compat</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attrs</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">(</span><span class="n">attrs</span><span class="p">,)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">attrs</span><span class="p">)</span>

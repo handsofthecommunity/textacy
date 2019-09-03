@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>textacy.ke.yake &#8212; textacy 0.8.0 documentation</title>
+    <title>textacy.ke.yake &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -31,25 +31,25 @@
           <div class="body" role="main">
             
   <h1>Source code for textacy.ke.yake</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">YAKE</span>
 <span class="sd">----</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
-
 <span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">operator</span>
+<span class="kn">import</span> <span class="nn">statistics</span>
 
 <span class="kn">from</span> <span class="nn">cytoolz</span> <span class="k">import</span> <span class="n">itertoolz</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">utils</span> <span class="k">as</span> <span class="n">ke_utils</span>
-<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">compat</span><span class="p">,</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">utils</span>
 
 
 <div class="viewcode-block" id="yake"><a class="viewcode-back" href="../../../api_reference/information_extraction.html#textacy.ke.yake.yake">[docs]</a><span class="k">def</span> <span class="nf">yake</span><span class="p">(</span>
     <span class="n">doc</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
     <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;lemma&quot;</span><span class="p">,</span>
     <span class="n">ngrams</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
     <span class="n">include_pos</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">),</span>
@@ -95,7 +95,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># validate / transform args</span>
     <span class="n">ngrams</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">to_collection</span><span class="p">(</span><span class="n">ngrams</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
-    <span class="n">include_pos</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">to_collection</span><span class="p">(</span><span class="n">include_pos</span><span class="p">,</span> <span class="n">compat</span><span class="o">.</span><span class="n">unicode_</span><span class="p">,</span> <span class="nb">set</span><span class="p">)</span>
+    <span class="n">include_pos</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">to_collection</span><span class="p">(</span><span class="n">include_pos</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">set</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">topn</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="mf">0.0</span> <span class="o">&lt;</span> <span class="n">topn</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -172,7 +172,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="s2">&quot;normalize=&#39;</span><span class="si">{}</span><span class="s2">&#39; is invalid; &quot;</span>
-            <span class="s2">&quot;must be None or one of </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="s2">&quot;lemma&quot;</span><span class="p">,</span> <span class="s2">&quot;lower&quot;</span><span class="p">})</span>
+            <span class="s2">&quot;must be None or one of </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">normalize</span><span class="p">,</span> <span class="p">{</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;lemma&quot;</span><span class="p">,</span> <span class="s2">&quot;lower&quot;</span><span class="p">})</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="n">as_strings</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">attr_name</span> <span class="o">=</span> <span class="n">attr_name</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span>
@@ -238,12 +238,12 @@
     <span class="c1"># compute summary stats for word frequencies</span>
     <span class="n">freqs_nsw</span> <span class="o">=</span> <span class="p">[</span><span class="n">freq</span> <span class="k">for</span> <span class="n">w_id</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">word_freqs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">w_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">]</span>
     <span class="n">freq_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">word_freqs</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-    <span class="n">freq_baseline</span> <span class="o">=</span> <span class="n">compat</span><span class="o">.</span><span class="n">mean_</span><span class="p">(</span><span class="n">freqs_nsw</span><span class="p">)</span> <span class="o">+</span> <span class="n">compat</span><span class="o">.</span><span class="n">stdev_</span><span class="p">(</span><span class="n">freqs_nsw</span><span class="p">)</span>
+    <span class="n">freq_baseline</span> <span class="o">=</span> <span class="n">statistics</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">freqs_nsw</span><span class="p">)</span> <span class="o">+</span> <span class="n">statistics</span><span class="o">.</span><span class="n">stdev</span><span class="p">(</span><span class="n">freqs_nsw</span><span class="p">)</span>
     <span class="n">n_sents</span> <span class="o">=</span> <span class="n">itertoolz</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">sents</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">w_id</span><span class="p">,</span> <span class="n">vals</span> <span class="ow">in</span> <span class="n">word_occ_vals</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">freq</span> <span class="o">=</span> <span class="n">word_freqs</span><span class="p">[</span><span class="n">w_id</span><span class="p">]</span>
-        <span class="n">word_weights</span><span class="p">[</span><span class="n">w_id</span><span class="p">][</span><span class="s2">&quot;case&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="s2">&quot;is_uc&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="n">compat</span><span class="o">.</span><span class="n">log2_</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">freq</span><span class="p">)</span>
-        <span class="n">word_weights</span><span class="p">[</span><span class="n">w_id</span><span class="p">][</span><span class="s2">&quot;pos&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compat</span><span class="o">.</span><span class="n">log2_</span><span class="p">(</span><span class="n">compat</span><span class="o">.</span><span class="n">log2_</span><span class="p">(</span><span class="mi">3</span> <span class="o">+</span> <span class="n">compat</span><span class="o">.</span><span class="n">median_</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="s2">&quot;sent_idx&quot;</span><span class="p">])))</span>
+        <span class="n">word_weights</span><span class="p">[</span><span class="n">w_id</span><span class="p">][</span><span class="s2">&quot;case&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="s2">&quot;is_uc&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">freq</span><span class="p">)</span>
+        <span class="n">word_weights</span><span class="p">[</span><span class="n">w_id</span><span class="p">][</span><span class="s2">&quot;pos&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="mi">3</span> <span class="o">+</span> <span class="n">statistics</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="s2">&quot;sent_idx&quot;</span><span class="p">])))</span>
         <span class="n">word_weights</span><span class="p">[</span><span class="n">w_id</span><span class="p">][</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">freq</span> <span class="o">/</span> <span class="n">freq_baseline</span>
         <span class="n">word_weights</span><span class="p">[</span><span class="n">w_id</span><span class="p">][</span><span class="s2">&quot;disp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="s2">&quot;sent_idx&quot;</span><span class="p">]))</span> <span class="o">/</span> <span class="n">n_sents</span>
         <span class="n">n_unique_lc</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="s2">&quot;l_context&quot;</span><span class="p">]))</span>
@@ -319,7 +319,7 @@
         <span class="c1"># NOTE: here i&#39;ve modified the YAKE algorithm to put less emphasis on term freq</span>
         <span class="c1"># term_scores[word.lower_] = word_scores[w_id] / (word_freqs[w_id] * (1 + word_scores[w_id]))</span>
         <span class="n">term_scores</span><span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">attr_name_str</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">word_scores</span><span class="p">[</span><span class="n">w_id</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">compat</span><span class="o">.</span><span class="n">log2_</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">word_freqs</span><span class="p">[</span><span class="n">w_id</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">word_scores</span><span class="p">[</span><span class="n">w_id</span><span class="p">]))</span>
+            <span class="n">word_scores</span><span class="p">[</span><span class="n">w_id</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">word_freqs</span><span class="p">[</span><span class="n">w_id</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">word_scores</span><span class="p">[</span><span class="n">w_id</span><span class="p">]))</span>
         <span class="p">)</span>
 
 
@@ -348,10 +348,10 @@
             <span class="n">seen_candidates</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ngtxt</span><span class="p">)</span>
         <span class="n">ngram_word_scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">word_scores</span><span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">)]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">ngram</span><span class="p">]</span>
         <span class="c1"># multiply individual word scores together in the numerator</span>
-        <span class="n">numerator</span> <span class="o">=</span> <span class="n">compat</span><span class="o">.</span><span class="n">reduce_</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">mul</span><span class="p">,</span> <span class="n">ngram_word_scores</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">numerator</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">mul</span><span class="p">,</span> <span class="n">ngram_word_scores</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
         <span class="c1"># NOTE: here i&#39;ve modified the YAKE algorithm to put less emphasis on term freq</span>
         <span class="c1"># denominator = ngram_freqs[ngtxt] * (1.0 + sum(ngram_word_scores))</span>
-        <span class="n">denominator</span> <span class="o">=</span> <span class="n">compat</span><span class="o">.</span><span class="n">log2_</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">ngram_freqs</span><span class="p">[</span><span class="n">ngtxt</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">ngram_word_scores</span><span class="p">))</span>
+        <span class="n">denominator</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">ngram_freqs</span><span class="p">[</span><span class="n">ngtxt</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">ngram_word_scores</span><span class="p">))</span>
         <span class="n">term_scores</span><span class="p">[</span><span class="n">ngtxt</span><span class="p">]</span> <span class="o">=</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span>
 </pre></div>
 

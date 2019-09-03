@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Vectorization &amp; Topic Modeling &#8212; textacy 0.8.0 documentation</title>
+    <title>Vectorization &amp; Topic Modeling &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -46,7 +46,7 @@ with filtering and weighting functionality as described above.</p>
 examples and explanations of the various weighting schemes.</p>
 <dl class="class">
 <dt id="textacy.vsm.vectorizers.Vectorizer">
-<em class="property">class </em><code class="sig-prename descclassname">textacy.vsm.vectorizers.</code><code class="sig-name descname">Vectorizer</code><span class="sig-paren">(</span><em class="sig-param">tf_type='linear'</em>, <em class="sig-param">apply_idf=False</em>, <em class="sig-param">idf_type='smooth'</em>, <em class="sig-param">apply_dl=False</em>, <em class="sig-param">dl_type='sqrt'</em>, <em class="sig-param">norm=None</em>, <em class="sig-param">min_df=1</em>, <em class="sig-param">max_df=1.0</em>, <em class="sig-param">max_n_terms=None</em>, <em class="sig-param">vocabulary_terms=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/vectorizers.html#Vectorizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.vectorizers.Vectorizer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">textacy.vsm.vectorizers.</code><code class="sig-name descname">Vectorizer</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">tf_type='linear'</em>, <em class="sig-param">apply_idf=False</em>, <em class="sig-param">idf_type='smooth'</em>, <em class="sig-param">apply_dl=False</em>, <em class="sig-param">dl_type='sqrt'</em>, <em class="sig-param">norm=None</em>, <em class="sig-param">min_df=1</em>, <em class="sig-param">max_df=1.0</em>, <em class="sig-param">max_n_terms=None</em>, <em class="sig-param">vocabulary_terms=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/vectorizers.html#Vectorizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.vectorizers.Vectorizer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform one or more tokenized documents into a sparse document-term matrix
 of shape (# docs, # unique terms), with flexibly weighted and normalized values.</p>
 <p>Stream a corpus with metadata from disk:</p>
@@ -423,7 +423,7 @@ params used to initialize the <a class="reference internal" href="#textacy.vsm.v
 
 <dl class="class">
 <dt id="textacy.vsm.vectorizers.GroupVectorizer">
-<em class="property">class </em><code class="sig-prename descclassname">textacy.vsm.vectorizers.</code><code class="sig-name descname">GroupVectorizer</code><span class="sig-paren">(</span><em class="sig-param">tf_type='linear'</em>, <em class="sig-param">apply_idf=False</em>, <em class="sig-param">idf_type='smooth'</em>, <em class="sig-param">apply_dl=False</em>, <em class="sig-param">dl_type='linear'</em>, <em class="sig-param">norm=None</em>, <em class="sig-param">min_df=1</em>, <em class="sig-param">max_df=1.0</em>, <em class="sig-param">max_n_terms=None</em>, <em class="sig-param">vocabulary_terms=None</em>, <em class="sig-param">vocabulary_grps=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/vectorizers.html#GroupVectorizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">textacy.vsm.vectorizers.</code><code class="sig-name descname">GroupVectorizer</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">tf_type='linear'</em>, <em class="sig-param">apply_idf=False</em>, <em class="sig-param">idf_type='smooth'</em>, <em class="sig-param">apply_dl=False</em>, <em class="sig-param">dl_type='linear'</em>, <em class="sig-param">norm=None</em>, <em class="sig-param">min_df=1</em>, <em class="sig-param">max_df=1.0</em>, <em class="sig-param">max_n_terms=None</em>, <em class="sig-param">vocabulary_terms=None</em>, <em class="sig-param">vocabulary_grps=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/vectorizers.html#GroupVectorizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.vectorizers.GroupVectorizer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform one or more tokenized documents into a group-term matrix of
 shape (# groups, # unique terms), with tf-, tf-idf, or binary-weighted values.</p>
 <p>This is an extension of typical document-term matrix vectorization, where
@@ -788,7 +788,7 @@ term frequency, document frequency, and document length, and filtering terms
 from a matrix by their document frequency.</p>
 <dl class="function">
 <dt id="textacy.vsm.matrix_utils.get_term_freqs">
-<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">get_term_freqs</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">type_='linear'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#get_term_freqs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.get_term_freqs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">get_term_freqs</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">*</em>, <em class="sig-param">type_='linear'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#get_term_freqs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.get_term_freqs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute frequencies for all terms in a document-term matrix, with optional
 sub-linear scaling.</p>
 <dl class="field-list simple">
@@ -846,7 +846,7 @@ the # of unique terms (# of columns) in <code class="docutils literal notranslat
 
 <dl class="function">
 <dt id="textacy.vsm.matrix_utils.get_inverse_doc_freqs">
-<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">get_inverse_doc_freqs</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">type_='smooth'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#get_inverse_doc_freqs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.get_inverse_doc_freqs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">get_inverse_doc_freqs</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">*</em>, <em class="sig-param">type_='smooth'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#get_inverse_doc_freqs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.get_inverse_doc_freqs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute inverse document frequencies for all terms in a document-term matrix,
 using one of several IDF formulations.</p>
 <dl class="field-list simple">
@@ -880,7 +880,7 @@ equal to the # of unique terms (# of columns) in <code class="docutils literal n
 
 <dl class="function">
 <dt id="textacy.vsm.matrix_utils.get_doc_lengths">
-<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">get_doc_lengths</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">type_='linear'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#get_doc_lengths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.get_doc_lengths" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">get_doc_lengths</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">*</em>, <em class="sig-param">type_='linear'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#get_doc_lengths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.get_doc_lengths" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the lengths (i.e. number of terms) for all documents in a
 document-term matrix.</p>
 <dl class="field-list simple">
@@ -939,7 +939,7 @@ length equal to the # of unique terms (# of columns) in <code class="docutils li
 
 <dl class="function">
 <dt id="textacy.vsm.matrix_utils.apply_idf_weighting">
-<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">apply_idf_weighting</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">type_='smooth'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#apply_idf_weighting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.apply_idf_weighting" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">apply_idf_weighting</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">*</em>, <em class="sig-param">type_='smooth'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#apply_idf_weighting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.apply_idf_weighting" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply inverse document frequency (idf) weighting to a term-frequency (tf)
 weighted document-term matrix, using one of several IDF formulations.</p>
 <dl class="field-list simple">
@@ -966,7 +966,7 @@ where value (i, j) is the tfidf weight of term j in doc i.</p>
 
 <dl class="function">
 <dt id="textacy.vsm.matrix_utils.filter_terms_by_df">
-<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">filter_terms_by_df</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">term_to_id</em>, <em class="sig-param">max_df=1.0</em>, <em class="sig-param">min_df=1</em>, <em class="sig-param">max_n_terms=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#filter_terms_by_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.filter_terms_by_df" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">filter_terms_by_df</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">term_to_id</em>, <em class="sig-param">*</em>, <em class="sig-param">max_df=1.0</em>, <em class="sig-param">min_df=1</em>, <em class="sig-param">max_n_terms=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#filter_terms_by_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.filter_terms_by_df" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter out terms that are too common and/or too rare (by document frequency),
 and compactify the top <code class="docutils literal notranslate"><span class="pre">max_n_terms</span></code> in the <code class="docutils literal notranslate"><span class="pre">id_to_term</span></code> mapping accordingly.
 Borrows heavily from the <code class="docutils literal notranslate"><span class="pre">sklearn.feature_extraction.text</span></code> module.</p>
@@ -1007,7 +1007,7 @@ as strings and values are their corresponding integer ids.</p>
 
 <dl class="function">
 <dt id="textacy.vsm.matrix_utils.filter_terms_by_ic">
-<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">filter_terms_by_ic</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">term_to_id</em>, <em class="sig-param">min_ic=0.0</em>, <em class="sig-param">max_n_terms=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#filter_terms_by_ic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.filter_terms_by_ic" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.vsm.matrix_utils.</code><code class="sig-name descname">filter_terms_by_ic</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">term_to_id</em>, <em class="sig-param">*</em>, <em class="sig-param">min_ic=0.0</em>, <em class="sig-param">max_n_terms=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/vsm/matrix_utils.html#filter_terms_by_ic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.vsm.matrix_utils.filter_terms_by_ic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter out terms that are too common and/or too rare (by information content),
 and compactify the top <code class="docutils literal notranslate"><span class="pre">max_n_terms</span></code> in the <code class="docutils literal notranslate"><span class="pre">id_to_term</span></code> mapping accordingly.
 Borrows heavily from the <code class="docutils literal notranslate"><span class="pre">sklearn.feature_extraction.text</span></code> module.</p>
@@ -1137,7 +1137,7 @@ sklearn pages for full details</p></li>
 </div>
 <dl class="method">
 <dt id="textacy.tm.topic_model.TopicModel.get_doc_topic_matrix">
-<code class="sig-name descname">get_doc_topic_matrix</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.get_doc_topic_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.get_doc_topic_matrix" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_doc_topic_matrix</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">*</em>, <em class="sig-param">normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.get_doc_topic_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.get_doc_topic_matrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform a document-term matrix into a document-topic matrix, where rows
 correspond to documents and columns to the topics in the topic model.</p>
 <dl class="field-list simple">
@@ -1161,7 +1161,7 @@ i.e. topic weights on each document sum to 1</p></li>
 
 <dl class="method">
 <dt id="textacy.tm.topic_model.TopicModel.top_topic_terms">
-<code class="sig-name descname">top_topic_terms</code><span class="sig-paren">(</span><em class="sig-param">id2term</em>, <em class="sig-param">topics=-1</em>, <em class="sig-param">top_n=10</em>, <em class="sig-param">weights=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.top_topic_terms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.top_topic_terms" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">top_topic_terms</code><span class="sig-paren">(</span><em class="sig-param">id2term</em>, <em class="sig-param">*</em>, <em class="sig-param">topics=-1</em>, <em class="sig-param">top_n=10</em>, <em class="sig-param">weights=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.top_topic_terms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.top_topic_terms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code> terms by weight per topic in <code class="docutils literal notranslate"><span class="pre">model</span></code>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -1196,7 +1196,7 @@ related terms and their associated weights wrt the topic; for example:</p>
 
 <dl class="method">
 <dt id="textacy.tm.topic_model.TopicModel.top_topic_docs">
-<code class="sig-name descname">top_topic_docs</code><span class="sig-paren">(</span><em class="sig-param">doc_topic_matrix</em>, <em class="sig-param">topics=-1</em>, <em class="sig-param">top_n=10</em>, <em class="sig-param">weights=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.top_topic_docs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.top_topic_docs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">top_topic_docs</code><span class="sig-paren">(</span><em class="sig-param">doc_topic_matrix</em>, <em class="sig-param">*</em>, <em class="sig-param">topics=-1</em>, <em class="sig-param">top_n=10</em>, <em class="sig-param">weights=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.top_topic_docs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.top_topic_docs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code> docs by weight per topic in <code class="docutils literal notranslate"><span class="pre">doc_topic_matrix</span></code>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -1228,7 +1228,7 @@ related docs and their associated weights wrt the topic; for example:</p>
 
 <dl class="method">
 <dt id="textacy.tm.topic_model.TopicModel.top_doc_topics">
-<code class="sig-name descname">top_doc_topics</code><span class="sig-paren">(</span><em class="sig-param">doc_topic_matrix</em>, <em class="sig-param">docs=-1</em>, <em class="sig-param">top_n=3</em>, <em class="sig-param">weights=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.top_doc_topics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.top_doc_topics" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">top_doc_topics</code><span class="sig-paren">(</span><em class="sig-param">doc_topic_matrix</em>, <em class="sig-param">*</em>, <em class="sig-param">docs=-1</em>, <em class="sig-param">top_n=3</em>, <em class="sig-param">weights=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.top_doc_topics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.top_doc_topics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the top <code class="docutils literal notranslate"><span class="pre">top_n</span></code> topics by weight per doc for <code class="docutils literal notranslate"><span class="pre">docs</span></code> in <code class="docutils literal notranslate"><span class="pre">doc_topic_matrix</span></code>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -1280,7 +1280,7 @@ or not. I suppose either way makes sense… o_O</p>
 
 <dl class="method">
 <dt id="textacy.tm.topic_model.TopicModel.termite_plot">
-<code class="sig-name descname">termite_plot</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">id2term</em>, <em class="sig-param">topics=-1</em>, <em class="sig-param">sort_topics_by='index'</em>, <em class="sig-param">highlight_topics=None</em>, <em class="sig-param">n_terms=25</em>, <em class="sig-param">rank_terms_by='topic_weight'</em>, <em class="sig-param">sort_terms_by='seriation'</em>, <em class="sig-param">save=False</em>, <em class="sig-param">rc_params=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.termite_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.termite_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">termite_plot</code><span class="sig-paren">(</span><em class="sig-param">doc_term_matrix</em>, <em class="sig-param">id2term</em>, <em class="sig-param">*</em>, <em class="sig-param">topics=-1</em>, <em class="sig-param">sort_topics_by='index'</em>, <em class="sig-param">highlight_topics=None</em>, <em class="sig-param">n_terms=25</em>, <em class="sig-param">rank_terms_by='topic_weight'</em>, <em class="sig-param">sort_terms_by='seriation'</em>, <em class="sig-param">save=False</em>, <em class="sig-param">rc_params=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/tm/topic_model.html#TopicModel.termite_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.tm.topic_model.TopicModel.termite_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a “termite” plot for assessing topic models using a tabular layout
 to promote comparison of terms both within and across topics.</p>
 <dl class="field-list simple">
@@ -1385,14 +1385,16 @@ Visual Interfaces. ACM, 2012.</p></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/quickstart.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="root.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="doc_and_corpus.html">Doc and Corpus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang_doc_corpus.html">Lang, Doc, Corpus</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spacier.html">spaCy extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="datasets.html">Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html">Resources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="text_processing.html">Text (Pre-)Processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="information_extraction.html">Information Extraction</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Vectorization &amp; Topic Modeling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io.html">IO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="viz.html">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="augmentation.html">Data Augmentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellany</a></li>
 </ul>

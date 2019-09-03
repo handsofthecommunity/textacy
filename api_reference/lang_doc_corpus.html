@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Doc and Corpus &#8212; textacy 0.8.0 documentation</title>
+    <title>Lang, Doc, Corpus &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -32,12 +32,62 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="module-textacy.doc">
-<span id="doc-and-corpus"></span><span id="api-reference-doc-and-corpus"></span><h1>Doc and Corpus<a class="headerlink" href="#module-textacy.doc" title="Permalink to this headline">¶</a></h1>
-<p>A convenient and flexible entry point for making spaCy docs, one at a time.</p>
+  <div class="section" id="module-textacy.spacier.core">
+<span id="lang-doc-corpus"></span><span id="api-reference-lang-doc-corpus"></span><h1>Lang, Doc, Corpus<a class="headerlink" href="#module-textacy.spacier.core" title="Permalink to this headline">¶</a></h1>
+<p>Convenient entry points for making spaCy docs and loading spaCy language pipelines.</p>
 <dl class="function">
-<dt id="textacy.doc.make_spacy_doc">
-<code class="sig-prename descclassname">textacy.doc.</code><code class="sig-name descname">make_spacy_doc</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">lang=&lt;bound method LangIdentifier.identify_lang of &lt;textacy.lang_utils.LangIdentifier object&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/doc.html#make_spacy_doc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.doc.make_spacy_doc" title="Permalink to this definition">¶</a></dt>
+<dt id="textacy.spacier.core.load_spacy_lang">
+<code class="sig-prename descclassname">textacy.spacier.core.</code><code class="sig-name descname">load_spacy_lang</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">disable=None</em>, <em class="sig-param">allow_blank=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/spacier/core.html#load_spacy_lang"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.spacier.core.load_spacy_lang" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a spaCy <code class="docutils literal notranslate"><span class="pre">Language</span></code>: a shared vocabulary and language-specific data
+for tokenizing text, and (if available) model data and a processing pipeline
+containing a sequence of components for annotating a document.
+An LRU cache saves languages in memory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (str or <a class="reference external" href="https://docs.python.org/3.6/library/pathlib.html#pathlib.Path" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code></a>) – spaCy language to load.
+Could be a shortcut link, full package name, or path to model directory,
+or a 2-letter ISO language code for which spaCy has language data.</p></li>
+<li><p><strong>disable</strong> (<em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – <p>Names of pipeline components to disable, if any.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although spaCy’s API specifies this argument as a list,
+here we require a tuple. Pipelines are stored in the LRU cache
+with unique identifiers generated from the hash of the function
+name and args — and lists aren’t hashable.</p>
+</div>
+</p></li>
+<li><p><strong>allow_blank</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, allow loading of blank spaCy <code class="docutils literal notranslate"><span class="pre">Language</span></code> s;
+if False, raise an OSError if a full processing pipeline isn’t available.
+Note that spaCy <code class="docutils literal notranslate"><span class="pre">Doc</span></code> s produced by blank languages are missing
+key functionality, e.g. POS tags, entities, sentences.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A loaded spaCy <code class="docutils literal notranslate"><span class="pre">Language</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.language.Language</span></code></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#OSError" title="(in Python v3.6)"><strong>OSError</strong></a> – </p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ImportError" title="(in Python v3.6)"><strong>ImportError</strong></a> – </p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://spacy.io/api/top-level#spacy.load">https://spacy.io/api/top-level#spacy.load</a></p></li>
+<li><p><a class="reference external" href="https://spacy.io/api/top-level#spacy.blank">https://spacy.io/api/top-level#spacy.blank</a></p></li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="textacy.spacier.core.make_spacy_doc">
+<code class="sig-prename descclassname">textacy.spacier.core.</code><code class="sig-name descname">make_spacy_doc</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">lang=&lt;bound method LangIdentifier.identify_lang of &lt;textacy.lang_utils.LangIdentifier object&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/spacier/core.html#make_spacy_doc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.spacier.core.make_spacy_doc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Doc</span></code> from valid inputs, and automatically
 load/validate <code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.language.Language</span></code> pipelines to process <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p>
 <p>Make a <code class="docutils literal notranslate"><span class="pre">Doc</span></code> from text:</p>
@@ -443,7 +493,7 @@ first document in the corpus; <code class="docutils literal notranslate"><span c
 
 <dl class="method">
 <dt id="textacy.corpus.Corpus.word_counts">
-<code class="sig-name descname">word_counts</code><span class="sig-paren">(</span><em class="sig-param">normalize='lemma'</em>, <em class="sig-param">weighting='count'</em>, <em class="sig-param">as_strings=False</em>, <em class="sig-param">filter_stops=True</em>, <em class="sig-param">filter_punct=True</em>, <em class="sig-param">filter_nums=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.word_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.word_counts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">word_counts</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">weighting='count'</em>, <em class="sig-param">as_strings=False</em>, <em class="sig-param">filter_stops=True</em>, <em class="sig-param">filter_punct=True</em>, <em class="sig-param">filter_nums=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.word_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.word_counts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map the set of unique words in <a class="reference internal" href="#textacy.corpus.Corpus" title="textacy.corpus.Corpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></a> to their counts as
 absolute, relative, or binary frequencies of occurence, similar to
 <a class="reference internal" href="spacier.html#textacy.spacier.doc_extensions.to_bag_of_words" title="textacy.spacier.doc_extensions.to_bag_of_words"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Doc._.to_bag_of_words()</span></code></a>
@@ -492,7 +542,7 @@ of occurrence (depending on the value of <code class="docutils literal notransla
 
 <dl class="method">
 <dt id="textacy.corpus.Corpus.word_doc_counts">
-<code class="sig-name descname">word_doc_counts</code><span class="sig-paren">(</span><em class="sig-param">normalize='lemma'</em>, <em class="sig-param">weighting='count'</em>, <em class="sig-param">smooth_idf=True</em>, <em class="sig-param">as_strings=False</em>, <em class="sig-param">filter_stops=True</em>, <em class="sig-param">filter_punct=True</em>, <em class="sig-param">filter_nums=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.word_doc_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.word_doc_counts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">word_doc_counts</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">weighting='count'</em>, <em class="sig-param">smooth_idf=True</em>, <em class="sig-param">as_strings=False</em>, <em class="sig-param">filter_stops=True</em>, <em class="sig-param">filter_punct=True</em>, <em class="sig-param">filter_nums=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/corpus.html#Corpus.word_doc_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.corpus.Corpus.word_doc_counts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map the set of unique words in <a class="reference internal" href="#textacy.corpus.Corpus" title="textacy.corpus.Corpus"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></a> to their <em>document</em> counts
 as absolute, relative, inverse, or binary frequencies of occurence.</p>
 <dl class="field-list simple">
@@ -623,14 +673,16 @@ was previously saved as a binary file.</p></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/quickstart.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="root.html">API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Doc and Corpus</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Lang, Doc, Corpus</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spacier.html">spaCy extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="datasets.html">Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html">Resources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="text_processing.html">Text (Pre-)Processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="information_extraction.html">Information Extraction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vsm_and_tm.html">Vectorization &amp; Topic Modeling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io.html">IO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="viz.html">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="augmentation.html">Data Augmentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellany</a></li>
 </ul>
@@ -672,7 +724,7 @@ was previously saved as a binary file.</p></li>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="../_sources/api_reference/doc_and_corpus.rst.txt"
+      <a href="../_sources/api_reference/lang_doc_corpus.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

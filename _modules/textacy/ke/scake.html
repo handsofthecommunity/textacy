@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>textacy.ke.scake &#8212; textacy 0.8.0 documentation</title>
+    <title>textacy.ke.scake &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -31,13 +31,10 @@
           <div class="body" role="main">
             
   <h1>Source code for textacy.ke.scake</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">sCAKE</span>
 <span class="sd">-----</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
-
 <span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">operator</span>
@@ -45,12 +42,13 @@
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">from</span> <span class="nn">cytoolz</span> <span class="k">import</span> <span class="n">itertoolz</span>
 
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">utils</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">utils</span> <span class="k">as</span> <span class="n">ke_utils</span>
-<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">compat</span><span class="p">,</span> <span class="n">utils</span>
 
 
 <div class="viewcode-block" id="scake"><a class="viewcode-back" href="../../../api_reference/information_extraction.html#textacy.ke.scake.scake">[docs]</a><span class="k">def</span> <span class="nf">scake</span><span class="p">(</span>
     <span class="n">doc</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
     <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;lemma&quot;</span><span class="p">,</span>
     <span class="n">include_pos</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">),</span>
     <span class="n">topn</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
@@ -83,7 +81,7 @@
 <span class="sd">        https://arxiv.org/abs/1811.10831v1</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># validate / transform args</span>
-    <span class="n">include_pos</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">to_collection</span><span class="p">(</span><span class="n">include_pos</span><span class="p">,</span> <span class="n">compat</span><span class="o">.</span><span class="n">unicode_</span><span class="p">,</span> <span class="nb">set</span><span class="p">)</span>
+    <span class="n">include_pos</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">to_collection</span><span class="p">(</span><span class="n">include_pos</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">set</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">topn</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="mf">0.0</span> <span class="o">&lt;</span> <span class="n">topn</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -97,11 +95,14 @@
 
     <span class="c1"># build up a graph of good words, edges weighting by adjacent sentence co-occurrence</span>
     <span class="n">cooc_mat</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
-    <span class="n">n_sents</span> <span class="o">=</span> <span class="n">itertoolz</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">sents</span><span class="p">)</span>  <span class="c1"># in case doc only has 1 sentence</span>
-    <span class="k">for</span> <span class="n">sent1</span><span class="p">,</span> <span class="n">sent2</span> <span class="ow">in</span> <span class="n">itertoolz</span><span class="o">.</span><span class="n">sliding_window</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_sents</span><span class="p">),</span> <span class="n">doc</span><span class="o">.</span><span class="n">sents</span><span class="p">):</span>
+    <span class="c1"># handle edge case where doc only has 1 sentence</span>
+    <span class="n">n_sents</span> <span class="o">=</span> <span class="n">itertoolz</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">sents</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">window_sents</span> <span class="ow">in</span> <span class="n">itertoolz</span><span class="o">.</span><span class="n">sliding_window</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_sents</span><span class="p">),</span> <span class="n">doc</span><span class="o">.</span><span class="n">sents</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">n_sents</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">window_sents</span> <span class="o">=</span> <span class="p">(</span><span class="n">window_sents</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[])</span>
         <span class="n">window_words</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">word</span>
-            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">itertoolz</span><span class="o">.</span><span class="n">concatv</span><span class="p">(</span><span class="n">sent1</span><span class="p">,</span> <span class="n">sent2</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">itertoolz</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">window_sents</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">is_stop</span> <span class="ow">or</span> <span class="n">word</span><span class="o">.</span><span class="n">is_punct</span> <span class="ow">or</span> <span class="n">word</span><span class="o">.</span><span class="n">is_space</span><span class="p">)</span>
             <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">include_pos</span> <span class="ow">or</span> <span class="n">word</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">include_pos</span><span class="p">)</span>
         <span class="p">)</span>
@@ -122,6 +123,8 @@
     <span class="p">)</span>
 
     <span class="n">word_scores</span> <span class="o">=</span> <span class="n">_compute_word_scores</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">cooc_mat</span><span class="p">,</span> <span class="n">normalize</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">word_scores</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
 
     <span class="c1"># generate a list of candidate terms</span>
     <span class="n">candidates</span> <span class="o">=</span> <span class="n">_get_candidates</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">normalize</span><span class="p">,</span> <span class="n">include_pos</span><span class="p">)</span>
@@ -153,6 +156,10 @@
     <span class="c1"># &quot;level of hierarchy&quot; component</span>
     <span class="n">max_truss_levels</span> <span class="o">=</span> <span class="n">_compute_node_truss_levels</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
     <span class="n">max_truss_level</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_truss_levels</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="c1"># check for edge case when all word scores would be zero / undefined</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">max_truss_level</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span>
+
     <span class="c1"># &quot;semantic strength of a word&quot; component</span>
     <span class="n">sem_strengths</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">w</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cooc_mat</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">([</span><span class="n">w</span><span class="p">,</span> <span class="n">nbr</span><span class="p">]))]</span> <span class="o">*</span> <span class="n">max_truss_levels</span><span class="p">[</span><span class="n">nbr</span><span class="p">]</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
@@ -165,7 +172,7 @@
     <span class="p">}</span>
     <span class="c1"># &quot;positional weight&quot; component</span>
     <span class="n">word_pos</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">word_str</span> <span class="ow">in</span> <span class="n">compat</span><span class="o">.</span><span class="n">zip_</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">ke_utils</span><span class="o">.</span><span class="n">normalize_terms</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">normalize</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">word_str</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">ke_utils</span><span class="o">.</span><span class="n">normalize_terms</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">normalize</span><span class="p">)):</span>
         <span class="n">word_pos</span><span class="p">[</span><span class="n">word_str</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="n">w</span><span class="p">:</span> <span class="n">word_pos</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">*</span> <span class="n">max_truss_levels</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">*</span> <span class="n">sem_strengths</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">*</span> <span class="n">sem_connectivities</span><span class="p">[</span><span class="n">w</span><span class="p">]</span>

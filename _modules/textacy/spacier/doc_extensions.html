@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>textacy.spacier.doc_extensions &#8212; textacy 0.8.0 documentation</title>
+    <title>textacy.spacier.doc_extensions &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -31,8 +31,7 @@
           <div class="body" role="main">
             
   <h1>Source code for textacy.spacier.doc_extensions</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Doc extensions</span>
 <span class="sd">--------------</span>
 
@@ -50,8 +49,6 @@
 <span class="sd">    &gt;&gt;&gt; print(doc._.preview)</span>
 <span class="sd">    Doc(6 tokens: &quot;This is a short text.&quot;)</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
-
 <span class="kn">import</span> <span class="nn">types</span>
 
 <span class="kn">import</span> <span class="nn">spacy</span>
@@ -259,6 +256,7 @@
 
 <div class="viewcode-block" id="to_terms_list"><a class="viewcode-back" href="../../../api_reference/spacier.html#textacy.spacier.doc_extensions.to_terms_list">[docs]</a><span class="k">def</span> <span class="nf">to_terms_list</span><span class="p">(</span>
     <span class="n">doc</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
     <span class="n">ngrams</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
     <span class="n">entities</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;lemma&quot;</span><span class="p">,</span>
@@ -425,6 +423,7 @@
 
 <div class="viewcode-block" id="to_bag_of_terms"><a class="viewcode-back" href="../../../api_reference/spacier.html#textacy.spacier.doc_extensions.to_bag_of_terms">[docs]</a><span class="k">def</span> <span class="nf">to_bag_of_terms</span><span class="p">(</span>
     <span class="n">doc</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
     <span class="n">ngrams</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
     <span class="n">entities</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;lemma&quot;</span><span class="p">,</span>
@@ -496,8 +495,16 @@
     <span class="k">return</span> <span class="n">bot</span></div>
 
 
-<div class="viewcode-block" id="to_bag_of_words"><a class="viewcode-back" href="../../../api_reference/spacier.html#textacy.spacier.doc_extensions.to_bag_of_words">[docs]</a><span class="k">def</span> <span class="nf">to_bag_of_words</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;lemma&quot;</span><span class="p">,</span> <span class="n">weighting</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="n">as_strings</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
-                    <span class="n">filter_stops</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">filter_punct</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">filter_nums</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="to_bag_of_words"><a class="viewcode-back" href="../../../api_reference/spacier.html#textacy.spacier.doc_extensions.to_bag_of_words">[docs]</a><span class="k">def</span> <span class="nf">to_bag_of_words</span><span class="p">(</span>
+    <span class="n">doc</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;lemma&quot;</span><span class="p">,</span>
+    <span class="n">weighting</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span>
+    <span class="n">as_strings</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">filter_stops</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">filter_punct</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">filter_nums</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transform ``Doc`` into a bag-of-words: the set of unique words in ``Doc``</span>
 <span class="sd">    mapped to their absolute, relative, or binary frequency of occurrence.</span>
@@ -549,7 +556,7 @@
     <span class="k">if</span> <span class="n">as_strings</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">wid</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">wid_weights</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">lex</span> <span class="o">=</span> <span class="n">vocab</span><span class="p">[</span><span class="n">wid</span><span class="p">]</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span> <span class="p">(</span><span class="n">lex</span><span class="o">.</span><span class="n">is_stop</span> <span class="ow">and</span> <span class="n">filter_stops</span><span class="p">)</span> <span class="ow">or</span> 
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span> <span class="p">(</span><span class="n">lex</span><span class="o">.</span><span class="n">is_stop</span> <span class="ow">and</span> <span class="n">filter_stops</span><span class="p">)</span> <span class="ow">or</span>
                      <span class="p">(</span><span class="n">lex</span><span class="o">.</span><span class="n">is_punct</span> <span class="ow">and</span> <span class="n">filter_punct</span><span class="p">)</span> <span class="ow">or</span>
                      <span class="p">(</span><span class="n">lex</span><span class="o">.</span><span class="n">is_digit</span> <span class="ow">and</span> <span class="n">filter_nums</span><span class="p">)</span> <span class="ow">or</span>
                       <span class="n">lex</span><span class="o">.</span><span class="n">is_space</span><span class="p">):</span>
@@ -558,8 +565,8 @@
         <span class="n">ss</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">strings</span>
         <span class="k">for</span> <span class="n">wid</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">wid_weights</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">lex</span> <span class="o">=</span> <span class="n">vocab</span><span class="p">[</span><span class="n">wid</span><span class="p">]</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span> <span class="p">(</span><span class="n">lex</span><span class="o">.</span><span class="n">is_stop</span> <span class="ow">and</span> <span class="n">filter_stops</span><span class="p">)</span> <span class="ow">or</span> 
-                     <span class="p">(</span><span class="n">lex</span><span class="o">.</span><span class="n">is_punct</span> <span class="ow">and</span> <span class="n">filter_punct</span><span class="p">)</span> <span class="ow">or</span> 
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span> <span class="p">(</span><span class="n">lex</span><span class="o">.</span><span class="n">is_stop</span> <span class="ow">and</span> <span class="n">filter_stops</span><span class="p">)</span> <span class="ow">or</span>
+                     <span class="p">(</span><span class="n">lex</span><span class="o">.</span><span class="n">is_punct</span> <span class="ow">and</span> <span class="n">filter_punct</span><span class="p">)</span> <span class="ow">or</span>
                      <span class="p">(</span><span class="n">lex</span><span class="o">.</span><span class="n">is_digit</span> <span class="ow">and</span> <span class="n">filter_nums</span><span class="p">)</span> <span class="ow">or</span>
                       <span class="n">lex</span><span class="o">.</span><span class="n">is_space</span><span class="p">):</span>
                 <span class="n">bow</span><span class="p">[</span><span class="n">ss</span><span class="p">[</span><span class="n">wid</span><span class="p">]]</span> <span class="o">=</span> <span class="n">weight</span>
@@ -568,6 +575,7 @@
 
 <div class="viewcode-block" id="to_semantic_network"><a class="viewcode-back" href="../../../api_reference/spacier.html#textacy.spacier.doc_extensions.to_semantic_network">[docs]</a><span class="k">def</span> <span class="nf">to_semantic_network</span><span class="p">(</span>
     <span class="n">doc</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
     <span class="n">nodes</span><span class="o">=</span><span class="s2">&quot;words&quot;</span><span class="p">,</span>
     <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;lemma&quot;</span><span class="p">,</span>
     <span class="n">edge_weighting</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span>

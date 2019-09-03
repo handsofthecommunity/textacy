@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>textacy.vsm.vectorizers &#8212; textacy 0.8.0 documentation</title>
+    <title>textacy.vsm.vectorizers &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -46,8 +46,6 @@
 <span class="sd">See the :class:`Vectorizer` and :class:`GroupVectorizer` docstrings for usage</span>
 <span class="sd">examples and explanations of the various weighting schemes.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
-
 <span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">import</span> <span class="nn">operator</span>
 <span class="kn">from</span> <span class="nn">array</span> <span class="k">import</span> <span class="n">array</span>
@@ -56,7 +54,6 @@
 <span class="kn">import</span> <span class="nn">scipy.sparse</span> <span class="k">as</span> <span class="nn">sp</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">normalize</span> <span class="k">as</span> <span class="n">normalize_mat</span>
 
-<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">compat</span>
 <span class="kn">from</span> <span class="nn">.matrix_utils</span> <span class="k">import</span> <span class="n">get_doc_lengths</span><span class="p">,</span> <span class="n">get_inverse_doc_freqs</span><span class="p">,</span> <span class="n">filter_terms_by_df</span>
 
 
@@ -64,7 +61,7 @@
 <span class="n">BM25_B</span> <span class="o">=</span> <span class="mf">0.75</span>
 
 
-<div class="viewcode-block" id="Vectorizer"><a class="viewcode-back" href="../../../api_reference/vsm_and_tm.html#textacy.vsm.vectorizers.Vectorizer">[docs]</a><span class="k">class</span> <span class="nc">Vectorizer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Vectorizer"><a class="viewcode-back" href="../../../api_reference/vsm_and_tm.html#textacy.vsm.vectorizers.Vectorizer">[docs]</a><span class="k">class</span> <span class="nc">Vectorizer</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transform one or more tokenized documents into a sparse document-term matrix</span>
 <span class="sd">    of shape (# docs, # unique terms), with flexibly weighted and normalized values.</span>
@@ -287,6 +284,7 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
         <span class="n">tf_type</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span>
         <span class="n">apply_idf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">idf_type</span><span class="o">=</span><span class="s2">&quot;smooth&quot;</span><span class="p">,</span>
@@ -334,7 +332,7 @@
 <span class="sd">            bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">vocabulary</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vocabulary</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">Mapping</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vocabulary</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Mapping</span><span class="p">):</span>
                 <span class="n">vocab</span> <span class="o">=</span> <span class="p">{}</span>
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">term</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">vocabulary</span><span class="p">)):</span>
                     <span class="k">if</span> <span class="n">vocab</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="o">!=</span> <span class="n">i</span><span class="p">:</span>
@@ -356,7 +354,7 @@
                         <span class="s2">&quot;Term ids in `vocabulary` must be unique, but </span><span class="si">{}</span><span class="s2"> ids&quot;</span>
                         <span class="s2">&quot;were assigned to more than one term.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_dupe_term_ids</span><span class="p">)</span>
                     <span class="p">)</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">compat</span><span class="o">.</span><span class="n">range_</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vocabulary</span><span class="p">)):</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vocabulary</span><span class="p">)):</span>
                     <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                             <span class="s2">&quot;Term ids in `vocabulary` must be compact, i.e. &quot;</span>
@@ -375,7 +373,7 @@
 <span class="sd">        Check that instance has a valid vocabulary mapping;</span>
 <span class="sd">        if not, raise a ValueError.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocabulary_terms</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">Mapping</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocabulary_terms</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Mapping</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;vocabulary hasn&#39;t been built; call `Vectorizer.fit()`&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vocabulary_terms</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;vocabulary is empty&quot;</span><span class="p">)</span>
@@ -918,6 +916,7 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
         <span class="n">tf_type</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span>
         <span class="n">apply_idf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">idf_type</span><span class="o">=</span><span class="s2">&quot;smooth&quot;</span><span class="p">,</span>
@@ -930,7 +929,7 @@
         <span class="n">vocabulary_terms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">vocabulary_grps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">GroupVectorizer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">tf_type</span><span class="o">=</span><span class="n">tf_type</span><span class="p">,</span>
             <span class="n">apply_idf</span><span class="o">=</span><span class="n">apply_idf</span><span class="p">,</span>
             <span class="n">idf_type</span><span class="o">=</span><span class="n">idf_type</span><span class="p">,</span>
@@ -1177,7 +1176,7 @@
         <span class="n">data</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">))</span>
         <span class="n">cols</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">))</span>
         <span class="n">rows</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">grp</span><span class="p">,</span> <span class="n">terms</span> <span class="ow">in</span> <span class="n">compat</span><span class="o">.</span><span class="n">zip_</span><span class="p">(</span><span class="n">grps</span><span class="p">,</span> <span class="n">tokenized_docs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">grp</span><span class="p">,</span> <span class="n">terms</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">grps</span><span class="p">,</span> <span class="n">tokenized_docs</span><span class="p">):</span>
 
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">grp_idx</span> <span class="o">=</span> <span class="n">vocabulary_grps</span><span class="p">[</span><span class="n">grp</span><span class="p">]</span>
@@ -1196,7 +1195,7 @@
 
             <span class="n">data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">term_counter</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
             <span class="n">cols</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">term_counter</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-            <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">grp_idx</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">compat</span><span class="o">.</span><span class="n">range_</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">term_counter</span><span class="p">)))</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">grp_idx</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">term_counter</span><span class="p">)))</span>
 
         <span class="c1"># do we still want defaultdict behaviour?</span>
         <span class="k">if</span> <span class="n">fixed_vocab_terms</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>

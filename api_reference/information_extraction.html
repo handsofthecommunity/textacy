@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Information Extraction &#8212; textacy 0.8.0 documentation</title>
+    <title>Information Extraction &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -39,7 +39,7 @@ by spaCy, such as n-grams, named entities, subject-verb-object triples, and
 acronyms.</p>
 <dl class="function">
 <dt id="textacy.extract.words">
-<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">words</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">filter_stops=True</em>, <em class="sig-param">filter_punct=True</em>, <em class="sig-param">filter_nums=False</em>, <em class="sig-param">include_pos=None</em>, <em class="sig-param">exclude_pos=None</em>, <em class="sig-param">min_freq=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#words"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.words" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">words</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">*</em>, <em class="sig-param">filter_stops=True</em>, <em class="sig-param">filter_punct=True</em>, <em class="sig-param">filter_nums=False</em>, <em class="sig-param">include_pos=None</em>, <em class="sig-param">exclude_pos=None</em>, <em class="sig-param">min_freq=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#words"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.words" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract an ordered sequence of words from a document processed by spaCy,
 optionally filtering words by part-of-speech tag and frequency.</p>
 <dl class="field-list simple">
@@ -76,7 +76,7 @@ check spaCy’s docs: <a class="reference external" href="https://spacy.io/api/a
 
 <dl class="function">
 <dt id="textacy.extract.ngrams">
-<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">ngrams</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">n</em>, <em class="sig-param">filter_stops=True</em>, <em class="sig-param">filter_punct=True</em>, <em class="sig-param">filter_nums=False</em>, <em class="sig-param">include_pos=None</em>, <em class="sig-param">exclude_pos=None</em>, <em class="sig-param">min_freq=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.ngrams" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">ngrams</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">n</em>, <em class="sig-param">*</em>, <em class="sig-param">filter_stops=True</em>, <em class="sig-param">filter_punct=True</em>, <em class="sig-param">filter_nums=False</em>, <em class="sig-param">include_pos=None</em>, <em class="sig-param">exclude_pos=None</em>, <em class="sig-param">min_freq=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.ngrams" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract an ordered sequence of n-grams (<code class="docutils literal notranslate"><span class="pre">n</span></code> consecutive words) from a
 spacy-parsed doc, optionally filtering n-grams by the types and
 parts-of-speech of the constituent words.</p>
@@ -120,7 +120,7 @@ check spaCy’s docs: <a class="reference external" href="https://spacy.io/api/a
 
 <dl class="function">
 <dt id="textacy.extract.entities">
-<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">entities</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">include_types=None</em>, <em class="sig-param">exclude_types=None</em>, <em class="sig-param">drop_determiners=True</em>, <em class="sig-param">min_freq=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#entities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.entities" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">entities</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">*</em>, <em class="sig-param">include_types=None</em>, <em class="sig-param">exclude_types=None</em>, <em class="sig-param">drop_determiners=True</em>, <em class="sig-param">min_freq=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#entities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.entities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract an ordered sequence of named entities (PERSON, ORG, LOC, etc.) from
 a <code class="docutils literal notranslate"><span class="pre">Doc</span></code>, optionally filtering by entity types and frequencies.</p>
 <dl class="field-list simple">
@@ -163,7 +163,7 @@ all specified filters in order of appearance in the document</p>
 
 <dl class="function">
 <dt id="textacy.extract.noun_chunks">
-<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">noun_chunks</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">drop_determiners=True</em>, <em class="sig-param">min_freq=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#noun_chunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.noun_chunks" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">noun_chunks</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">*</em>, <em class="sig-param">drop_determiners=True</em>, <em class="sig-param">min_freq=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#noun_chunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.noun_chunks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract an ordered sequence of noun chunks from a spacy-parsed doc, optionally
 filtering by frequency and dropping leading determiners.</p>
 <dl class="field-list simple">
@@ -222,7 +222,7 @@ use <a class="reference internal" href="#textacy.extract.matches" title="textacy
 
 <dl class="function">
 <dt id="textacy.extract.matches">
-<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">matches</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">patterns</em>, <em class="sig-param">on_match=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#matches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.matches" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">matches</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">patterns</em>, <em class="sig-param">*</em>, <em class="sig-param">on_match=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#matches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.matches" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract <code class="docutils literal notranslate"><span class="pre">Span</span></code> s from a <code class="docutils literal notranslate"><span class="pre">Doc</span></code> matching one or more patterns
 of per-token attr:value pairs, with optional quantity qualifiers.</p>
 <dl class="field-list simple">
@@ -328,7 +328,7 @@ International Journal on Document Analysis and Recognition 1.4 (1999): 191-198.<
 
 <dl class="function">
 <dt id="textacy.extract.semistructured_statements">
-<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">semistructured_statements</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">entity</em>, <em class="sig-param">cue='be'</em>, <em class="sig-param">ignore_entity_case=True</em>, <em class="sig-param">min_n_words=1</em>, <em class="sig-param">max_n_words=20</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#semistructured_statements"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.semistructured_statements" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.extract.</code><code class="sig-name descname">semistructured_statements</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">entity</em>, <em class="sig-param">*</em>, <em class="sig-param">cue='be'</em>, <em class="sig-param">ignore_entity_case=True</em>, <em class="sig-param">min_n_words=1</em>, <em class="sig-param">max_n_words=20</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/extract.html#semistructured_statements"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.extract.semistructured_statements" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract “semi-structured statements” from a spacy-parsed doc, each as a
 (entity, cue, fragment) triple. This is similar to subject-verb-object triples.</p>
 <dl class="field-list simple">
@@ -383,7 +383,7 @@ Tagging of Reported Speech in Newspaper Articles”.</p>
 <h3>TextRank<a class="headerlink" href="#textrank" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="textacy.ke.textrank.textrank">
-<code class="sig-prename descclassname">textacy.ke.textrank.</code><code class="sig-name descname">textrank</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">include_pos=('NOUN'</em>, <em class="sig-param">'PROPN'</em>, <em class="sig-param">'ADJ')</em>, <em class="sig-param">window_size=2</em>, <em class="sig-param">edge_weighting='binary'</em>, <em class="sig-param">position_bias=False</em>, <em class="sig-param">topn=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/textrank.html#textrank"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.textrank.textrank" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.ke.textrank.</code><code class="sig-name descname">textrank</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">*</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">include_pos=('NOUN'</em>, <em class="sig-param">'PROPN'</em>, <em class="sig-param">'ADJ')</em>, <em class="sig-param">window_size=2</em>, <em class="sig-param">edge_weighting='binary'</em>, <em class="sig-param">position_bias=False</em>, <em class="sig-param">topn=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/textrank.html#textrank"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.textrank.textrank" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract key terms from a document using the TextRank algorithm, or
 a variation thereof. For example:</p>
 <ul class="simple">
@@ -443,7 +443,7 @@ pages 1105-1115.</p></li>
 <h3>YAKE<a class="headerlink" href="#yake" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="textacy.ke.yake.yake">
-<code class="sig-prename descclassname">textacy.ke.yake.</code><code class="sig-name descname">yake</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">ngrams=(1</em>, <em class="sig-param">2</em>, <em class="sig-param">3)</em>, <em class="sig-param">include_pos=('NOUN'</em>, <em class="sig-param">'PROPN'</em>, <em class="sig-param">'ADJ')</em>, <em class="sig-param">window_size=2</em>, <em class="sig-param">topn=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/yake.html#yake"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.yake.yake" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.ke.yake.</code><code class="sig-name descname">yake</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">*</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">ngrams=(1</em>, <em class="sig-param">2</em>, <em class="sig-param">3)</em>, <em class="sig-param">include_pos=('NOUN'</em>, <em class="sig-param">'PROPN'</em>, <em class="sig-param">'ADJ')</em>, <em class="sig-param">window_size=2</em>, <em class="sig-param">topn=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/yake.html#yake"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.yake.yake" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract key terms from a document using the YAKE algorithm.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -494,7 +494,7 @@ Lecture Notes in Computer Science, vol 10772, pp. 684-691.</p>
 <h3>sCAKE<a class="headerlink" href="#scake" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="textacy.ke.scake.scake">
-<code class="sig-prename descclassname">textacy.ke.scake.</code><code class="sig-name descname">scake</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">include_pos=('NOUN'</em>, <em class="sig-param">'PROPN'</em>, <em class="sig-param">'ADJ')</em>, <em class="sig-param">topn=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/scake.html#scake"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.scake.scake" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.ke.scake.</code><code class="sig-name descname">scake</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">*</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">include_pos=('NOUN'</em>, <em class="sig-param">'PROPN'</em>, <em class="sig-param">'ADJ')</em>, <em class="sig-param">topn=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/scake.html#scake"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.scake.scake" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract key terms from a document using the sCAKE algorithm.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -533,7 +533,7 @@ Aware Keyword Extraction. Information Sciences. 477.
 <h3>SGRank<a class="headerlink" href="#sgrank" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="textacy.ke.sgrank.sgrank">
-<code class="sig-prename descclassname">textacy.ke.sgrank.</code><code class="sig-name descname">sgrank</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">ngrams=(1</em>, <em class="sig-param">2</em>, <em class="sig-param">3</em>, <em class="sig-param">4</em>, <em class="sig-param">5</em>, <em class="sig-param">6)</em>, <em class="sig-param">include_pos=('NOUN'</em>, <em class="sig-param">'PROPN'</em>, <em class="sig-param">'ADJ')</em>, <em class="sig-param">window_size=1500</em>, <em class="sig-param">topn=10</em>, <em class="sig-param">idf=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/sgrank.html#sgrank"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.sgrank.sgrank" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.ke.sgrank.</code><code class="sig-name descname">sgrank</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">*</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">ngrams=(1</em>, <em class="sig-param">2</em>, <em class="sig-param">3</em>, <em class="sig-param">4</em>, <em class="sig-param">5</em>, <em class="sig-param">6)</em>, <em class="sig-param">include_pos=('NOUN'</em>, <em class="sig-param">'PROPN'</em>, <em class="sig-param">'ADJ')</em>, <em class="sig-param">window_size=1500</em>, <em class="sig-param">topn=10</em>, <em class="sig-param">idf=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/sgrank.html#sgrank"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.sgrank.sgrank" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract key terms from a document using the SGRank algorithm.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -605,7 +605,7 @@ and return a str, e.g. <a class="reference internal" href="spacier.html#textacy.
 
 <dl class="function">
 <dt id="textacy.ke.utils.aggregate_term_variants">
-<code class="sig-prename descclassname">textacy.ke.utils.</code><code class="sig-name descname">aggregate_term_variants</code><span class="sig-paren">(</span><em class="sig-param">terms</em>, <em class="sig-param">acro_defs=None</em>, <em class="sig-param">fuzzy_dedupe=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/utils.html#aggregate_term_variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.utils.aggregate_term_variants" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.ke.utils.</code><code class="sig-name descname">aggregate_term_variants</code><span class="sig-paren">(</span><em class="sig-param">terms</em>, <em class="sig-param">*</em>, <em class="sig-param">acro_defs=None</em>, <em class="sig-param">fuzzy_dedupe=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/utils.html#aggregate_term_variants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.utils.aggregate_term_variants" title="Permalink to this definition">¶</a></dt>
 <dd><p>Take a set of unique terms and aggregate terms that are symbolic, lexical,
 and ordering variants of each other, as well as acronyms and fuzzy string matches.</p>
 <dl class="field-list simple">
@@ -656,7 +656,7 @@ as a tuple of constituent tokens.</p>
 
 <dl class="function">
 <dt id="textacy.ke.utils.get_ngram_candidates">
-<code class="sig-prename descclassname">textacy.ke.utils.</code><code class="sig-name descname">get_ngram_candidates</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">ns</em>, <em class="sig-param">include_pos=('NOUN'</em>, <em class="sig-param">'PROPN'</em>, <em class="sig-param">'ADJ')</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/utils.html#get_ngram_candidates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.utils.get_ngram_candidates" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.ke.utils.</code><code class="sig-name descname">get_ngram_candidates</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">ns</em>, <em class="sig-param">*</em>, <em class="sig-param">include_pos=('NOUN'</em>, <em class="sig-param">'PROPN'</em>, <em class="sig-param">'ADJ')</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/utils.html#get_ngram_candidates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.utils.get_ngram_candidates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get candidate keyterms from <code class="docutils literal notranslate"><span class="pre">doc</span></code>, where candidates are n-length sequences
 of tokens (for all n in <code class="docutils literal notranslate"><span class="pre">ns</span></code>) that don’t start/end with a stop word or
 contain punctuation tokens, and whose constituent tokens are filtered by POS tag.</p>
@@ -707,7 +707,7 @@ as a tuple of constituent Tokens.</p>
 
 <dl class="function">
 <dt id="textacy.ke.utils.get_filtered_topn_terms">
-<code class="sig-prename descclassname">textacy.ke.utils.</code><code class="sig-name descname">get_filtered_topn_terms</code><span class="sig-paren">(</span><em class="sig-param">term_scores</em>, <em class="sig-param">topn</em>, <em class="sig-param">match_threshold=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/utils.html#get_filtered_topn_terms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.utils.get_filtered_topn_terms" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.ke.utils.</code><code class="sig-name descname">get_filtered_topn_terms</code><span class="sig-paren">(</span><em class="sig-param">term_scores</em>, <em class="sig-param">topn</em>, <em class="sig-param">*</em>, <em class="sig-param">match_threshold=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/utils.html#get_filtered_topn_terms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.utils.get_filtered_topn_terms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build up a list of the <code class="docutils literal notranslate"><span class="pre">topn</span></code> terms, filtering out any that are substrings
 of better-scoring terms and optionally filtering out any that are sufficiently
 similar to better-scoring terms.</p>
@@ -731,7 +731,7 @@ to higher-scoring terms. Uses <a class="reference internal" href="misc.html#text
 
 <dl class="function">
 <dt id="textacy.ke.utils.most_discriminating_terms">
-<code class="sig-prename descclassname">textacy.ke.utils.</code><code class="sig-name descname">most_discriminating_terms</code><span class="sig-paren">(</span><em class="sig-param">terms_lists</em>, <em class="sig-param">bool_array_grp1</em>, <em class="sig-param">max_n_terms=1000</em>, <em class="sig-param">top_n_terms=25</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/utils.html#most_discriminating_terms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.utils.most_discriminating_terms" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.ke.utils.</code><code class="sig-name descname">most_discriminating_terms</code><span class="sig-paren">(</span><em class="sig-param">terms_lists</em>, <em class="sig-param">bool_array_grp1</em>, <em class="sig-param">*</em>, <em class="sig-param">max_n_terms=1000</em>, <em class="sig-param">top_n_terms=25</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/ke/utils.html#most_discriminating_terms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.ke.utils.most_discriminating_terms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a collection of documents assigned to 1 of 2 exclusive groups, get the
 <code class="docutils literal notranslate"><span class="pre">top_n_terms</span></code> most discriminating terms for group1-and-not-group2 and
 group2-and-not-group1.</p>
@@ -811,14 +811,16 @@ and Document Set Discovery from Unstructured Text.” (2014).
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/quickstart.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="root.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="doc_and_corpus.html">Doc and Corpus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang_doc_corpus.html">Lang, Doc, Corpus</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spacier.html">spaCy extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="datasets.html">Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html">Resources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="text_processing.html">Text (Pre-)Processing</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Information Extraction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vsm_and_tm.html">Vectorization &amp; Topic Modeling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io.html">IO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="viz.html">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="augmentation.html">Data Augmentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellany</a></li>
 </ul>

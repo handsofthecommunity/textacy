@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>textacy.datasets.wikimedia &#8212; textacy 0.8.0 documentation</title>
+    <title>textacy.datasets.wikimedia &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -31,10 +31,9 @@
           <div class="body" role="main">
             
   <h1>Source code for textacy.datasets.wikimedia</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Wikimedia</span>
-<span class="sd">---------</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Wikimedia articles</span>
+<span class="sd">------------------</span>
 
 <span class="sd">All articles for a given Wikimedia project, specified by language and version.</span>
 
@@ -54,22 +53,19 @@
 <span class="sd">JSON file with one record per line. For more information, refer to</span>
 <span class="sd">https://meta.wikimedia.org/wiki/Data_dumps.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
-
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">urllib.parse</span>
 
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">cytoolz</span> <span class="k">import</span> <span class="n">itertoolz</span>
 
-<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">compat</span>
-<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">constants</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">constants</span><span class="p">,</span> <span class="n">utils</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">io</span> <span class="k">as</span> <span class="n">tio</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">utils</span>
-<span class="kn">from</span> <span class="nn">.dataset</span> <span class="k">import</span> <span class="n">Dataset</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">Dataset</span>
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -147,16 +143,20 @@
         <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">meta</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">,</span>
         <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;en&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;current&quot;</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Wikimedia</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lang</span> <span class="o">=</span> <span class="n">lang</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">project</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">namespace</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_filestub</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{lang}{project}</span><span class="s2">/</span><span class="si">{version}</span><span class="s2">/</span><span class="si">{lang}{project}</span><span class="s2">-</span><span class="si">{version}</span><span class="s2">-cirrussearch-content.json.gz&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">version</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filestub</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">{lang}{project}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">),</span>
+            <span class="s2">&quot;</span><span class="si">{version}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">),</span>
+            <span class="s2">&quot;</span><span class="si">{lang}{project}</span><span class="s2">-</span><span class="si">{version}</span><span class="s2">-cirrussearch-content.json.gz&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">lang</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filestub</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">to_path</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filepath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_filestub</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">filepath</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -164,12 +164,12 @@
 <span class="sd">        str: Full path on disk for the Wikimedia CirrusSearch db dump</span>
 <span class="sd">        corresponding to the ``project``, ``lang``, and ``version``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_filepath</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filepath</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filepath</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_filepath</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="Wikimedia.download"><a class="viewcode-back" href="../../../api_reference/datasets.html#textacy.datasets.wikimedia.Wikimedia.download">[docs]</a>    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Wikimedia.download"><a class="viewcode-back" href="../../../api_reference/datasets.html#textacy.datasets.wikimedia.Wikimedia.download">[docs]</a>    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Download the Wikimedia CirrusSearch db dump corresponding to the given</span>
 <span class="sd">        ``project``, ``lang``, and ``version`` as a compressed JSON file,</span>
@@ -184,7 +184,7 @@
 <span class="sd">            and can take hours to fully download.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">file_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_file_url</span><span class="p">()</span>
-        <span class="n">filepath</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span>
+        <span class="n">tio</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span>
             <span class="n">file_url</span><span class="p">,</span>
             <span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_filestub</span><span class="p">,</span>
             <span class="n">dirpath</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span>
@@ -211,19 +211,20 @@
                 <span class="p">)</span>
                 <span class="k">raise</span>
         <span class="k">for</span> <span class="n">version_dt</span> <span class="ow">in</span> <span class="n">version_dts</span><span class="p">:</span>
-            <span class="n">file_url</span> <span class="o">=</span> <span class="n">compat</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span>
+            <span class="n">file_url</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span>
                 <span class="n">DOWNLOAD_ROOT</span><span class="p">,</span>
                 <span class="s2">&quot;</span><span class="si">{version}</span><span class="s2">/</span><span class="si">{lang}{project}</span><span class="s2">-</span><span class="si">{version_dt}</span><span class="s2">-cirrussearch-content.json.gz&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">version</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
                     <span class="n">lang</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="p">,</span>
                     <span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
-                    <span class="n">version_dt</span><span class="o">=</span><span class="n">version_dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">))</span>
+                    <span class="n">version_dt</span><span class="o">=</span><span class="n">version_dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="p">)</span>
             <span class="p">)</span>
             <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">file_url</span>
         <span class="c1"># check that the version actually exists...</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">compat</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">DOWNLOAD_ROOT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">DOWNLOAD_ROOT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">&quot;no Wikimedia CirrusSearch data found for version=&#39;</span><span class="si">{version}</span><span class="s2">&#39;; &quot;</span>
@@ -277,7 +278,7 @@
                 <span class="s2">&quot;headings&quot;</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;heading&quot;</span><span class="p">,</span> <span class="p">[])),</span>
                 <span class="s2">&quot;wiki_links&quot;</span><span class="p">:</span> <span class="n">wiki_links</span><span class="p">,</span>
                 <span class="s2">&quot;ext_links&quot;</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span>
-                    <span class="n">compat</span><span class="o">.</span><span class="n">url_unquote_plus</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+                    <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">unquote_plus</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">source</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;external_link&quot;</span><span class="p">,</span> <span class="p">[])),</span>
                 <span class="s2">&quot;categories&quot;</span><span class="p">:</span> <span class="n">categories</span><span class="p">,</span>
                 <span class="s2">&quot;dt_created&quot;</span><span class="p">:</span> <span class="n">source</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;create_timestamp&quot;</span><span class="p">),</span>
@@ -294,8 +295,8 @@
                 <span class="k">lambda</span> <span class="n">record</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">min_len</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">category</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">category</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">validate_set_member_filter</span><span class="p">(</span>
-                <span class="n">category</span><span class="p">,</span> <span class="n">compat</span><span class="o">.</span><span class="n">string_types</span><span class="p">,</span> <span class="n">valid_vals</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">category</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">validate_set_members</span><span class="p">(</span>
+                <span class="n">category</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">),</span> <span class="n">valid_vals</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
             <span class="n">filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="k">lambda</span> <span class="n">record</span><span class="p">:</span> <span class="p">(</span>
                     <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;categories&quot;</span><span class="p">)</span>
@@ -303,8 +304,8 @@
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">wiki_link</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">wiki_link</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">validate_set_member_filter</span><span class="p">(</span>
-                <span class="n">wiki_link</span><span class="p">,</span> <span class="n">compat</span><span class="o">.</span><span class="n">string_types</span><span class="p">,</span> <span class="n">valid_vals</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">wiki_link</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">validate_set_members</span><span class="p">(</span>
+                <span class="n">wiki_link</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">),</span> <span class="n">valid_vals</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
             <span class="n">filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="k">lambda</span> <span class="n">record</span><span class="p">:</span> <span class="p">(</span>
                     <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;wiki_links&quot;</span><span class="p">)</span>
@@ -322,7 +323,7 @@
             <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">record</span>
 
-<div class="viewcode-block" id="Wikimedia.texts"><a class="viewcode-back" href="../../../api_reference/datasets.html#textacy.datasets.wikimedia.Wikimedia.texts">[docs]</a>    <span class="k">def</span> <span class="nf">texts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wiki_link</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">min_len</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Wikimedia.texts"><a class="viewcode-back" href="../../../api_reference/datasets.html#textacy.datasets.wikimedia.Wikimedia.texts">[docs]</a>    <span class="k">def</span> <span class="nf">texts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wiki_link</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">min_len</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Iterate over wiki pages in this dataset, optionally filtering by a variety</span>
 <span class="sd">        of metadata and/or text length, and yield texts only,</span>
@@ -352,7 +353,7 @@
         <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">islice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_filtered_iter</span><span class="p">(</span><span class="n">filters</span><span class="p">),</span> <span class="n">limit</span><span class="p">):</span>
             <span class="k">yield</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Wikimedia.records"><a class="viewcode-back" href="../../../api_reference/datasets.html#textacy.datasets.wikimedia.Wikimedia.records">[docs]</a>    <span class="k">def</span> <span class="nf">records</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wiki_link</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">min_len</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Wikimedia.records"><a class="viewcode-back" href="../../../api_reference/datasets.html#textacy.datasets.wikimedia.Wikimedia.records">[docs]</a>    <span class="k">def</span> <span class="nf">records</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wiki_link</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">min_len</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Iterate over wiki pages in this dataset, optionally filtering by a variety</span>
 <span class="sd">        of metadata and/or text length, and yield text + metadata pairs,</span>
@@ -391,37 +392,37 @@
 
 <span class="sd">    Download a database dump (one time only!) and save its contents to disk::</span>
 
-<span class="sd">        &gt;&gt;&gt; wp = Wikipedia(lang=&quot;en&quot;, version=&quot;current&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; wp.download()</span>
-<span class="sd">        &gt;&gt;&gt; wp.info</span>
+<span class="sd">        &gt;&gt;&gt; ds = Wikipedia(lang=&quot;en&quot;, version=&quot;current&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; ds.download()</span>
+<span class="sd">        &gt;&gt;&gt; ds.info</span>
 <span class="sd">        {&#39;name&#39;: &#39;wikipedia&#39;,</span>
 <span class="sd">         &#39;site_url&#39;: &#39;https://en.wikipedia.org/wiki/Main_Page&#39;,</span>
 <span class="sd">         &#39;description&#39;: &#39;All pages for a given language- and version-specific Wikipedia site snapshot.&#39;}</span>
 
 <span class="sd">    Iterate over wiki pages as texts or records with both text and metadata::</span>
 
-<span class="sd">        &gt;&gt;&gt; for text in wp.texts(limit=5):</span>
+<span class="sd">        &gt;&gt;&gt; for text in ds.texts(limit=5):</span>
 <span class="sd">        ...     print(text[:500])</span>
-<span class="sd">        &gt;&gt;&gt; for text, meta in wp.records(limit=5):</span>
+<span class="sd">        &gt;&gt;&gt; for text, meta in ds.records(limit=5):</span>
 <span class="sd">        ...     print(meta[&quot;page_id&quot;], meta[&quot;title&quot;])</span>
 
 <span class="sd">    Filter wiki pages by a variety of metadata fields and text length::</span>
 
-<span class="sd">        &gt;&gt;&gt; for text, meta in wp.records(category=&quot;Living people&quot;, limit=5):</span>
+<span class="sd">        &gt;&gt;&gt; for text, meta in ds.records(category=&quot;Living people&quot;, limit=5):</span>
 <span class="sd">        ...     print(meta[&quot;title&quot;], meta[&quot;categories&quot;])</span>
-<span class="sd">        &gt;&gt;&gt; for text, meta in wp.records(wiki_link=&quot;United_States&quot;, limit=5):</span>
+<span class="sd">        &gt;&gt;&gt; for text, meta in ds.records(wiki_link=&quot;United_States&quot;, limit=5):</span>
 <span class="sd">        ...     print(meta[&quot;title&quot;], meta[&quot;wiki_links&quot;])</span>
-<span class="sd">        &gt;&gt;&gt; for text in wp.texts(min_len=10000, limit=5):</span>
+<span class="sd">        &gt;&gt;&gt; for text in ds.texts(min_len=10000, limit=5):</span>
 <span class="sd">        ...     print(len(text))</span>
 
 <span class="sd">    Stream wiki pages into a :class:`textacy.Corpus &lt;textacy.corpus.Corpus&gt;`::</span>
 
-<span class="sd">        &gt;&gt;&gt; textacy.Corpus(&quot;en&quot;, data=wp.records(min_len=2000, limit=50))</span>
+<span class="sd">        &gt;&gt;&gt; textacy.Corpus(&quot;en&quot;, data=ds.records(min_len=2000, limit=50))</span>
 <span class="sd">        Corpus(50 docs; 72368 tokens)</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        data_dir (str): Path to directory on disk under which database dump</span>
-<span class="sd">            files are stored. Each file is expected as</span>
+<span class="sd">        data_dir (str or :class:`pathlib.Path`): Path to directory on disk</span>
+<span class="sd">            under which database dump files are stored. Each file is expected as</span>
 <span class="sd">            ``{lang}{project}/{version}/{lang}{project}-{version}-cirrussearch-content.json.gz``</span>
 <span class="sd">            immediately under this directory.</span>
 <span class="sd">        lang (str): Standard two-letter language code, e.g. &quot;en&quot; =&gt; &quot;English&quot;,</span>
@@ -435,10 +436,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_DATA_DIR</span><span class="p">,</span> <span class="s2">&quot;wikipedia&quot;</span><span class="p">),</span>
-        <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;en&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;current&quot;</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="mi">0</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">data_dir</span><span class="o">=</span><span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_DATA_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;wikipedia&quot;</span><span class="p">),</span>
+        <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;en&quot;</span><span class="p">,</span>
+        <span class="n">version</span><span class="o">=</span><span class="s2">&quot;current&quot;</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Wikipedia</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="s2">&quot;wikipedia&quot;</span><span class="p">,</span> <span class="n">METAS</span><span class="p">[</span><span class="s2">&quot;wikipedia&quot;</span><span class="p">],</span> <span class="s2">&quot;wiki&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">,</span>
             <span class="n">lang</span><span class="o">=</span><span class="n">lang</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
         <span class="p">)</span></div>
@@ -451,37 +455,37 @@
 
 <span class="sd">    Download a database dump (one time only!) and save its contents to disk::</span>
 
-<span class="sd">        &gt;&gt;&gt; wn = Wikinews(lang=&quot;en&quot;, version=&quot;current&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; wn.download()</span>
-<span class="sd">        &gt;&gt;&gt; wn.info</span>
+<span class="sd">        &gt;&gt;&gt; ds = Wikinews(lang=&quot;en&quot;, version=&quot;current&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; ds.download()</span>
+<span class="sd">        &gt;&gt;&gt; ds.info</span>
 <span class="sd">        {&#39;name&#39;: &#39;wikinews&#39;,</span>
 <span class="sd">         &#39;site_url&#39;: &#39;https://en.wikinews.org/wiki/Main_Page&#39;,</span>
 <span class="sd">         &#39;description&#39;: &#39;All pages for a given language- and version-specific Wikinews site snapshot.&#39;}</span>
 
 <span class="sd">    Iterate over wiki pages as texts or records with both text and metadata::</span>
 
-<span class="sd">        &gt;&gt;&gt; for text in wn.texts(limit=5):</span>
+<span class="sd">        &gt;&gt;&gt; for text in ds.texts(limit=5):</span>
 <span class="sd">        ...     print(text[:500])</span>
-<span class="sd">        &gt;&gt;&gt; for text, meta in wn.records(limit=5):</span>
+<span class="sd">        &gt;&gt;&gt; for text, meta in ds.records(limit=5):</span>
 <span class="sd">        ...     print(meta[&quot;page_id&quot;], meta[&quot;title&quot;])</span>
 
 <span class="sd">    Filter wiki pages by a variety of metadata fields and text length::</span>
 
-<span class="sd">        &gt;&gt;&gt; for text, meta in wn.records(category=&quot;Politics and conflicts&quot;, limit=5):</span>
+<span class="sd">        &gt;&gt;&gt; for text, meta in ds.records(category=&quot;Politics and conflicts&quot;, limit=5):</span>
 <span class="sd">        ...     print(meta[&quot;title&quot;], meta[&quot;categories&quot;])</span>
-<span class="sd">        &gt;&gt;&gt; for text, meta in wn.records(wiki_link=&quot;Reuters&quot;, limit=5):</span>
+<span class="sd">        &gt;&gt;&gt; for text, meta in ds.records(wiki_link=&quot;Reuters&quot;, limit=5):</span>
 <span class="sd">        ...     print(meta[&quot;title&quot;], meta[&quot;wiki_links&quot;])</span>
-<span class="sd">        &gt;&gt;&gt; for text in wn.texts(min_len=5000, limit=5):</span>
+<span class="sd">        &gt;&gt;&gt; for text in ds.texts(min_len=5000, limit=5):</span>
 <span class="sd">        ...     print(len(text))</span>
 
 <span class="sd">    Stream wiki pages into a :class:`textacy.Corpus &lt;textacy.corpus.Corpus&gt;`::</span>
 
-<span class="sd">        &gt;&gt;&gt; textacy.Corpus(&quot;en&quot;, data=wn.records(limit=100))</span>
+<span class="sd">        &gt;&gt;&gt; textacy.Corpus(&quot;en&quot;, data=ds.records(limit=100))</span>
 <span class="sd">        Corpus(100 docs; 33092 tokens)</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        data_dir (str): Path to directory on disk under which database dump</span>
-<span class="sd">            files are stored. Each file is expected as</span>
+<span class="sd">        data_dir (str or :class:`pathlib.Path`): Path to directory on disk</span>
+<span class="sd">            under which database dump files are stored. Each file is expected as</span>
 <span class="sd">            ``{lang}{project}/{version}/{lang}{project}-{version}-cirrussearch-content.json.gz``</span>
 <span class="sd">            immediately under this directory.</span>
 <span class="sd">        lang (str): Standard two-letter language code, e.g. &quot;en&quot; =&gt; &quot;English&quot;,</span>
@@ -495,10 +499,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_DATA_DIR</span><span class="p">,</span> <span class="s2">&quot;wikinews&quot;</span><span class="p">),</span>
-        <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;en&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;current&quot;</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="mi">0</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">data_dir</span><span class="o">=</span><span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_DATA_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;wikinews&quot;</span><span class="p">),</span>
+        <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;en&quot;</span><span class="p">,</span>
+        <span class="n">version</span><span class="o">=</span><span class="s2">&quot;current&quot;</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Wikinews</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="s2">&quot;wikinews&quot;</span><span class="p">,</span> <span class="n">METAS</span><span class="p">[</span><span class="s2">&quot;wikinews&quot;</span><span class="p">],</span> <span class="s2">&quot;wikinews&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">,</span>
             <span class="n">lang</span><span class="o">=</span><span class="n">lang</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
         <span class="p">)</span></div>

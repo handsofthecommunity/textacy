@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>textacy.preprocessing.replace &#8212; textacy 0.8.0 documentation</title>
+    <title>textacy.preprocessing.replace &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -31,16 +31,13 @@
           <div class="body" role="main">
             
   <h1>Source code for textacy.preprocessing.replace</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Replace</span>
 <span class="sd">-------</span>
 
 <span class="sd">Replace parts of raw text that are semantically important as members of a group</span>
 <span class="sd">but not so much in the individual instances.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
-
 <span class="kn">from</span> <span class="nn">.resources</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">RE_CURRENCY_SYMBOL</span><span class="p">,</span>
     <span class="n">RE_EMAIL</span><span class="p">,</span>
@@ -101,20 +98,6 @@
     <span class="k">return</span> <span class="n">RE_EMOJI</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">replace_with</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="replace_numbers"><a class="viewcode-back" href="../../../api_reference/text_processing.html#textacy.preprocessing.replace.replace_numbers">[docs]</a><span class="k">def</span> <span class="nf">replace_numbers</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">replace_with</span><span class="o">=</span><span class="s2">&quot;_NUMBER_&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Replace all numbers in ``text`` with ``replace_with``.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        text (str)</span>
-<span class="sd">        replace_with (str)</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        str</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">RE_NUMBER</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">replace_with</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span></div>
-
-
 <div class="viewcode-block" id="replace_hashtags"><a class="viewcode-back" href="../../../api_reference/text_processing.html#textacy.preprocessing.replace.replace_hashtags">[docs]</a><span class="k">def</span> <span class="nf">replace_hashtags</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">replace_with</span><span class="o">=</span><span class="s2">&quot;_TAG_&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replace all hashtags in ``text`` with ``replace_with``.</span>
@@ -127,6 +110,20 @@
 <span class="sd">        str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">RE_HASHTAG</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">replace_with</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="replace_numbers"><a class="viewcode-back" href="../../../api_reference/text_processing.html#textacy.preprocessing.replace.replace_numbers">[docs]</a><span class="k">def</span> <span class="nf">replace_numbers</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">replace_with</span><span class="o">=</span><span class="s2">&quot;_NUMBER_&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Replace all numbers in ``text`` with ``replace_with``.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        text (str)</span>
+<span class="sd">        replace_with (str)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">RE_NUMBER</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">replace_with</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="replace_phone_numbers"><a class="viewcode-back" href="../../../api_reference/text_processing.html#textacy.preprocessing.replace.replace_phone_numbers">[docs]</a><span class="k">def</span> <span class="nf">replace_phone_numbers</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">replace_with</span><span class="o">=</span><span class="s2">&quot;_PHONE_&quot;</span><span class="p">):</span>
@@ -154,7 +151,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">RE_URL</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">replace_with</span><span class="p">,</span> <span class="n">RE_SHORT_URL</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">replace_with</span><span class="p">,</span> <span class="n">text</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">RE_SHORT_URL</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">replace_with</span><span class="p">,</span> <span class="n">RE_URL</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">replace_with</span><span class="p">,</span> <span class="n">text</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="replace_user_handles"><a class="viewcode-back" href="../../../api_reference/text_processing.html#textacy.preprocessing.replace.replace_user_handles">[docs]</a><span class="k">def</span> <span class="nf">replace_user_handles</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">replace_with</span><span class="o">=</span><span class="s2">&quot;_USER_&quot;</span><span class="p">):</span>

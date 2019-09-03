@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Miscellany &#8212; textacy 0.8.0 documentation</title>
+    <title>Miscellany &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -312,7 +312,7 @@ Higher value =&gt; more difficult text.</p>
 
 <dl class="function">
 <dt id="textacy.text_stats.flesch_reading_ease">
-<code class="sig-prename descclassname">textacy.text_stats.</code><code class="sig-name descname">flesch_reading_ease</code><span class="sig-paren">(</span><em class="sig-param">n_syllables</em>, <em class="sig-param">n_words</em>, <em class="sig-param">n_sents</em>, <em class="sig-param">lang=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/text_stats.html#flesch_reading_ease"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.text_stats.flesch_reading_ease" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.text_stats.</code><code class="sig-name descname">flesch_reading_ease</code><span class="sig-paren">(</span><em class="sig-param">n_syllables</em>, <em class="sig-param">n_words</em>, <em class="sig-param">n_sents</em>, <em class="sig-param">*</em>, <em class="sig-param">lang=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/text_stats.html#flesch_reading_ease"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.text_stats.flesch_reading_ease" title="Permalink to this definition">¶</a></dt>
 <dd><p>Readability score usually in the range [0, 100], related (inversely) to
 <a class="reference internal" href="#textacy.text_stats.flesch_kincaid_grade_level" title="textacy.text_stats.flesch_kincaid_grade_level"><code class="xref py py-func docutils literal notranslate"><span class="pre">flesch_kincaid_grade_level()</span></code></a>. Higher value =&gt; easier text.</p>
 <div class="admonition note">
@@ -327,6 +327,7 @@ Spanish: ?
 French: ?
 Italian: <a class="reference external" href="https://it.wikipedia.org/wiki/Formula_di_Flesch">https://it.wikipedia.org/wiki/Formula_di_Flesch</a>
 Dutch: ?
+Portuguese: <a class="reference external" href="https://pt.wikipedia.org/wiki/Legibilidade_de_Flesch">https://pt.wikipedia.org/wiki/Legibilidade_de_Flesch</a>
 Russian: <a class="reference external" href="https://ru.wikipedia.org/wiki/%D0%98%D0%BD%D0%B4%D0%B5%D0%BA%D1%81_%D1%83%D0%B4%D0%BE%D0%B1%D0%BE%D1%87%D0%B8%D1%82%D0%B0%D0%B5%D0%BC%D0%BE%D1%81%D1%82%D0%B8">https://ru.wikipedia.org/wiki/%D0%98%D0%BD%D0%B4%D0%B5%D0%BA%D1%81_%D1%83%D0%B4%D0%BE%D0%B1%D0%BE%D1%87%D0%B8%D1%82%D0%B0%D0%B5%D0%BC%D0%BE%D1%81%D1%82%D0%B8</a></p>
 </dd></dl>
 
@@ -384,7 +385,7 @@ difficulty of reading a foreign text. Higher value =&gt; more difficult text.</p
 
 <dl class="function">
 <dt id="textacy.text_stats.wiener_sachtextformel">
-<code class="sig-prename descclassname">textacy.text_stats.</code><code class="sig-name descname">wiener_sachtextformel</code><span class="sig-paren">(</span><em class="sig-param">n_words</em>, <em class="sig-param">n_polysyllable_words</em>, <em class="sig-param">n_monosyllable_words</em>, <em class="sig-param">n_long_words</em>, <em class="sig-param">n_sents</em>, <em class="sig-param">variant=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/text_stats.html#wiener_sachtextformel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.text_stats.wiener_sachtextformel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.text_stats.</code><code class="sig-name descname">wiener_sachtextformel</code><span class="sig-paren">(</span><em class="sig-param">n_words</em>, <em class="sig-param">n_polysyllable_words</em>, <em class="sig-param">n_monosyllable_words</em>, <em class="sig-param">n_long_words</em>, <em class="sig-param">n_sents</em>, <em class="sig-param">*</em>, <em class="sig-param">variant=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/text_stats.html#wiener_sachtextformel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.text_stats.wiener_sachtextformel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Readability score for German-language texts, whose value estimates the grade
 level required to understand a text. Higher value =&gt; more difficult text.</p>
 <p class="rubric">References</p>
@@ -401,6 +402,30 @@ easier text.</p>
 <p><a class="reference external" href="https://it.wikipedia.org/wiki/Indice_Gulpease">https://it.wikipedia.org/wiki/Indice_Gulpease</a></p>
 </dd></dl>
 
+<dl class="function">
+<dt id="textacy.text_stats.load_hyphenator">
+<code class="sig-prename descclassname">textacy.text_stats.</code><code class="sig-name descname">load_hyphenator</code><span class="sig-paren">(</span><em class="sig-param">lang</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/text_stats.html#load_hyphenator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.text_stats.load_hyphenator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load an object that hyphenates words at valid points, as used in LaTex typesetting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lang</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – <p>Standard 2-letter language abbreviation. To get a list of
+valid values:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyphen</span><span class="p">;</span> <span class="n">pyphen</span><span class="o">.</span><span class="n">LANGUAGES</span>
+</pre></div>
+</div>
+</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pyphen.Pyphen()</span></code></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>While hyphenation points always fall on syllable divisions,
+not all syllable divisions are valid hyphenation points. But it’s decent.</p>
+</div>
+</dd></dl>
+
 </div>
 <span class="target" id="module-textacy.network"></span><div class="section" id="semantic-networks">
 <h2>Semantic Networks<a class="headerlink" href="#semantic-networks" title="Permalink to this headline">¶</a></h2>
@@ -409,7 +434,7 @@ whole sentences and edges are weighted by the strength of their co-occurrence or
 similarity, respectively.</p>
 <dl class="function">
 <dt id="textacy.network.terms_to_semantic_network">
-<code class="sig-prename descclassname">textacy.network.</code><code class="sig-name descname">terms_to_semantic_network</code><span class="sig-paren">(</span><em class="sig-param">terms</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">window_width=10</em>, <em class="sig-param">edge_weighting='cooc_freq'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/network.html#terms_to_semantic_network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.network.terms_to_semantic_network" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.network.</code><code class="sig-name descname">terms_to_semantic_network</code><span class="sig-paren">(</span><em class="sig-param">terms</em>, <em class="sig-param">*</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">window_width=10</em>, <em class="sig-param">edge_weighting='cooc_freq'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/network.html#terms_to_semantic_network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.network.terms_to_semantic_network" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform an ordered list of non-overlapping terms into a semantic network,
 where each term is represented by a node with weighted edges linking it to
 other terms that co-occur within <code class="docutils literal notranslate"><span class="pre">window_width</span></code> terms of itself.</p>
@@ -461,7 +486,7 @@ like terms are counted together; for example, by applying
 
 <dl class="function">
 <dt id="textacy.network.sents_to_semantic_network">
-<code class="sig-prename descclassname">textacy.network.</code><code class="sig-name descname">sents_to_semantic_network</code><span class="sig-paren">(</span><em class="sig-param">sents</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">edge_weighting='cosine'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/network.html#sents_to_semantic_network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.network.sents_to_semantic_network" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.network.</code><code class="sig-name descname">sents_to_semantic_network</code><span class="sig-paren">(</span><em class="sig-param">sents</em>, <em class="sig-param">*</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">edge_weighting='cosine'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/network.html#sents_to_semantic_network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.network.sents_to_semantic_network" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform a list of sentences into a semantic network, where each sentence is
 represented by a node with edges linking it to other sentences weighted by
 the (cosine or jaccard) similarity of their constituent words.</p>
@@ -678,68 +703,6 @@ similarity measures.</p>
 </dd></dl>
 
 </div>
-<span class="target" id="module-textacy.lexicon_methods"></span><div class="section" id="lexicon-methods">
-<h2>Lexicon Methods<a class="headerlink" href="#lexicon-methods" title="Permalink to this headline">¶</a></h2>
-<p>Collection of lexicon-based methods for characterizing texts by sentiment,
-emotional valence, etc.</p>
-<p>This module is a bit of an orphan right now…</p>
-<dl class="function">
-<dt id="textacy.lexicon_methods.emotional_valence">
-<code class="sig-prename descclassname">textacy.lexicon_methods.</code><code class="sig-name descname">emotional_valence</code><span class="sig-paren">(</span><em class="sig-param">words</em>, <em class="sig-param">threshold=0.0</em>, <em class="sig-param">dm_data_dir=None</em>, <em class="sig-param">dm_weighting='normfreq'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/lexicon_methods.html#emotional_valence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.lexicon_methods.emotional_valence" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get average emotional valence over all words for the following emotions –
-AFRAID, AMUSED, ANGRY, ANNOYED, DONT_CARE, HAPPY, INSPIRED, SAD – using
-the <a class="reference internal" href="#depechemood" id="id1"><span>[DepecheMood]</span></a> dataset.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>words</strong> (List[<code class="xref py py-class docutils literal notranslate"><span class="pre">spacy.tokens.Token</span></code>]) – list of words for which to get
-average emotional valence; note that only nouns, adjectives, adverbs,
-and verbs will be counted</p></li>
-<li><p><strong>threshold</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – minimum emotional valence score for which to
-count a given word for a given emotion; value must be in [0.0, 1.0)</p></li>
-<li><p><strong>dm_data_dir</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – full path to directory where DepecheMood data
-is saved on disk</p></li>
-<li><p><strong>dm_weighting</strong> (<em>{'freq'</em><em>, </em><em>'normfreq'</em><em>, </em><em>'tfidf'}</em>) – type of word
-weighting used in building DepecheMood matrix</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>mapping of emotion (str) to average valence score (float)</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)">dict</a></p>
-</dd>
-</dl>
-<p class="rubric">References</p>
-<dl class="citation">
-<dt class="label" id="depechemood"><span class="brackets"><a class="fn-backref" href="#id1">DepecheMood</a></span></dt>
-<dd><p>Staiano and Guerini. DepecheMood: a Lexicon for Emotion
-Analysis from Crowd-Annotated News. 2014.
-Data available at <a class="reference external" href="https://github.com/marcoguerini/DepecheMood/releases">https://github.com/marcoguerini/DepecheMood/releases</a></p>
-</dd>
-</dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><a class="reference internal" href="utils.html#textacy.cache.load_depechemood" title="textacy.cache.load_depechemood"><code class="xref py py-func docutils literal notranslate"><span class="pre">cache.load_depechemood()</span></code></a></p>
-</div>
-</dd></dl>
-
-<dl class="function">
-<dt id="textacy.lexicon_methods.download_depechemood">
-<code class="sig-prename descclassname">textacy.lexicon_methods.</code><code class="sig-name descname">download_depechemood</code><span class="sig-paren">(</span><em class="sig-param">data_dir=None</em>, <em class="sig-param">force=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/lexicon_methods.html#download_depechemood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.lexicon_methods.download_depechemood" title="Permalink to this definition">¶</a></dt>
-<dd><p>Download the DepecheMood dataset from GitHub, save to disk as .txt files.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data_dir</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Path to directory on disk where data files are to be saved.</p></li>
-<li><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, download the data, even if it already exists
-on disk under <code class="docutils literal notranslate"><span class="pre">data_dir</span></code>.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</div>
 </div>
 
 
@@ -785,14 +748,16 @@ on disk under <code class="docutils literal notranslate"><span class="pre">data_
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/quickstart.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="root.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="doc_and_corpus.html">Doc and Corpus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang_doc_corpus.html">Lang, Doc, Corpus</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spacier.html">spaCy extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="datasets.html">Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html">Resources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="text_processing.html">Text (Pre-)Processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="information_extraction.html">Information Extraction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vsm_and_tm.html">Vectorization &amp; Topic Modeling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io.html">IO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="viz.html">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="augmentation.html">Data Augmentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Miscellany</a></li>
 </ul>

@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Index &#8212; textacy 0.8.0 documentation</title>
+    <title>Index &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -42,6 +42,7 @@
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#J"><strong>J</strong></a>
  | <a href="#K"><strong>K</strong></a>
@@ -64,25 +65,33 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/information_extraction.html#textacy.extract.acronyms_and_definitions">acronyms_and_definitions() (in module textacy.extract)</a>
 </li>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.add">add() (textacy.corpus.Corpus method)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.add">add() (textacy.corpus.Corpus method)</a>
 </li>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.add_doc">add_doc() (textacy.corpus.Corpus method)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.add_doc">add_doc() (textacy.corpus.Corpus method)</a>
 </li>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.add_docs">add_docs() (textacy.corpus.Corpus method)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.add_docs">add_docs() (textacy.corpus.Corpus method)</a>
 </li>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.add_record">add_record() (textacy.corpus.Corpus method)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.add_record">add_record() (textacy.corpus.Corpus method)</a>
 </li>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.add_records">add_records() (textacy.corpus.Corpus method)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.add_records">add_records() (textacy.corpus.Corpus method)</a>
+</li>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.add_text">add_text() (textacy.corpus.Corpus method)</a>
+</li>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.add_texts">add_texts() (textacy.corpus.Corpus method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.add_text">add_text() (textacy.corpus.Corpus method)</a>
-</li>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.add_texts">add_texts() (textacy.corpus.Corpus method)</a>
-</li>
       <li><a href="api_reference/information_extraction.html#textacy.ke.utils.aggregate_term_variants">aggregate_term_variants() (in module textacy.ke.utils)</a>
 </li>
+      <li><a href="api_reference/resources.html#textacy.resources.concept_net.ConceptNet.antonyms">antonyms() (textacy.resources.concept_net.ConceptNet property)</a>
+</li>
       <li><a href="api_reference/vsm_and_tm.html#textacy.vsm.matrix_utils.apply_idf_weighting">apply_idf_weighting() (in module textacy.vsm.matrix_utils)</a>
+</li>
+      <li><a href="api_reference/augmentation.html#textacy.augmentation.augmenter.Augmenter.apply_transforms">apply_transforms() (textacy.augmentation.augmenter.Augmenter method)</a>
+</li>
+      <li><a href="api_reference/augmentation.html#textacy.augmentation.augmenter.Augmenter">Augmenter (class in textacy.augmentation.augmenter)</a>
+</li>
+      <li><a href="api_reference/augmentation.html#textacy.augmentation.utils.AugTok">AugTok (class in textacy.augmentation.utils)</a>
 </li>
       <li><a href="api_reference/datasets.html#textacy.datasets.oxford_text_archive.OxfordTextArchive.authors">authors (textacy.datasets.oxford_text_archive.OxfordTextArchive attribute)</a>
 </li>
@@ -122,9 +131,11 @@
 </li>
       <li><a href="api_reference/misc.html#textacy.text_stats.coleman_liau_index">coleman_liau_index() (in module textacy.text_stats)</a>
 </li>
+      <li><a href="api_reference/resources.html#textacy.resources.concept_net.ConceptNet">ConceptNet (class in textacy.resources.concept_net)</a>
+</li>
       <li><a href="api_reference/datasets.html#textacy.datasets.capitol_words.CapitolWords.congresses">congresses (textacy.datasets.capitol_words.CapitolWords attribute)</a>
 </li>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus">Corpus (class in textacy.corpus)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus">Corpus (class in textacy.corpus)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -136,9 +147,15 @@
 </li>
       <li><a href="api_reference/io.html#textacy.io.json.ExtendedJSONEncoder.default">default() (textacy.io.json.ExtendedJSONEncoder method)</a>
 </li>
+      <li><a href="api_reference/augmentation.html#textacy.augmentation.transforms.delete_chars">delete_chars() (in module textacy.augmentation.transforms)</a>
+</li>
+      <li><a href="api_reference/augmentation.html#textacy.augmentation.transforms.delete_words">delete_words() (in module textacy.augmentation.transforms)</a>
+</li>
+      <li><a href="api_reference/resources.html#textacy.resources.depeche_mood.DepecheMood">DepecheMood (class in textacy.resources.depeche_mood)</a>
+</li>
       <li><a href="api_reference/information_extraction.html#textacy.extract.direct_quotations">direct_quotations() (in module textacy.extract)</a>
 </li>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.docs">docs (textacy.corpus.Corpus attribute)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.docs">docs (textacy.corpus.Corpus attribute)</a>
 </li>
       <li><a href="api_reference/datasets.html#textacy.datasets.capitol_words.CapitolWords.download">download() (textacy.datasets.capitol_words.CapitolWords method)</a>
 
@@ -151,16 +168,20 @@
 </li>
         <li><a href="api_reference/datasets.html#textacy.datasets.supreme_court.SupremeCourt.download">(textacy.datasets.supreme_court.SupremeCourt method)</a>
 </li>
+        <li><a href="api_reference/datasets.html#textacy.datasets.udhr.UDHR.download">(textacy.datasets.udhr.UDHR method)</a>
+</li>
         <li><a href="api_reference/datasets.html#textacy.datasets.wikimedia.Wikimedia.download">(textacy.datasets.wikimedia.Wikimedia method)</a>
 </li>
         <li><a href="api_reference/utils.html#textacy.lang_utils.LangIdentifier.download">(textacy.lang_utils.LangIdentifier method)</a>
 </li>
+        <li><a href="api_reference/resources.html#textacy.resources.concept_net.ConceptNet.download">(textacy.resources.concept_net.ConceptNet method)</a>
+</li>
+        <li><a href="api_reference/resources.html#textacy.resources.depeche_mood.DepecheMood.download">(textacy.resources.depeche_mood.DepecheMood method)</a>
+</li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api_reference/misc.html#textacy.lexicon_methods.download_depechemood">download_depechemood() (in module textacy.lexicon_methods)</a>
-</li>
-      <li><a href="api_reference/datasets.html#textacy.datasets.utils.download_file">download_file() (in module textacy.datasets.utils)</a>
+      <li><a href="api_reference/io.html#textacy.io.utils.download_file">download_file() (in module textacy.io.utils)</a>
 </li>
       <li><a href="api_reference/viz.html#textacy.viz.network.draw_semantic_network">draw_semantic_network() (in module textacy.viz.network)</a>
 </li>
@@ -172,12 +193,10 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api_reference/misc.html#textacy.lexicon_methods.emotional_valence">emotional_valence() (in module textacy.lexicon_methods)</a>
+      <li><a href="api_reference/information_extraction.html#textacy.extract.entities">entities() (in module textacy.extract)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api_reference/information_extraction.html#textacy.extract.entities">entities() (in module textacy.extract)</a>
-</li>
       <li><a href="api_reference/io.html#textacy.io.json.ExtendedJSONEncoder">ExtendedJSONEncoder (class in textacy.io.json)</a>
 </li>
   </ul></td>
@@ -192,6 +211,10 @@
         <li><a href="api_reference/datasets.html#textacy.datasets.supreme_court.SupremeCourt.filepath">(textacy.datasets.supreme_court.SupremeCourt property)</a>
 </li>
         <li><a href="api_reference/datasets.html#textacy.datasets.wikimedia.Wikimedia.filepath">(textacy.datasets.wikimedia.Wikimedia property)</a>
+</li>
+        <li><a href="api_reference/resources.html#textacy.resources.concept_net.ConceptNet.filepath">(textacy.resources.concept_net.ConceptNet property)</a>
+</li>
+        <li><a href="api_reference/resources.html#textacy.resources.depeche_mood.DepecheMood.filepath">(textacy.resources.depeche_mood.DepecheMood property)</a>
 </li>
       </ul></li>
       <li><a href="api_reference/datasets.html#textacy.datasets.reddit_comments.RedditComments.filepaths">filepaths (textacy.datasets.reddit_comments.RedditComments attribute)</a>
@@ -208,14 +231,14 @@
         <li><a href="api_reference/vsm_and_tm.html#textacy.vsm.vectorizers.Vectorizer.fit">(textacy.vsm.vectorizers.Vectorizer method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/vsm_and_tm.html#textacy.vsm.vectorizers.GroupVectorizer.fit_transform">fit_transform() (textacy.vsm.vectorizers.GroupVectorizer method)</a>
 
       <ul>
         <li><a href="api_reference/vsm_and_tm.html#textacy.vsm.vectorizers.Vectorizer.fit_transform">(textacy.vsm.vectorizers.Vectorizer method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/misc.html#textacy.text_stats.TextStats.flesch_kincaid_grade_level">flesch_kincaid_grade_level (textacy.text_stats.TextStats attribute)</a>
 </li>
       <li><a href="api_reference/misc.html#textacy.text_stats.flesch_kincaid_grade_level">flesch_kincaid_grade_level() (in module textacy.text_stats)</a>
@@ -242,7 +265,11 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.get">get() (textacy.corpus.Corpus method)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.get">get() (textacy.corpus.Corpus method)</a>
+</li>
+      <li><a href="api_reference/resources.html#textacy.resources.concept_net.ConceptNet.get_antonyms">get_antonyms() (textacy.resources.concept_net.ConceptNet method)</a>
+</li>
+      <li><a href="api_reference/augmentation.html#textacy.augmentation.utils.get_char_weights">get_char_weights() (in module textacy.augmentation.utils)</a>
 </li>
       <li><a href="api_reference/spacier.html#textacy.spacier.doc_extensions.get_doc_extensions">get_doc_extensions() (in module textacy.spacier.doc_extensions)</a>
 </li>
@@ -252,11 +279,15 @@
 </li>
       <li><a href="api_reference/vsm_and_tm.html#textacy.tm.topic_model.TopicModel.get_doc_topic_matrix">get_doc_topic_matrix() (textacy.tm.topic_model.TopicModel method)</a>
 </li>
-      <li><a href="api_reference/datasets.html#textacy.datasets.utils.get_filename_from_url">get_filename_from_url() (in module textacy.datasets.utils)</a>
+      <li><a href="api_reference/resources.html#textacy.resources.depeche_mood.DepecheMood.get_emotional_valence">get_emotional_valence() (textacy.resources.depeche_mood.DepecheMood method)</a>
+</li>
+      <li><a href="api_reference/io.html#textacy.io.utils.get_filename_from_url">get_filename_from_url() (in module textacy.io.utils)</a>
 </li>
       <li><a href="api_reference/io.html#textacy.io.utils.get_filepaths">get_filepaths() (in module textacy.io.utils)</a>
 </li>
       <li><a href="api_reference/information_extraction.html#textacy.ke.utils.get_filtered_topn_terms">get_filtered_topn_terms() (in module textacy.ke.utils)</a>
+</li>
+      <li><a href="api_reference/resources.html#textacy.resources.concept_net.ConceptNet.get_hyponyms">get_hyponyms() (textacy.resources.concept_net.ConceptNet method)</a>
 </li>
       <li><a href="api_reference/vsm_and_tm.html#textacy.vsm.matrix_utils.get_information_content">get_information_content() (in module textacy.vsm.matrix_utils)</a>
 </li>
@@ -268,14 +299,16 @@
 </li>
       <li><a href="api_reference/spacier.html#textacy.spacier.utils.get_main_verbs_of_sent">get_main_verbs_of_sent() (in module textacy.spacier.utils)</a>
 </li>
+      <li><a href="api_reference/resources.html#textacy.resources.concept_net.ConceptNet.get_meronyms">get_meronyms() (textacy.resources.concept_net.ConceptNet method)</a>
+</li>
       <li><a href="api_reference/spacier.html#textacy.spacier.doc_extensions.get_meta">get_meta() (in module textacy.spacier.doc_extensions)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/spacier.html#textacy.spacier.doc_extensions.get_n_sents">get_n_sents() (in module textacy.spacier.doc_extensions)</a>
 </li>
       <li><a href="api_reference/spacier.html#textacy.spacier.doc_extensions.get_n_tokens">get_n_tokens() (in module textacy.spacier.doc_extensions)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/information_extraction.html#textacy.ke.utils.get_ngram_candidates">get_ngram_candidates() (in module textacy.ke.utils)</a>
 </li>
       <li><a href="api_reference/spacier.html#textacy.spacier.utils.get_normalized_text">get_normalized_text() (in module textacy.spacier.utils)</a>
@@ -291,6 +324,8 @@
       <li><a href="api_reference/spacier.html#textacy.spacier.utils.get_span_for_verb_auxiliaries">get_span_for_verb_auxiliaries() (in module textacy.spacier.utils)</a>
 </li>
       <li><a href="api_reference/spacier.html#textacy.spacier.utils.get_subjects_of_verb">get_subjects_of_verb() (in module textacy.spacier.utils)</a>
+</li>
+      <li><a href="api_reference/resources.html#textacy.resources.concept_net.ConceptNet.get_synonyms">get_synonyms() (textacy.resources.concept_net.ConceptNet method)</a>
 </li>
       <li><a href="api_reference/vsm_and_tm.html#textacy.vsm.matrix_utils.get_term_freqs">get_term_freqs() (in module textacy.vsm.matrix_utils)</a>
 </li>
@@ -309,6 +344,14 @@
       <li><a href="api_reference/misc.html#textacy.text_stats.TextStats.gunning_fog_index">gunning_fog_index (textacy.text_stats.TextStats attribute)</a>
 </li>
       <li><a href="api_reference/misc.html#textacy.text_stats.gunning_fog_index">gunning_fog_index() (in module textacy.text_stats)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_reference/resources.html#textacy.resources.concept_net.ConceptNet.hyponyms">hyponyms() (textacy.resources.concept_net.ConceptNet property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -334,15 +377,23 @@
         <li><a href="api_reference/utils.html#textacy.lang_utils.LangIdentifier.identify_lang">(textacy.lang_utils.LangIdentifier method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/utils.html#textacy.lang_utils.LangIdentifier.identify_topn_langs">identify_topn_langs() (textacy.lang_utils.LangIdentifier method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/datasets.html#textacy.datasets.imdb.IMDB">IMDB (class in textacy.datasets.imdb)</a>
+</li>
+      <li><a href="api_reference/datasets.html#textacy.datasets.udhr.UDHR.index">index() (textacy.datasets.udhr.UDHR property)</a>
 </li>
       <li><a href="api_reference/utils.html#textacy.lang_utils.LangIdentifier.init_pipeline">init_pipeline() (textacy.lang_utils.LangIdentifier method)</a>
 </li>
+      <li><a href="api_reference/augmentation.html#textacy.augmentation.transforms.insert_chars">insert_chars() (in module textacy.augmentation.transforms)</a>
+</li>
+      <li><a href="api_reference/augmentation.html#textacy.augmentation.transforms.insert_word_synonyms">insert_word_synonyms() (in module textacy.augmentation.transforms)</a>
+</li>
       <li><a href="api_reference/text_processing.html#textacy.text_utils.is_acronym">is_acronym() (in module textacy.text_utils)</a>
+</li>
+      <li><a href="api_reference/augmentation.html#textacy.augmentation.utils.AugTok.is_word">is_word() (textacy.augmentation.utils.AugTok property)</a>
 </li>
       <li><a href="api_reference/datasets.html#textacy.datasets.supreme_court.SupremeCourt.issue_area_codes">issue_area_codes (textacy.datasets.supreme_court.SupremeCourt attribute)</a>
 </li>
@@ -374,25 +425,25 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.lang">lang (textacy.corpus.Corpus attribute)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.lang">lang (textacy.corpus.Corpus attribute)</a>
 </li>
       <li><a href="api_reference/utils.html#textacy.lang_utils.LangIdentifier">LangIdentifier (class in textacy.lang_utils)</a>
+</li>
+      <li><a href="api_reference/datasets.html#textacy.datasets.udhr.UDHR.langs">langs (textacy.datasets.udhr.UDHR attribute)</a>
 </li>
       <li><a href="api_reference/misc.html#textacy.similarity.levenshtein">levenshtein() (in module textacy.similarity)</a>
 </li>
       <li><a href="api_reference/misc.html#textacy.text_stats.TextStats.lix">lix (textacy.text_stats.TextStats attribute)</a>
 </li>
-      <li><a href="api_reference/misc.html#textacy.text_stats.lix">lix() (in module textacy.text_stats)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.load">load() (textacy.corpus.Corpus class method)</a>
+      <li><a href="api_reference/misc.html#textacy.text_stats.lix">lix() (in module textacy.text_stats)</a>
 </li>
-      <li><a href="api_reference/utils.html#textacy.cache.load_depechemood">load_depechemood() (in module textacy.cache)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.load">load() (textacy.corpus.Corpus class method)</a>
 </li>
-      <li><a href="api_reference/utils.html#textacy.cache.load_hyphenator">load_hyphenator() (in module textacy.cache)</a>
+      <li><a href="api_reference/misc.html#textacy.text_stats.load_hyphenator">load_hyphenator() (in module textacy.text_stats)</a>
 </li>
-      <li><a href="api_reference/utils.html#textacy.cache.load_spacy_lang">load_spacy_lang() (in module textacy.cache)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.spacier.core.load_spacy_lang">load_spacy_lang() (in module textacy.spacier.core)</a>
 </li>
       <li><a href="api_reference/utils.html#textacy.cache.LRU_CACHE">LRU_CACHE (in module textacy.cache)</a>
 </li>
@@ -404,13 +455,15 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/spacier.html#textacy.spacier.utils.make_doc_from_text_chunks">make_doc_from_text_chunks() (in module textacy.spacier.utils)</a>
 </li>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.doc.make_spacy_doc">make_spacy_doc() (in module textacy.doc)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.spacier.core.make_spacy_doc">make_spacy_doc() (in module textacy.spacier.core)</a>
 </li>
       <li><a href="api_reference/information_extraction.html#textacy.extract.matches">matches() (in module textacy.extract)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/spacier.html#textacy.spacier.utils.merge_spans">merge_spans() (in module textacy.spacier.utils)</a>
+</li>
+      <li><a href="api_reference/resources.html#textacy.resources.concept_net.ConceptNet.meronyms">meronyms() (textacy.resources.concept_net.ConceptNet property)</a>
 </li>
       <li><a href="api_reference/datasets.html#textacy.datasets.oxford_text_archive.OxfordTextArchive.metadata">metadata() (textacy.datasets.oxford_text_archive.OxfordTextArchive property)</a>
 </li>
@@ -424,7 +477,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/misc.html#textacy.text_stats.TextStats.n_chars">n_chars (textacy.text_stats.TextStats attribute)</a>
 </li>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.n_docs">n_docs (textacy.corpus.Corpus attribute)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.n_docs">n_docs (textacy.corpus.Corpus attribute)</a>
 </li>
       <li><a href="api_reference/misc.html#textacy.text_stats.TextStats.n_long_words">n_long_words (textacy.text_stats.TextStats attribute)</a>
 </li>
@@ -432,7 +485,7 @@
 </li>
       <li><a href="api_reference/misc.html#textacy.text_stats.TextStats.n_polysyllable_words">n_polysyllable_words (textacy.text_stats.TextStats attribute)</a>
 </li>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.n_sents">n_sents (textacy.corpus.Corpus attribute)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.n_sents">n_sents (textacy.corpus.Corpus attribute)</a>
 
       <ul>
         <li><a href="api_reference/misc.html#textacy.text_stats.TextStats.n_sents">(textacy.text_stats.TextStats attribute)</a>
@@ -440,7 +493,7 @@
       </ul></li>
       <li><a href="api_reference/misc.html#textacy.text_stats.TextStats.n_syllables">n_syllables (textacy.text_stats.TextStats attribute)</a>
 </li>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.n_tokens">n_tokens (textacy.corpus.Corpus attribute)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.n_tokens">n_tokens (textacy.corpus.Corpus attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -486,6 +539,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/utils.html#textacy.lang_utils.LangIdentifier.pipeline">pipeline (textacy.lang_utils.LangIdentifier attribute)</a>
 </li>
+      <li><a href="api_reference/augmentation.html#textacy.augmentation.utils.AugTok.pos">pos() (textacy.augmentation.utils.AugTok property)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/information_extraction.html#textacy.extract.pos_regex_matches">pos_regex_matches() (in module textacy.extract)</a>
@@ -525,6 +580,8 @@
 </li>
         <li><a href="api_reference/datasets.html#textacy.datasets.supreme_court.SupremeCourt.records">(textacy.datasets.supreme_court.SupremeCourt method)</a>
 </li>
+        <li><a href="api_reference/datasets.html#textacy.datasets.udhr.UDHR.records">(textacy.datasets.udhr.UDHR method)</a>
+</li>
         <li><a href="api_reference/datasets.html#textacy.datasets.wikimedia.Wikimedia.records">(textacy.datasets.wikimedia.Wikimedia method)</a>
 </li>
       </ul></li>
@@ -532,7 +589,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/datasets.html#textacy.datasets.reddit_comments.RedditComments">RedditComments (class in textacy.datasets.reddit_comments)</a>
 </li>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.remove">remove() (textacy.corpus.Corpus method)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.remove">remove() (textacy.corpus.Corpus method)</a>
 </li>
       <li><a href="api_reference/text_processing.html#textacy.preprocessing.remove.remove_accents">remove_accents() (in module textacy.preprocessing.remove)</a>
 </li>
@@ -562,7 +619,7 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.save">save() (textacy.corpus.Corpus method)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.save">save() (textacy.corpus.Corpus method)</a>
 </li>
       <li><a href="api_reference/information_extraction.html#textacy.ke.scake.scake">scake() (in module textacy.ke.scake)</a>
 </li>
@@ -578,23 +635,33 @@
 </li>
       <li><a href="api_reference/misc.html#textacy.text_stats.TextStats.smog_index">smog_index (textacy.text_stats.TextStats attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/misc.html#textacy.text_stats.smog_index">smog_index() (in module textacy.text_stats)</a>
 </li>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.spacy_lang">spacy_lang (textacy.corpus.Corpus attribute)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.spacy_lang">spacy_lang (textacy.corpus.Corpus attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/datasets.html#textacy.datasets.capitol_words.CapitolWords.speaker_names">speaker_names (textacy.datasets.capitol_words.CapitolWords attribute)</a>
 </li>
       <li><a href="api_reference/datasets.html#textacy.datasets.capitol_words.CapitolWords.speaker_parties">speaker_parties (textacy.datasets.capitol_words.CapitolWords attribute)</a>
-</li>
-      <li><a href="api_reference/io.html#textacy.io.utils.split_record_fields">split_record_fields() (in module textacy.io.utils)</a>
 </li>
       <li><a href="api_reference/io.html#textacy.io.utils.split_records">split_records() (in module textacy.io.utils)</a>
 </li>
       <li><a href="api_reference/information_extraction.html#textacy.extract.subject_verb_object_triples">subject_verb_object_triples() (in module textacy.extract)</a>
 </li>
+      <li><a href="api_reference/augmentation.html#textacy.augmentation.transforms.substitute_chars">substitute_chars() (in module textacy.augmentation.transforms)</a>
+</li>
+      <li><a href="api_reference/augmentation.html#textacy.augmentation.transforms.substitute_word_synonyms">substitute_word_synonyms() (in module textacy.augmentation.transforms)</a>
+</li>
       <li><a href="api_reference/datasets.html#textacy.datasets.supreme_court.SupremeCourt">SupremeCourt (class in textacy.datasets.supreme_court)</a>
+</li>
+      <li><a href="api_reference/augmentation.html#textacy.augmentation.transforms.swap_chars">swap_chars() (in module textacy.augmentation.transforms)</a>
+</li>
+      <li><a href="api_reference/augmentation.html#textacy.augmentation.transforms.swap_words">swap_words() (in module textacy.augmentation.transforms)</a>
+</li>
+      <li><a href="api_reference/resources.html#textacy.resources.concept_net.ConceptNet.synonyms">synonyms() (textacy.resources.concept_net.ConceptNet property)</a>
+</li>
+      <li><a href="api_reference/augmentation.html#textacy.augmentation.utils.AugTok.syns">syns() (textacy.augmentation.utils.AugTok property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -614,9 +681,17 @@
 </li>
       <li><a href="api_reference/misc.html#textacy.network.terms_to_semantic_network">terms_to_semantic_network() (in module textacy.network)</a>
 </li>
+      <li><a href="api_reference/augmentation.html#textacy.augmentation.utils.AugTok.text">text() (textacy.augmentation.utils.AugTok property)</a>
+</li>
+      <li><a href="api_reference/augmentation.html#module-textacy.augmentation.augmenter">textacy.augmentation.augmenter (module)</a>
+</li>
+      <li><a href="api_reference/augmentation.html#module-textacy.augmentation.transforms">textacy.augmentation.transforms (module)</a>
+</li>
+      <li><a href="api_reference/augmentation.html#module-textacy.augmentation.utils">textacy.augmentation.utils (module)</a>
+</li>
       <li><a href="api_reference/utils.html#module-textacy.cache">textacy.cache (module)</a>
 </li>
-      <li><a href="api_reference/doc_and_corpus.html#module-textacy.corpus">textacy.corpus (module)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#module-textacy.corpus">textacy.corpus (module)</a>
 </li>
       <li><a href="api_reference/datasets.html#module-textacy.datasets.capitol_words">textacy.datasets.capitol_words (module)</a>
 </li>
@@ -628,11 +703,11 @@
 </li>
       <li><a href="api_reference/datasets.html#module-textacy.datasets.supreme_court">textacy.datasets.supreme_court (module)</a>
 </li>
+      <li><a href="api_reference/datasets.html#module-textacy.datasets.udhr">textacy.datasets.udhr (module)</a>
+</li>
       <li><a href="api_reference/datasets.html#module-textacy.datasets.utils">textacy.datasets.utils (module)</a>
 </li>
       <li><a href="api_reference/datasets.html#module-textacy.datasets.wikimedia">textacy.datasets.wikimedia (module)</a>
-</li>
-      <li><a href="api_reference/doc_and_corpus.html#module-textacy.doc">textacy.doc (module)</a>
 </li>
       <li><a href="api_reference/information_extraction.html#module-textacy.extract">textacy.extract (module)</a>
 </li>
@@ -662,8 +737,6 @@
 </li>
       <li><a href="api_reference/utils.html#module-textacy.lang_utils">textacy.lang_utils (module)</a>
 </li>
-      <li><a href="api_reference/misc.html#module-textacy.lexicon_methods">textacy.lexicon_methods (module)</a>
-</li>
       <li><a href="api_reference/misc.html#module-textacy.network">textacy.network (module)</a>
 </li>
       <li><a href="api_reference/text_processing.html#module-textacy.preprocessing.normalize">textacy.preprocessing.normalize (module)</a>
@@ -672,11 +745,17 @@
 </li>
       <li><a href="api_reference/text_processing.html#module-textacy.preprocessing.replace">textacy.preprocessing.replace (module)</a>
 </li>
+      <li><a href="api_reference/resources.html#module-textacy.resources.concept_net">textacy.resources.concept_net (module)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_reference/resources.html#module-textacy.resources.depeche_mood">textacy.resources.depeche_mood (module)</a>
+</li>
       <li><a href="api_reference/misc.html#module-textacy.similarity">textacy.similarity (module)</a>
 </li>
       <li><a href="api_reference/spacier.html#module-textacy.spacier.components">textacy.spacier.components (module)</a>
+</li>
+      <li><a href="api_reference/lang_doc_corpus.html#module-textacy.spacier.core">textacy.spacier.core (module)</a>
 </li>
       <li><a href="api_reference/spacier.html#module-textacy.spacier.doc_extensions">textacy.spacier.doc_extensions (module)</a>
 </li>
@@ -709,12 +788,16 @@
 </li>
         <li><a href="api_reference/datasets.html#textacy.datasets.supreme_court.SupremeCourt.texts">(textacy.datasets.supreme_court.SupremeCourt method)</a>
 </li>
+        <li><a href="api_reference/datasets.html#textacy.datasets.udhr.UDHR.texts">(textacy.datasets.udhr.UDHR method)</a>
+</li>
         <li><a href="api_reference/datasets.html#textacy.datasets.wikimedia.Wikimedia.texts">(textacy.datasets.wikimedia.Wikimedia method)</a>
 </li>
       </ul></li>
       <li><a href="api_reference/misc.html#textacy.text_stats.TextStats">TextStats (class in textacy.text_stats)</a>
 </li>
       <li><a href="api_reference/spacier.html#textacy.spacier.components.TextStatsComponent">TextStatsComponent (class in textacy.spacier.components)</a>
+</li>
+      <li><a href="api_reference/augmentation.html#textacy.augmentation.utils.to_aug_toks">to_aug_toks() (in module textacy.augmentation.utils)</a>
 </li>
       <li><a href="api_reference/spacier.html#textacy.spacier.doc_extensions.to_bag_of_terms">to_bag_of_terms() (in module textacy.spacier.doc_extensions)</a>
 </li>
@@ -752,10 +835,12 @@
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api_reference/datasets.html#textacy.datasets.utils.unpack_archive">unpack_archive() (in module textacy.datasets.utils)</a>
+      <li><a href="api_reference/datasets.html#textacy.datasets.udhr.UDHR">UDHR (class in textacy.datasets.udhr)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_reference/io.html#textacy.io.utils.unpack_archive">unpack_archive() (in module textacy.io.utils)</a>
+</li>
       <li><a href="api_reference/io.html#textacy.io.utils.unzip">unzip() (in module textacy.io.utils)</a>
 </li>
   </ul></td>
@@ -764,18 +849,14 @@
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api_reference/datasets.html#textacy.datasets.utils.validate_and_clip_range_filter">validate_and_clip_range_filter() (in module textacy.datasets.utils)</a>
-</li>
-      <li><a href="api_reference/datasets.html#textacy.datasets.utils.validate_set_member_filter">validate_set_member_filter() (in module textacy.datasets.utils)</a>
-</li>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.vector_norms">vector_norms() (textacy.corpus.Corpus property)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.vector_norms">vector_norms() (textacy.corpus.Corpus property)</a>
 </li>
       <li><a href="api_reference/vsm_and_tm.html#textacy.vsm.vectorizers.Vectorizer">Vectorizer (class in textacy.vsm.vectorizers)</a>
 </li>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.vectors">vectors() (textacy.corpus.Corpus property)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.vectors">vectors() (textacy.corpus.Corpus property)</a>
-</li>
       <li><a href="api_reference/vsm_and_tm.html#textacy.vsm.vectorizers.GroupVectorizer.vocabulary_grps">vocabulary_grps (textacy.vsm.vectorizers.GroupVectorizer attribute)</a>
 </li>
       <li><a href="api_reference/vsm_and_tm.html#textacy.vsm.vectorizers.GroupVectorizer.vocabulary_terms">vocabulary_terms (textacy.vsm.vectorizers.GroupVectorizer attribute)</a>
@@ -792,6 +873,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference/vsm_and_tm.html#textacy.vsm.vectorizers.Vectorizer.weighting">weighting() (textacy.vsm.vectorizers.Vectorizer property)</a>
 </li>
+      <li><a href="api_reference/resources.html#textacy.resources.depeche_mood.DepecheMood.weights">weights() (textacy.resources.depeche_mood.DepecheMood property)</a>
+</li>
       <li><a href="api_reference/misc.html#textacy.text_stats.TextStats.wiener_sachtextformel">wiener_sachtextformel (textacy.text_stats.TextStats attribute)</a>
 </li>
       <li><a href="api_reference/misc.html#textacy.text_stats.wiener_sachtextformel">wiener_sachtextformel() (in module textacy.text_stats)</a>
@@ -804,11 +887,11 @@
 </li>
       <li><a href="api_reference/misc.html#textacy.similarity.word2vec">word2vec() (in module textacy.similarity)</a>
 </li>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.word_counts">word_counts() (textacy.corpus.Corpus method)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.word_counts">word_counts() (textacy.corpus.Corpus method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api_reference/doc_and_corpus.html#textacy.corpus.Corpus.word_doc_counts">word_doc_counts() (textacy.corpus.Corpus method)</a>
+      <li><a href="api_reference/lang_doc_corpus.html#textacy.corpus.Corpus.word_doc_counts">word_doc_counts() (textacy.corpus.Corpus method)</a>
 </li>
       <li><a href="api_reference/misc.html#textacy.similarity.word_movers">word_movers() (in module textacy.similarity)</a>
 </li>
@@ -825,6 +908,8 @@
       <li><a href="api_reference/io.html#textacy.io.matrix.write_sparse_matrix">write_sparse_matrix() (in module textacy.io.matrix)</a>
 </li>
       <li><a href="api_reference/io.html#textacy.io.text.write_text">write_text() (in module textacy.io.text)</a>
+</li>
+      <li><a href="api_reference/augmentation.html#textacy.augmentation.utils.AugTok.ws">ws() (textacy.augmentation.utils.AugTok property)</a>
 </li>
   </ul></td>
 </tr></table>

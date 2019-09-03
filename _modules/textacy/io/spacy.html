@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>textacy.io.spacy &#8212; textacy 0.8.0 documentation</title>
+    <title>textacy.io.spacy &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -38,25 +38,24 @@
 <span class="sd">Functions for reading from and writing to disk spacy documents in either</span>
 <span class="sd">pickle or binary format. Be warned: Both formats have pros and cons.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
 
 <span class="kn">from</span> <span class="nn">srsly</span> <span class="k">import</span> <span class="n">msgpack</span>
 <span class="kn">from</span> <span class="nn">spacy.language</span> <span class="k">import</span> <span class="n">Language</span>
 <span class="kn">from</span> <span class="nn">spacy.tokens</span> <span class="k">import</span> <span class="n">Doc</span>
 
-<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">cache</span>
-<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">compat</span>
-<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">utils</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">open_sesame</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">spacier</span><span class="p">,</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">utils</span> <span class="k">as</span> <span class="n">io_utils</span>
 
 
-<div class="viewcode-block" id="read_spacy_docs"><a class="viewcode-back" href="../../../api_reference/io.html#textacy.io.spacy.read_spacy_docs">[docs]</a><span class="k">def</span> <span class="nf">read_spacy_docs</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;pickle&quot;</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="read_spacy_docs"><a class="viewcode-back" href="../../../api_reference/io.html#textacy.io.spacy.read_spacy_docs">[docs]</a><span class="k">def</span> <span class="nf">read_spacy_docs</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;pickle&quot;</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Read the contents of a file at ``filepath``, written either in pickle or binary</span>
 <span class="sd">    format.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        filepath (str): Path to file on disk from which data will be read.</span>
+<span class="sd">        filepath (str or :class:`pathlib.Path`): Path to file on disk</span>
+<span class="sd">            from which data will be read.</span>
 <span class="sd">        format ({&quot;pickle&quot;, &quot;binary&quot;}): Format of the data that was written to disk.</span>
 <span class="sd">            If &#39;pickle&#39;, use ``pickle`` in python&#39;s stdlib; if &#39;binary&#39;, use</span>
 <span class="sd">            the 3rd-party ``msgpack`` library.</span>
@@ -86,8 +85,8 @@
 <span class="sd">            provided when ``format=&quot;binary&quot;``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;pickle&quot;</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">open_sesame</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">spacy_doc</span> <span class="ow">in</span> <span class="n">compat</span><span class="o">.</span><span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">io_utils</span><span class="o">.</span><span class="n">open_sesame</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">spacy_doc</span> <span class="ow">in</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
                 <span class="k">yield</span> <span class="n">spacy_doc</span>
     <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;binary&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">lang</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -99,13 +98,13 @@
             <span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">Language</span><span class="p">):</span>
             <span class="n">vocab</span> <span class="o">=</span> <span class="n">lang</span><span class="o">.</span><span class="n">vocab</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">compat</span><span class="o">.</span><span class="n">unicode_</span><span class="p">):</span>
-            <span class="n">vocab</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">load_spacy_lang</span><span class="p">(</span><span class="n">lang</span><span class="p">)</span><span class="o">.</span><span class="n">vocab</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">vocab</span> <span class="o">=</span> <span class="n">spacier</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">load_spacy_lang</span><span class="p">(</span><span class="n">lang</span><span class="p">)</span><span class="o">.</span><span class="n">vocab</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">&quot;lang = &#39;</span><span class="si">{}</span><span class="s2">&#39; is invalid; must be a str or `spacy.Language`&quot;</span>
             <span class="p">)</span>
-        <span class="k">with</span> <span class="n">open_sesame</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">io_utils</span><span class="o">.</span><span class="n">open_sesame</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">unpacker</span> <span class="o">=</span> <span class="n">msgpack</span><span class="o">.</span><span class="n">Unpacker</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">unicode_errors</span><span class="o">=</span><span class="s2">&quot;strict&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">unpacker</span><span class="p">:</span>
 
@@ -124,7 +123,7 @@
                     <span class="n">user_data_values</span> <span class="o">=</span> <span class="n">msgpack</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="s2">&quot;user_data_values&quot;</span><span class="p">])</span>
                     <span class="n">user_data</span> <span class="o">=</span> <span class="p">{</span>
                         <span class="n">key</span><span class="p">:</span> <span class="n">value</span>
-                        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">compat</span><span class="o">.</span><span class="n">zip_</span><span class="p">(</span><span class="n">user_data_keys</span><span class="p">,</span> <span class="n">user_data_values</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">user_data_keys</span><span class="p">,</span> <span class="n">user_data_values</span><span class="p">)</span>
                     <span class="p">}</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">user_data</span> <span class="o">=</span> <span class="kc">None</span>
@@ -134,7 +133,7 @@
                 <span class="n">words</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="n">spaces</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">compat</span><span class="o">.</span><span class="n">range_</span><span class="p">(</span><span class="n">attrs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">attrs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
                     <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">attrs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
                     <span class="n">has_space</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">attrs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
                     <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">start</span><span class="p">:</span> <span class="n">end</span><span class="p">])</span>
@@ -159,7 +158,13 @@
 
 
 <div class="viewcode-block" id="write_spacy_docs"><a class="viewcode-back" href="../../../api_reference/io.html#textacy.io.spacy.write_spacy_docs">[docs]</a><span class="k">def</span> <span class="nf">write_spacy_docs</span><span class="p">(</span>
-    <span class="n">data</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">make_dirs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;pickle&quot;</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;tensor&quot;</span><span class="p">,),</span> <span class="n">include_tensor</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">data</span><span class="p">,</span>
+    <span class="n">filepath</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">make_dirs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;pickle&quot;</span><span class="p">,</span>
+    <span class="n">exclude</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;tensor&quot;</span><span class="p">,),</span>
+    <span class="n">include_tensor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Write one or more ``Doc`` s to disk at ``filepath`` in either pickle or</span>
@@ -168,7 +173,8 @@
 <span class="sd">    Args:</span>
 <span class="sd">        data (:class:`spacy.tokens.Doc` or Iterable[:class:`spacy.tokens.Doc`]):</span>
 <span class="sd">            A single ``Doc`` or a sequence of ``Doc`` s to write to disk.</span>
-<span class="sd">        filepath (str): Path to file on disk to which data will be written.</span>
+<span class="sd">        filepath (str or :class:`pathlib.Path`): Path to file on disk</span>
+<span class="sd">            to which data will be written.</span>
 <span class="sd">        make_dirs (bool): If True, automatically create (sub)directories if</span>
 <span class="sd">            not already present in order to write ``filepath``.</span>
 <span class="sd">        format ({&quot;pickle&quot;, &quot;binary&quot;}): Format of the data written to disk.</span>
@@ -213,10 +219,10 @@
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">Doc</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">data</span><span class="p">]</span>
     <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;pickle&quot;</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">open_sesame</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;wb&quot;</span><span class="p">,</span> <span class="n">make_dirs</span><span class="o">=</span><span class="n">make_dirs</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">compat</span><span class="o">.</span><span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">f</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">io_utils</span><span class="o">.</span><span class="n">open_sesame</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;wb&quot;</span><span class="p">,</span> <span class="n">make_dirs</span><span class="o">=</span><span class="n">make_dirs</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">f</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;binary&quot;</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">open_sesame</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;wb&quot;</span><span class="p">,</span> <span class="n">make_dirs</span><span class="o">=</span><span class="n">make_dirs</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">io_utils</span><span class="o">.</span><span class="n">open_sesame</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;wb&quot;</span><span class="p">,</span> <span class="n">make_dirs</span><span class="o">=</span><span class="n">make_dirs</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">spacy_doc</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
                 <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">spacy_doc</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>spaCy extensions &#8212; textacy 0.8.0 documentation</title>
+    <title>spaCy extensions &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -15,7 +15,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Datasets" href="datasets.html" />
-    <link rel="prev" title="Doc and Corpus" href="doc_and_corpus.html" />
+    <link rel="prev" title="Lang, Doc, Corpus" href="lang_doc_corpus.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -210,7 +210,7 @@ is treated as a single sentence.</p>
 
 <dl class="function">
 <dt id="textacy.spacier.doc_extensions.to_terms_list">
-<code class="sig-prename descclassname">textacy.spacier.doc_extensions.</code><code class="sig-name descname">to_terms_list</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">ngrams=(1</em>, <em class="sig-param">2</em>, <em class="sig-param">3)</em>, <em class="sig-param">entities=True</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">as_strings=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/spacier/doc_extensions.html#to_terms_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.spacier.doc_extensions.to_terms_list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.spacier.doc_extensions.</code><code class="sig-name descname">to_terms_list</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">*</em>, <em class="sig-param">ngrams=(1</em>, <em class="sig-param">2</em>, <em class="sig-param">3)</em>, <em class="sig-param">entities=True</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">as_strings=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/spacier/doc_extensions.html#to_terms_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.spacier.doc_extensions.to_terms_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform <code class="docutils literal notranslate"><span class="pre">Doc</span></code> into a sequence of ngrams and/or entities — not necessarily
 in order of appearance — where each appears in the sequence as many times as
 it appears in <code class="docutils literal notranslate"><span class="pre">Doc</span></code>.</p>
@@ -275,7 +275,7 @@ actual list of terms, call <code class="docutils literal notranslate"><span clas
 
 <dl class="function">
 <dt id="textacy.spacier.doc_extensions.to_bag_of_terms">
-<code class="sig-prename descclassname">textacy.spacier.doc_extensions.</code><code class="sig-name descname">to_bag_of_terms</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">ngrams=(1</em>, <em class="sig-param">2</em>, <em class="sig-param">3)</em>, <em class="sig-param">entities=True</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">weighting='count'</em>, <em class="sig-param">as_strings=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/spacier/doc_extensions.html#to_bag_of_terms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.spacier.doc_extensions.to_bag_of_terms" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.spacier.doc_extensions.</code><code class="sig-name descname">to_bag_of_terms</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">*</em>, <em class="sig-param">ngrams=(1</em>, <em class="sig-param">2</em>, <em class="sig-param">3)</em>, <em class="sig-param">entities=True</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">weighting='count'</em>, <em class="sig-param">as_strings=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/spacier/doc_extensions.html#to_bag_of_terms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.spacier.doc_extensions.to_bag_of_terms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform <code class="docutils literal notranslate"><span class="pre">Doc</span></code> into a bag-of-terms: the set of unique terms in <code class="docutils literal notranslate"><span class="pre">Doc</span></code>
 mapped to their frequency of occurrence, where “terms” includes ngrams and/or entities.</p>
 <dl class="field-list simple">
@@ -332,7 +332,7 @@ of occurrence (depending on the value of <code class="docutils literal notransla
 
 <dl class="function">
 <dt id="textacy.spacier.doc_extensions.to_bag_of_words">
-<code class="sig-prename descclassname">textacy.spacier.doc_extensions.</code><code class="sig-name descname">to_bag_of_words</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">weighting='count'</em>, <em class="sig-param">as_strings=False</em>, <em class="sig-param">filter_stops=True</em>, <em class="sig-param">filter_punct=True</em>, <em class="sig-param">filter_nums=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/spacier/doc_extensions.html#to_bag_of_words"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.spacier.doc_extensions.to_bag_of_words" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.spacier.doc_extensions.</code><code class="sig-name descname">to_bag_of_words</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">*</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">weighting='count'</em>, <em class="sig-param">as_strings=False</em>, <em class="sig-param">filter_stops=True</em>, <em class="sig-param">filter_punct=True</em>, <em class="sig-param">filter_nums=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/spacier/doc_extensions.html#to_bag_of_words"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.spacier.doc_extensions.to_bag_of_words" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform <code class="docutils literal notranslate"><span class="pre">Doc</span></code> into a bag-of-words: the set of unique words in <code class="docutils literal notranslate"><span class="pre">Doc</span></code>
 mapped to their absolute, relative, or binary frequency of occurrence.</p>
 <dl class="field-list simple">
@@ -373,7 +373,7 @@ of occurrence (depending on the value of <code class="docutils literal notransla
 
 <dl class="function">
 <dt id="textacy.spacier.doc_extensions.to_semantic_network">
-<code class="sig-prename descclassname">textacy.spacier.doc_extensions.</code><code class="sig-name descname">to_semantic_network</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">nodes='words'</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">edge_weighting='default'</em>, <em class="sig-param">window_width=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/spacier/doc_extensions.html#to_semantic_network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.spacier.doc_extensions.to_semantic_network" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">textacy.spacier.doc_extensions.</code><code class="sig-name descname">to_semantic_network</code><span class="sig-paren">(</span><em class="sig-param">doc</em>, <em class="sig-param">*</em>, <em class="sig-param">nodes='words'</em>, <em class="sig-param">normalize='lemma'</em>, <em class="sig-param">edge_weighting='default'</em>, <em class="sig-param">window_width=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/textacy/spacier/doc_extensions.html#to_semantic_network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#textacy.spacier.doc_extensions.to_semantic_network" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform <code class="docutils literal notranslate"><span class="pre">Doc</span></code> into a semantic network, where nodes are either
 “words” or “sents” and edges between nodes may be weighted in different ways.</p>
 <dl class="field-list simple">
@@ -614,7 +614,7 @@ around a verb that are auxiliary verbs or negations.</p>
     <ul>
         <li>
           &larr;
-          <a href="doc_and_corpus.html" title="Previous document">Doc and Corpus</a>
+          <a href="lang_doc_corpus.html" title="Previous document">Lang, Doc, Corpus</a>
         </li>
         <li>
           <a href="datasets.html" title="Next document">Datasets</a>
@@ -649,14 +649,16 @@ around a verb that are auxiliary verbs or negations.</p>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/quickstart.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="root.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="doc_and_corpus.html">Doc and Corpus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang_doc_corpus.html">Lang, Doc, Corpus</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">spaCy extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="datasets.html">Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html">Resources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="text_processing.html">Text (Pre-)Processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="information_extraction.html">Information Extraction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vsm_and_tm.html">Vectorization &amp; Topic Modeling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io.html">IO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="viz.html">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="augmentation.html">Data Augmentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellany</a></li>
 </ul>
@@ -670,7 +672,7 @@ around a verb that are auxiliary verbs or negations.</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="root.html">API Reference</a><ul>
-      <li>Previous: <a href="doc_and_corpus.html" title="previous chapter">Doc and Corpus</a></li>
+      <li>Previous: <a href="lang_doc_corpus.html" title="previous chapter">Lang, Doc, Corpus</a></li>
       <li>Next: <a href="datasets.html" title="next chapter">Datasets</a></li>
   </ul></li>
   </ul></li>

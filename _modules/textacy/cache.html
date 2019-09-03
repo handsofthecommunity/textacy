@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>textacy.cache &#8212; textacy 0.8.0 documentation</title>
+    <title>textacy.cache &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -35,28 +35,14 @@
 <span class="sd">Cache</span>
 <span class="sd">-----</span>
 
-<span class="sd">Functions to load and cache language data and other NLP resources. Loading data</span>
+<span class="sd">Functionality for caching language data and other NLP resources. Loading data</span>
 <span class="sd">from disk can be slow; let&#39;s just do it once and forget about it. :)</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
-
-<span class="kn">import</span> <span class="nn">csv</span>
-<span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
-<span class="kn">import</span> <span class="nn">io</span>
-<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="kn">import</span> <span class="nn">joblib</span>
-<span class="kn">import</span> <span class="nn">spacy</span>
 <span class="kn">from</span> <span class="nn">cachetools</span> <span class="k">import</span> <span class="n">cached</span><span class="p">,</span> <span class="n">LRUCache</span>
-<span class="kn">from</span> <span class="nn">cachetools.keys</span> <span class="k">import</span> <span class="n">hashkey</span>
-
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">compat</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">constants</span>
-
-<span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_get_size</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">seen</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -103,142 +89,6 @@
     <span class="sd">&quot;&quot;&quot;Clear textacy&#39;s cache of loaded data.&quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">LRU_CACHE</span>
     <span class="n">LRU_CACHE</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="load_spacy_lang"><a class="viewcode-back" href="../../api_reference/utils.html#textacy.cache.load_spacy_lang">[docs]</a><span class="nd">@cached</span><span class="p">(</span><span class="n">LRU_CACHE</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">hashkey</span><span class="p">,</span> <span class="s2">&quot;spacy_lang&quot;</span><span class="p">))</span>
-<span class="k">def</span> <span class="nf">load_spacy_lang</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_blank</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Load a spaCy ``Language``: a shared vocabulary and language-specific data</span>
-<span class="sd">    for tokenizing text, and (if available) model data and a processing pipeline</span>
-<span class="sd">    containing a sequence of components for annotating a document.</span>
-<span class="sd">    An LRU cache saves languages in memory.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        name (str or :class:`pathlib.Path`): spaCy language to load.</span>
-<span class="sd">            Could be a shortcut link, full package name, or path to model directory,</span>
-<span class="sd">            or a 2-letter ISO language code for which spaCy has language data.</span>
-<span class="sd">        disable (Tuple[str]): Names of pipeline components to disable, if any.</span>
-
-<span class="sd">            .. note:: Although spaCy&#39;s API specifies this argument as a list,</span>
-<span class="sd">               here we require a tuple. Pipelines are stored in the LRU cache</span>
-<span class="sd">               with unique identifiers generated from the hash of the function</span>
-<span class="sd">               name and args --- and lists aren&#39;t hashable.</span>
-
-<span class="sd">        allow_blank (bool): If True, allow loading of blank spaCy ``Language`` s;</span>
-<span class="sd">            if False, raise an OSError/IOError if a full processing pipeline</span>
-<span class="sd">            isn&#39;t available. Note that spaCy ``Doc`` s produced by blank languages</span>
-<span class="sd">            are missing key functionality, e.g. POS tags, entities, sentences.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        :class:`spacy.language.Language`: A loaded spaCy ``Language``.</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        OSError/IOError</span>
-<span class="sd">        ImportError</span>
-
-<span class="sd">    See Also:</span>
-<span class="sd">        * https://spacy.io/api/top-level#spacy.load</span>
-<span class="sd">        * https://spacy.io/api/top-level#spacy.blank</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">disable</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">disable</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="c1"># load a full spacy lang processing pipeline</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">spacy_lang</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="n">disable</span><span class="p">)</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;loaded &#39;</span><span class="si">%s</span><span class="s2">&#39; spaCy language pipeline&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">spacy_lang</span>
-    <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">IOError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="c1"># fall back to a blank spacy lang</span>
-        <span class="k">if</span> <span class="n">allow_blank</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">compat</span><span class="o">.</span><span class="n">unicode_</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">spacy_lang</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">blank</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-            <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;loaded &#39;</span><span class="si">%s</span><span class="s2">&#39; spaCy language blank&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">spacy_lang</span>
-        <span class="k">raise</span> <span class="n">e</span></div>
-
-
-<div class="viewcode-block" id="load_hyphenator"><a class="viewcode-back" href="../../api_reference/utils.html#textacy.cache.load_hyphenator">[docs]</a><span class="nd">@cached</span><span class="p">(</span><span class="n">LRU_CACHE</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">hashkey</span><span class="p">,</span> <span class="s2">&quot;hyphenator&quot;</span><span class="p">))</span>
-<span class="k">def</span> <span class="nf">load_hyphenator</span><span class="p">(</span><span class="n">lang</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Load an object that hyphenates words at valid points, as used in LaTex typesetting.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        lang (str): Standard 2-letter language abbreviation. To get a list of</span>
-<span class="sd">            valid values::</span>
-
-<span class="sd">                &gt;&gt;&gt; import pyphen; pyphen.LANGUAGES</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        :class:`pyphen.Pyphen()`</span>
-
-<span class="sd">    Note:</span>
-<span class="sd">        While hyphenation points always fall on syllable divisions,</span>
-<span class="sd">        not all syllable divisions are valid hyphenation points. But it&#39;s decent.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">pyphen</span>
-
-    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Loading &quot;</span><span class="si">%s</span><span class="s1">&quot; language hyphenator&#39;</span><span class="p">,</span> <span class="n">lang</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">pyphen</span><span class="o">.</span><span class="n">Pyphen</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="n">lang</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="load_depechemood"><a class="viewcode-back" href="../../api_reference/utils.html#textacy.cache.load_depechemood">[docs]</a><span class="nd">@cached</span><span class="p">(</span><span class="n">LRU_CACHE</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">hashkey</span><span class="p">,</span> <span class="s2">&quot;depechemood&quot;</span><span class="p">))</span>
-<span class="k">def</span> <span class="nf">load_depechemood</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">weighting</span><span class="o">=</span><span class="s2">&quot;normfreq&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Load DepecheMood lexicon text file from disk, munge into nested dictionary</span>
-<span class="sd">    for convenient lookup by lemma#POS. NB: English only!</span>
-
-<span class="sd">    Each version of DepecheMood is built starting from word-by-document matrices</span>
-<span class="sd">    either using raw frequencies (DepecheMood_freq.txt), normalized frequencies</span>
-<span class="sd">    (DepecheMood_normfreq.txt) or tf-idf (DepecheMood_tfidf.txt). The files are</span>
-<span class="sd">    tab-separated; each row contains one Lemma#PoS followed by the scores for the</span>
-<span class="sd">    following emotions: AFRAID, AMUSED, ANGRY, ANNOYED, DONT_CARE, HAPPY, INSPIRED, SAD.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        data_dir (str): Directory on disk where DepecheMood lexicon text fields,</span>
-<span class="sd">            i.e. the location of the &#39;DepecheMood_V1.0&#39; directory created when</span>
-<span class="sd">            unzipping the DM dataset.</span>
-<span class="sd">        weighting ({&#39;freq&#39;, &#39;normfreq&#39;, &#39;tfidf&#39;}): Type of word</span>
-<span class="sd">            weighting used in building DepecheMood matrix.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Dict[dict]: Top-level keys are Lemma#POS strings, values are nested dicts</span>
-<span class="sd">        with emotion names as keys and weights as floats.</span>
-
-<span class="sd">    References:</span>
-<span class="sd">        Staiano, J., &amp; Guerini, M. (2014). &quot;DepecheMood: a Lexicon for Emotion</span>
-<span class="sd">        Analysis from Crowd-Annotated News&quot;. Proceedings of ACL-2014. (arXiv:1405.1605)</span>
-<span class="sd">        Data available at https://github.com/marcoguerini/DepecheMood/releases .</span>
-
-<span class="sd">    See Also:</span>
-<span class="sd">        :func:`download_depechemood &lt;textacy.lexicon_methods.download_depechemood&gt;`</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">data_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">data_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_DATA_DIR</span><span class="p">,</span> <span class="s2">&quot;depechemood&quot;</span><span class="p">,</span> <span class="s2">&quot;DepecheMood_V1.0&quot;</span><span class="p">)</span>
-    <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;DepecheMood_</span><span class="si">{weighting}</span><span class="s2">.txt&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">weighting</span><span class="o">=</span><span class="n">weighting</span><span class="p">)</span>
-    <span class="p">)</span>
-    <span class="n">delimiter</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">compat</span><span class="o">.</span><span class="n">PY2</span> <span class="k">else</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span>
-    <span class="c1"># HACK: Py2&#39;s csv module fail</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;rt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">:</span>
-            <span class="n">csvreader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csvfile</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">)</span>
-            <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">csvreader</span><span class="p">)</span>
-    <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">IOError</span><span class="p">):</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span>
-            <span class="s2">&quot;Unable to load DepecheMood from </span><span class="si">%s</span><span class="s2">.&quot;</span>
-            <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">Have you downloaded the data? If not, you can use the &quot;</span>
-            <span class="s2">&quot;`textacy.lexicon_methods.download_depechemood()` function.&quot;</span>
-            <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">If so, have you given the correct `data_dir`? The directory &quot;</span>
-            <span class="s2">&quot;should have a `DepecheMood_V1.0` subdirectory, within which are &quot;</span>
-            <span class="s2">&quot;three text files and a README.&quot;</span><span class="p">,</span>
-            <span class="n">data_dir</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">raise</span>
-    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Loading DepecheMood lexicon from </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span>
-    <span class="n">cols</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="p">{</span><span class="n">cols</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">compat</span><span class="o">.</span><span class="n">range_</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">)}</span>
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-    <span class="p">}</span></div>
 </pre></div>
 
           </div>

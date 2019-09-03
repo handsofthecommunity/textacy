@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>textacy.text_utils &#8212; textacy 0.8.0 documentation</title>
+    <title>textacy.text_utils &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -37,8 +37,6 @@
 
 <span class="sd">Set of small utility functions that take text strings as input.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
-
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
@@ -90,7 +88,7 @@
 
 
 <div class="viewcode-block" id="keyword_in_context"><a class="viewcode-back" href="../../api_reference/text_processing.html#textacy.text_utils.keyword_in_context">[docs]</a><span class="k">def</span> <span class="nf">keyword_in_context</span><span class="p">(</span>
-    <span class="n">text</span><span class="p">,</span> <span class="n">keyword</span><span class="p">,</span> <span class="n">ignore_case</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">window_width</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">print_only</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">text</span><span class="p">,</span> <span class="n">keyword</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">ignore_case</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">window_width</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">print_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Search for ``keyword`` in ``text`` via regular expression, return or print strings</span>

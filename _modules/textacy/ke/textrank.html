@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>textacy.ke.textrank &#8212; textacy 0.8.0 documentation</title>
+    <title>textacy.ke.textrank &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -31,23 +31,21 @@
           <div class="body" role="main">
             
   <h1>Source code for textacy.ke.textrank</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">TextRank</span>
 <span class="sd">--------</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
-
 <span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">import</span> <span class="nn">operator</span>
 
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">utils</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">graph_base</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">utils</span> <span class="k">as</span> <span class="n">ke_utils</span>
-<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">compat</span><span class="p">,</span> <span class="n">utils</span>
 
 
 <div class="viewcode-block" id="textrank"><a class="viewcode-back" href="../../../api_reference/information_extraction.html#textacy.ke.textrank.textrank">[docs]</a><span class="k">def</span> <span class="nf">textrank</span><span class="p">(</span>
     <span class="n">doc</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
     <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;lemma&quot;</span><span class="p">,</span>
     <span class="n">include_pos</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">),</span>
     <span class="n">window_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
@@ -101,7 +99,7 @@
 <span class="sd">          pages 1105-1115.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># validate / transform args</span>
-    <span class="n">include_pos</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">to_collection</span><span class="p">(</span><span class="n">include_pos</span><span class="p">,</span> <span class="n">compat</span><span class="o">.</span><span class="n">unicode_</span><span class="p">,</span> <span class="nb">set</span><span class="p">)</span>
+    <span class="n">include_pos</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">to_collection</span><span class="p">(</span><span class="n">include_pos</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">set</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">topn</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="mf">0.0</span> <span class="o">&lt;</span> <span class="n">topn</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -115,7 +113,7 @@
 
     <span class="k">if</span> <span class="n">position_bias</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">word_pos</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">norm_word</span> <span class="ow">in</span> <span class="n">compat</span><span class="o">.</span><span class="n">zip_</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">ke_utils</span><span class="o">.</span><span class="n">normalize_terms</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">normalize</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">norm_word</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">ke_utils</span><span class="o">.</span><span class="n">normalize_terms</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">normalize</span><span class="p">)):</span>
             <span class="n">word_pos</span><span class="p">[</span><span class="n">norm_word</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">sum_word_pos</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">word_pos</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
         <span class="n">word_pos</span> <span class="o">=</span> <span class="p">{</span><span class="n">word</span><span class="p">:</span> <span class="n">pos</span> <span class="o">/</span> <span class="n">sum_word_pos</span> <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">word_pos</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
@@ -135,9 +133,8 @@
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">topn</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
         <span class="n">topn</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">candidates</span><span class="p">))</span> <span class="o">*</span> <span class="n">topn</span><span class="p">))</span>
     <span class="c1"># rank candidates by aggregating constituent word scores</span>
-    <span class="c1"># TODO: PY3 doesn&#39;t need to make a list when computing the mean</span>
     <span class="n">candidate_scores</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">candidate</span><span class="p">):</span> <span class="nb">sum</span><span class="p">([</span><span class="n">word_scores</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">candidate</span><span class="p">])</span>
+        <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">candidate</span><span class="p">):</span> <span class="nb">sum</span><span class="p">(</span><span class="n">word_scores</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">candidate</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">candidates</span>
     <span class="p">}</span>
     <span class="n">sorted_candidate_scores</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>

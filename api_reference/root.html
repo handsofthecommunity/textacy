@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>API Reference &#8212; textacy 0.8.0 documentation</title>
+    <title>API Reference &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -14,7 +14,7 @@
     <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Doc and Corpus" href="doc_and_corpus.html" />
+    <link rel="next" title="Lang, Doc, Corpus" href="lang_doc_corpus.html" />
     <link rel="prev" title="Quickstart" href="../getting_started/quickstart.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -36,7 +36,7 @@
 <span id="id1"></span><h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="doc_and_corpus.html">Doc and Corpus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lang_doc_corpus.html">Lang, Doc, Corpus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spacier.html">spaCy extensions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="spacier.html#doc-extensions">Doc extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spacier.html#pipeline-components">Pipeline Components</a></li>
@@ -44,13 +44,19 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="datasets.html">Datasets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="datasets.html#capitol-words">Capitol Words</a></li>
-<li class="toctree-l2"><a class="reference internal" href="datasets.html#supreme-court-decisions">Supreme Court Decisions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="datasets.html#wikimedia">Wikimedia</a></li>
-<li class="toctree-l2"><a class="reference internal" href="datasets.html#reddit-comments">Reddit Comments</a></li>
-<li class="toctree-l2"><a class="reference internal" href="datasets.html#oxford-text-archive">Oxford Text Archive</a></li>
-<li class="toctree-l2"><a class="reference internal" href="datasets.html#imdb-reviews">IMDB Reviews</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#capitol-words-congressional-speeches">Capitol Words Congressional speeches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#supreme-court-decisions">Supreme Court decisions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#wikimedia-articles">Wikimedia articles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#reddit-comments">Reddit comments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#oxford-text-archive-literary-works">Oxford Text Archive literary works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#imdb-movie-reviews">IMDB movie reviews</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#udhr-translations">UDHR translations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="datasets.html#dataset-utils">Dataset Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Resources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="resources.html#conceptnet">ConceptNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html#depechemood">DepecheMood</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="text_processing.html">Text (Pre-)Processing</a><ul>
@@ -81,8 +87,9 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="viz.html">Visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="augmentation.html">Data Augmentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="utils.html#language-identification">Language Identification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#language-identification">Language identification</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html#cache">Cache</a></li>
 </ul>
 </li>
@@ -90,7 +97,6 @@
 <li class="toctree-l2"><a class="reference internal" href="misc.html#text-statistics">Text Statistics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html#semantic-networks">Semantic Networks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html#similarity">Similarity</a></li>
-<li class="toctree-l2"><a class="reference internal" href="misc.html#lexicon-methods">Lexicon Methods</a></li>
 </ul>
 </li>
 </ul>
@@ -108,7 +114,7 @@
           <a href="../getting_started/quickstart.html" title="Previous document">Quickstart</a>
         </li>
         <li>
-          <a href="doc_and_corpus.html" title="Next document">Doc and Corpus</a>
+          <a href="lang_doc_corpus.html" title="Next document">Lang, Doc, Corpus</a>
           &rarr;
         </li>
     </ul>
@@ -140,14 +146,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/quickstart.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="doc_and_corpus.html">Doc and Corpus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang_doc_corpus.html">Lang, Doc, Corpus</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spacier.html">spaCy extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="datasets.html">Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html">Resources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="text_processing.html">Text (Pre-)Processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="information_extraction.html">Information Extraction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vsm_and_tm.html">Vectorization &amp; Topic Modeling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io.html">IO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="viz.html">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="augmentation.html">Data Augmentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellany</a></li>
 </ul>
@@ -161,7 +169,7 @@
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="../getting_started/quickstart.html" title="previous chapter">Quickstart</a></li>
-      <li>Next: <a href="doc_and_corpus.html" title="next chapter">Doc and Corpus</a></li>
+      <li>Next: <a href="lang_doc_corpus.html" title="next chapter">Lang, Doc, Corpus</a></li>
   </ul></li>
 </ul>
 </div>

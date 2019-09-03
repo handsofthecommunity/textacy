@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Installation &#8212; textacy 0.8.0 documentation</title>
+    <title>Installation &#8212; textacy 0.9.0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -70,15 +70,18 @@ work as expected with textacy’s automatic language identification. For example
 </pre></div>
 </div>
 <p>textacy itself features convenient access to several datasets comprised of
-thousands of text + metadata records. Data can be downloaded via the <code class="docutils literal notranslate"><span class="pre">.download()</span></code>
-method on corresponding dataset classes (see <a class="reference internal" href="../api_reference/datasets.html#api-reference-datasets"><span class="std std-ref">Datasets</span></a> for details)
+thousands of text + metadata records, as well as a couple linguistic resources.
+Data can be downloaded via the <code class="docutils literal notranslate"><span class="pre">.download()</span></code> method on corresponding dataset/resource
+classes (see <a class="reference internal" href="../api_reference/datasets.html#api-reference-datasets"><span class="std std-ref">Datasets</span></a> and <a class="reference internal" href="../api_reference/resources.html#api-reference-resources"><span class="std std-ref">Resources</span></a> for details)
 or directly from the command line.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m textacy download capitol_words
+<span class="gp">$</span> python -m textacy download depeche_mood
 </pre></div>
 </div>
-<p>will download and save a compressed json file with ~11k speeches given by the
-main protagonists of the 2016 U.S. Presidential election (that had previously
-served in the U.S. Congress). For more information, run</p>
+<p>These commands download and save a compressed json file with ~11k speeches given by the
+main protagonists of the 2016 U.S. Presidential election, followed by a set of emotion
+lexicons in English and Italian with various word representations. For more information
+about particular datasets/resources use the <code class="docutils literal notranslate"><span class="pre">info</span></code> subcommand, or just run</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m textacy --help
 </pre></div>
 </div>
